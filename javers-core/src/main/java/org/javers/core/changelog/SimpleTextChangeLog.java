@@ -11,7 +11,6 @@ import org.javers.core.diff.changetype.container.ListChange;
 import org.javers.core.diff.changetype.container.SetChange;
 import org.javers.core.diff.changetype.map.MapChange;
 import org.javers.core.metamodel.object.GlobalId;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Sample text changeLog, renders text log like that:

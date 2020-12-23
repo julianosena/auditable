@@ -1,6 +1,7 @@
 package org.javers.core.graph;
 
 import org.javers.common.validation.Validate;
+
 import java.util.Optional;
 import java.util.function.Supplier;
 

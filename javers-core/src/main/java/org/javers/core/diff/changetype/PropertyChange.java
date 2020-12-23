@@ -6,8 +6,6 @@ import org.javers.core.metamodel.object.ValueObjectId;
 import java.util.Objects;
 import java.util.Optional;
 
-import static org.javers.common.validation.Validate.argumentIsNotNull;
-
 /**
  * Change on object's property of any type (Value, List, Set, Map, Array or Reference)
  *

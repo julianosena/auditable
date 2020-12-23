@@ -1,7 +1,6 @@
 package org.javers.core.diff.appenders;
 
 import org.javers.common.validation.Validate;
-import org.javers.core.metamodel.annotation.Value;
 import org.javers.core.metamodel.type.CustomComparableType;
 import org.javers.core.metamodel.type.JaversType;
 

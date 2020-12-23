@@ -2,10 +2,10 @@ package org.javers.core.diff.appenders;
 
 import org.javers.core.diff.NodePair;
 import org.javers.core.diff.changetype.PropertyChange;
-import org.javers.core.metamodel.object.GlobalId;
 import org.javers.core.metamodel.type.JaversProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Type;
 
 import static org.javers.core.metamodel.type.JaversType.DEFAULT_TYPE_PARAMETER;

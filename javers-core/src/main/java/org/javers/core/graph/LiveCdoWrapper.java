@@ -2,6 +2,7 @@ package org.javers.core.graph;
 
 import org.javers.core.metamodel.object.GlobalId;
 import org.javers.core.metamodel.type.ManagedType;
+
 import static org.javers.common.validation.Validate.argumentCheck;
 import static org.javers.common.validation.Validate.argumentIsNotNull;
 

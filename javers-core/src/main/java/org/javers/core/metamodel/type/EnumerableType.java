@@ -1,11 +1,12 @@
 package org.javers.core.metamodel.type;
 
 import org.javers.common.collections.EnumerableFunction;
-
-import java.util.*;
 import org.javers.common.validation.Validate;
 import org.javers.core.metamodel.object.OwnerContext;
+
 import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

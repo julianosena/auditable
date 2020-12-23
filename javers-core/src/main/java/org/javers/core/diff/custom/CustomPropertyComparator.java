@@ -2,10 +2,8 @@ package org.javers.core.diff.custom;
 
 import org.javers.core.diff.changetype.PropertyChange;
 import org.javers.core.diff.changetype.PropertyChangeMetadata;
-import org.javers.core.diff.changetype.ValueChange;
 import org.javers.core.metamodel.property.Property;
 import org.javers.core.metamodel.type.CustomType;
-import org.javers.core.metamodel.type.ValueType;
 
 import java.util.Optional;
 

@@ -2,7 +2,6 @@ package org.javers.core.graph;
 
 import org.javers.common.string.ShaDigest;
 import org.javers.core.json.JsonConverter;
-import org.javers.core.metamodel.type.ManagedType;
 import org.javers.core.snapshot.SnapshotFactory;
 
 import java.util.List;

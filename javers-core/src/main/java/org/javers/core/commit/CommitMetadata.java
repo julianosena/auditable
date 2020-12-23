@@ -2,6 +2,7 @@ package org.javers.core.commit;
 
 import org.javers.common.string.ToStringBuilder;
 import org.javers.common.validation.Validate;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDateTime;

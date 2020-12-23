@@ -6,8 +6,6 @@ import org.javers.common.validation.Validate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Collections.*;
-
 /**
  * Fluent builder for {@link EntityDefinition},
  * allows to set all optional attributes:

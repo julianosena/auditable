@@ -1,7 +1,8 @@
 package org.javers.core.metamodel.clazz;
 
-import java.util.List;
 import org.javers.core.metamodel.type.ValueObjectType;
+
+import java.util.List;
 
 /**
  * Recipe for {@link ValueObjectType}

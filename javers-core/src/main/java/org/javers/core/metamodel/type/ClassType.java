@@ -2,6 +2,7 @@ package org.javers.core.metamodel.type;
 
 import org.javers.common.reflection.ReflectionUtil;
 import org.javers.common.validation.Validate;
+
 import java.lang.reflect.Type;
 import java.util.Optional;
 

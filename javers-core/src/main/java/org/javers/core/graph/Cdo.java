@@ -3,7 +3,9 @@ package org.javers.core.graph;
 import org.javers.common.validation.Validate;
 import org.javers.core.metamodel.object.GlobalId;
 import org.javers.core.metamodel.property.Property;
-import org.javers.core.metamodel.type.*;
+import org.javers.core.metamodel.type.EntityType;
+import org.javers.core.metamodel.type.ManagedType;
+import org.javers.core.metamodel.type.ValueObjectType;
 
 import java.util.Optional;
 

@@ -10,14 +10,11 @@ import org.javers.core.metamodel.object.OwnerContext;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
-
-import static org.javers.common.collections.Collections.wrapNull;
 
 /**
  * @author bartosz walacik

@@ -8,7 +8,6 @@ import org.javers.core.ChangesByObject;
 import org.javers.core.diff.changetype.PropertyChange;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

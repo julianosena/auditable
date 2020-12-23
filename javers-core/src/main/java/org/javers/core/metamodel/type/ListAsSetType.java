@@ -7,8 +7,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
-import static org.javers.common.validation.Validate.argumentIsNotNull;
-
 public class ListAsSetType extends CollectionType {
 
     public ListAsSetType(Type baseJavaType) {

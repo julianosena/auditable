@@ -6,6 +6,7 @@ import org.javers.core.diff.changetype.NewObject;
 import org.javers.core.diff.changetype.ObjectRemoved;
 import org.javers.core.diff.changetype.PropertyChange;
 import org.javers.core.metamodel.object.GlobalId;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

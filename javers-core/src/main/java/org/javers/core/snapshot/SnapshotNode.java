@@ -6,6 +6,7 @@ import org.javers.core.metamodel.object.GlobalId;
 import org.javers.core.metamodel.property.Property;
 import org.javers.core.metamodel.type.EnumerableType;
 import org.javers.core.metamodel.type.JaversProperty;
+
 import java.util.Collections;
 import java.util.List;
 

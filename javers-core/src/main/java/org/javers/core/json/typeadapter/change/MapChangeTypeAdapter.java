@@ -3,7 +3,6 @@ package org.javers.core.json.typeadapter.change;
 import com.google.gson.*;
 import org.javers.common.exception.JaversException;
 import org.javers.common.exception.JaversExceptionCode;
-import org.javers.core.commit.CommitMetadata;
 import org.javers.core.diff.changetype.PropertyChangeMetadata;
 import org.javers.core.diff.changetype.map.*;
 import org.javers.core.metamodel.type.MapType;
@@ -12,10 +11,6 @@ import org.javers.core.metamodel.type.TypeMapper;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
 
 class MapChangeTypeAdapter extends ChangeTypeAdapter<MapChange> {
 

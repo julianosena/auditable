@@ -1,7 +1,6 @@
 package org.javers.core.diff;
 
 import org.javers.common.string.PrettyValuePrinter;
-import org.javers.core.commit.CommitMetadata;
 
 import java.util.*;
 

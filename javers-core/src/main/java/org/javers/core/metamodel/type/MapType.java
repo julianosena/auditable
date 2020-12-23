@@ -6,7 +6,10 @@ import org.javers.common.validation.Validate;
 import org.javers.core.metamodel.object.OwnerContext;
 
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Stream;

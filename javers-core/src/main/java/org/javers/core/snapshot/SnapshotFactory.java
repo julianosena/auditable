@@ -4,7 +4,6 @@ import org.javers.common.collections.Defaults;
 import org.javers.common.exception.JaversException;
 import org.javers.common.exception.JaversExceptionCode;
 import org.javers.core.commit.CommitMetadata;
-import org.javers.core.diff.appenders.HashWrapper;
 import org.javers.core.graph.Cdo;
 import org.javers.core.graph.LiveNode;
 import org.javers.core.metamodel.object.*;

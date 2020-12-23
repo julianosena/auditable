@@ -3,7 +3,6 @@ package org.javers.core.graph;
 import org.javers.common.collections.Lists;
 import org.javers.core.JaversCoreConfiguration;
 import org.javers.core.MappingStyle;
-import org.javers.core.pico.InstantiatingModule;
 import org.javers.core.pico.LateInstantiatingModule;
 import org.picocontainer.MutablePicoContainer;
 

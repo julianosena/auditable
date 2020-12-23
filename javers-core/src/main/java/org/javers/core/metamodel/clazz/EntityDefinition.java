@@ -1,7 +1,9 @@
 package org.javers.core.metamodel.clazz;
 
 import org.javers.core.metamodel.type.EntityType;
+
 import java.util.List;
+
 import static org.javers.common.collections.Lists.immutableCopyOf;
 
 /**

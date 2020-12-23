@@ -1,8 +1,5 @@
 package org.javers.core.metamodel.type;
 
-import java.lang.reflect.TypeVariable;
-import java.util.*;
-
 import org.javers.common.validation.Validate;
 import org.javers.core.metamodel.clazz.*;
 import org.javers.core.metamodel.scanner.ClassScan;
@@ -10,6 +7,9 @@ import org.javers.core.metamodel.scanner.ClassScanner;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 

@@ -1,6 +1,7 @@
 package org.javers.core.metamodel.scanner;
 
 import org.javers.core.metamodel.annotation.*;
+
 import java.lang.annotation.Annotation;
 
 /**

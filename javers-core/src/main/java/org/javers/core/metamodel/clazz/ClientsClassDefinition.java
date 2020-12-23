@@ -1,13 +1,12 @@
 package org.javers.core.metamodel.clazz;
 
-import java.util.Optional;
-
 import org.javers.core.metamodel.type.CustomType;
 import org.javers.core.metamodel.type.EntityType;
 import org.javers.core.metamodel.type.ValueObjectType;
 import org.javers.core.metamodel.type.ValueType;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 import static org.javers.common.validation.Validate.argumentCheck;

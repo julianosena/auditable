@@ -6,7 +6,6 @@ import org.javers.core.metamodel.clazz.EntityDefinition;
 import org.javers.core.metamodel.scanner.ClassScan;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author bartosz.walacik

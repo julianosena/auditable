@@ -1,6 +1,5 @@
 package org.javers.core.changelog;
 
-import java.util.Optional;
 import org.javers.core.commit.CommitMetadata;
 import org.javers.core.diff.Change;
 import org.javers.core.diff.changetype.*;
@@ -12,6 +11,7 @@ import org.javers.core.diff.changetype.map.MapChange;
 import org.javers.core.metamodel.object.GlobalId;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.javers.common.validation.Validate.argumentIsNotNull;
 

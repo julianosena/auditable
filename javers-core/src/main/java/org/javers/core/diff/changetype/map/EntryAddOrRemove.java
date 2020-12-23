@@ -1,9 +1,9 @@
 package org.javers.core.diff.changetype.map;
 
-import java.util.Objects;
-
 import org.javers.common.string.ToStringBuilder;
 import org.javers.core.diff.changetype.Atomic;
+
+import java.util.Objects;
 
 /**
  * Entry added or removed from a Map

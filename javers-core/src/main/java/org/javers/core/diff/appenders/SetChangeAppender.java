@@ -2,7 +2,10 @@ package org.javers.core.diff.appenders;
 
 import org.javers.common.collections.Sets;
 import org.javers.core.diff.NodePair;
-import org.javers.core.diff.changetype.container.*;
+import org.javers.core.diff.changetype.container.ContainerElementChange;
+import org.javers.core.diff.changetype.container.SetChange;
+import org.javers.core.diff.changetype.container.ValueAdded;
+import org.javers.core.diff.changetype.container.ValueRemoved;
 import org.javers.core.metamodel.type.*;
 
 import java.util.*;

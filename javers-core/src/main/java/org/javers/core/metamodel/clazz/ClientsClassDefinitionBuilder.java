@@ -1,8 +1,6 @@
 package org.javers.core.metamodel.clazz;
 
 import org.javers.common.collections.Lists;
-import java.util.Optional;
-
 import org.javers.common.exception.JaversException;
 import org.javers.common.exception.JaversExceptionCode;
 import org.javers.common.validation.Validate;
@@ -11,6 +9,7 @@ import org.javers.core.metamodel.annotation.DiffInclude;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @since 1.4

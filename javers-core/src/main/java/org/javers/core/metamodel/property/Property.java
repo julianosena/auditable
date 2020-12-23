@@ -1,9 +1,9 @@
 package org.javers.core.metamodel.property;
 
-import java.lang.reflect.Field;
 import org.javers.common.exception.JaversException;
 import org.javers.common.exception.JaversExceptionCode;
 import org.javers.common.reflection.JaversMember;
+
 import java.lang.reflect.Type;
 import java.util.Optional;
 

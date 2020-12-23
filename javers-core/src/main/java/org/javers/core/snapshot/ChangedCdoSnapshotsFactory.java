@@ -2,7 +2,10 @@ package org.javers.core.snapshot;
 
 import org.javers.common.validation.Validate;
 import org.javers.core.commit.CommitMetadata;
-import org.javers.core.graph.*;
+import org.javers.core.graph.Cdo;
+import org.javers.core.graph.LiveGraph;
+import org.javers.core.graph.LiveNode;
+import org.javers.core.graph.ObjectNode;
 import org.javers.core.metamodel.object.CdoSnapshot;
 
 import java.util.ArrayList;

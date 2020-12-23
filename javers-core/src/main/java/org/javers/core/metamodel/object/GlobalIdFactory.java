@@ -8,11 +8,15 @@ import org.javers.core.graph.ObjectAccessHook;
 import org.javers.core.graph.ObjectAccessProxy;
 import org.javers.core.metamodel.object.ValueObjectIdWithHash.ValueObjectIdWithPlaceholder;
 import org.javers.core.metamodel.object.ValueObjectIdWithHash.ValueObjectIdWithPlaceholderOnParent;
-import org.javers.core.metamodel.type.*;
+import org.javers.core.metamodel.type.EntityType;
+import org.javers.core.metamodel.type.ManagedType;
+import org.javers.core.metamodel.type.TypeMapper;
+import org.javers.core.metamodel.type.ValueObjectType;
 import org.javers.repository.jql.GlobalIdDTO;
 import org.javers.repository.jql.InstanceIdDTO;
 import org.javers.repository.jql.UnboundedValueObjectIdDTO;
 import org.javers.repository.jql.ValueObjectIdDTO;
+
 import java.util.Optional;
 
 /**

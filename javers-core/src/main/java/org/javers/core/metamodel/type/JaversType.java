@@ -1,7 +1,5 @@
 package org.javers.core.metamodel.type;
 
-import java.util.*;
-
 import org.javers.common.reflection.ReflectionUtil;
 import org.javers.common.string.PrettyPrintBuilder;
 import org.javers.common.string.ToStringBuilder;
@@ -11,6 +9,7 @@ import org.javers.core.metamodel.annotation.TypeName;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.*;
 
 /**
  * Managed property type

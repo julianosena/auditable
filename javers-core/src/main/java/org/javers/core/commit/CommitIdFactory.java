@@ -5,9 +5,7 @@ import org.javers.common.exception.JaversExceptionCode;
 import org.javers.core.JaversCoreConfiguration;
 import org.javers.repository.api.JaversExtendedRepository;
 
-import static org.javers.core.CommitIdGenerator.CUSTOM;
-import static org.javers.core.CommitIdGenerator.RANDOM;
-import static org.javers.core.CommitIdGenerator.SYNCHRONIZED_SEQUENCE;
+import static org.javers.core.CommitIdGenerator.*;
 
 class CommitIdFactory {
     private final JaversCoreConfiguration javersCoreConfiguration;

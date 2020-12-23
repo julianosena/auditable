@@ -1,6 +1,7 @@
 package org.javers.core.metamodel.type;
 
 import java.lang.reflect.Type;
+
 import static org.javers.common.reflection.ReflectionUtil.extractClass;
 
 /**

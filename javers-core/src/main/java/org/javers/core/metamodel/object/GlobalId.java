@@ -1,9 +1,10 @@
 package org.javers.core.metamodel.object;
 
-import java.util.Comparator;
 import org.javers.common.validation.Validate;
 import org.javers.core.metamodel.type.ManagedType;
+
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Global ID of Client's domain object (CDO)

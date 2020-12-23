@@ -8,6 +8,7 @@ import org.javers.common.string.ToStringBuilder;
 import org.javers.common.validation.Validate;
 import org.javers.core.metamodel.object.InstanceId;
 import org.javers.core.metamodel.property.Property;
+
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;

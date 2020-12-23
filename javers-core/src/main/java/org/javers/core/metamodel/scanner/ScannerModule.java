@@ -7,7 +7,6 @@ import org.javers.core.MappingStyle;
 import org.javers.core.pico.LateInstantiatingModule;
 import org.picocontainer.MutablePicoContainer;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 

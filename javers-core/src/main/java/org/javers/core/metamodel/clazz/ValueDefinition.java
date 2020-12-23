@@ -2,9 +2,6 @@ package org.javers.core.metamodel.clazz;
 
 import org.javers.core.diff.custom.CustomValueComparator;
 
-import java.util.Optional;
-import java.util.function.Function;
-
 /**
  * @author bartosz walacik
  */

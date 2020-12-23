@@ -1,10 +1,8 @@
 package org.javers.core.metamodel.type;
 
-import org.javers.common.collections.Maps;
-import org.javers.common.validation.Validate;
-
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 /**

@@ -2,7 +2,9 @@ package org.javers.core.diff.changetype;
 
 import org.javers.core.commit.CommitMetadata;
 import org.javers.core.metamodel.object.GlobalId;
+
 import java.util.Optional;
+
 import static org.javers.common.validation.Validate.argumentsAreNotNull;
 
 public class PropertyChangeMetadata {

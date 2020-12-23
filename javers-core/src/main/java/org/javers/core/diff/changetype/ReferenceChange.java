@@ -3,7 +3,6 @@ package org.javers.core.diff.changetype;
 import org.javers.common.string.PrettyValuePrinter;
 import org.javers.common.validation.Validate;
 import org.javers.core.metamodel.object.GlobalId;
-import org.javers.core.metamodel.property.MissingProperty;
 
 import java.util.Objects;
 import java.util.Optional;

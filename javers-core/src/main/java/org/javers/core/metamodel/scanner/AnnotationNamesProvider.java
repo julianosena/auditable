@@ -1,11 +1,13 @@
 package org.javers.core.metamodel.scanner;
 
 import org.javers.common.collections.Lists;
-import org.javers.common.collections.Sets;
 import org.javers.common.reflection.ReflectionUtil;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author bartosz walacik

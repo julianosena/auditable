@@ -3,7 +3,6 @@ package org.javers.core.commit;
 import org.javers.common.validation.Validate;
 import org.javers.core.Changes;
 import org.javers.core.CommitIdGenerator;
-import org.javers.core.diff.Change;
 import org.javers.core.diff.Diff;
 import org.javers.core.graph.Cdo;
 import org.javers.core.metamodel.object.CdoSnapshot;

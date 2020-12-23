@@ -1,11 +1,9 @@
 package org.javers.core.diff.changetype.map;
 
-import java.util.Objects;
-
 import org.javers.common.string.PrettyValuePrinter;
 import org.javers.core.diff.changetype.Atomic;
 
-import static org.javers.common.string.ToStringBuilder.format;
+import java.util.Objects;
 
 /**
  * Changed value assigned to a key in a Map
