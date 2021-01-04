@@ -9,7 +9,7 @@ You can report a **Bug** or a **Feature Request** to our [github issues](http://
 Bug Reports have to contain:
 
 1. Clear description of your **expectations versus reality**
-1. [**Runnable test case**](https://github.com/javers/javers/tree/master/javers-core/src/test/groovy/org/javers/core/cases) which isolates the bug and allows us to easily reproduce it on our laptops.
+1. [**Runnable test case**](https://github.com/javers/javers/tree/master/itau-auditable-core/src/test/groovy/org/javers/core/cases) which isolates the bug and allows us to easily reproduce it on our laptops.
    You can push this test case to your fork of this repository. 
 
 ## Guidelines for Contributors

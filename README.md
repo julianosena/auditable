@@ -1,7 +1,7 @@
 ﻿﻿
 ![logotype.svg](https://javers.org/img/logotype.svg)
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.javers/javers-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.javers/javers-core)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.javers/itau-auditable-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.javers/itau-auditable-core)
 [![Build Status](https://travis-ci.org/javers/javers.svg?branch=master)](https://travis-ci.org/javers/javers/)
 [![Financial Contributors on Open Collective](https://opencollective.com/javers/all/badge.svg?label=financial+contributors)](https://opencollective.com/javers)
 
@@ -34,7 +34,7 @@ Build JaVers and run unit tests
 Run the environment self-test, to check if JaVers is compatible with your JDK version
 
 ```
-./gradlew javers-core:run
+./gradlew itau-auditable-core:run
 ```
 
 ## Issues and Contributing

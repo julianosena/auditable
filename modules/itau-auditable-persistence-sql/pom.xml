@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>itau-auditable-persistence-sql</artifactId>
+    <version>${parent.version}</version>
+
+    <parent>
+        <groupId>br.com.zup.itau</groupId>
+        <artifactId>itau-auditable-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <properties>
+        <polyjdbc.version>0.7.6</polyjdbc.version>
+        <guava.version>30.1-jre</guava.version>
+
+        <!-- Test -->
+        <fest-assert.version>1.4</fest-assert.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>br.com.zup.itau</groupId>
+            <artifactId>itau-auditable-core</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+
+        <!-- Database -->
+        <dependency>
+            <groupId>org.polyjdbc</groupId>
+            <artifactId>polyjdbc</artifactId>
+            <version>${polyjdbc.version}</version>
+        </dependency>
+
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.easytesting</groupId>
+            <artifactId>fest-assert</artifactId>
+            <version>${fest-assert.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>

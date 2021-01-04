@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>itau-auditable-spring</artifactId>
+    <version>${parent.version}</version>
+
+    <parent>
+        <groupId>br.com.zup.itau</groupId>
+        <artifactId>itau-auditable-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <properties>
+        <aspectjweaver.version>1.9.6</aspectjweaver.version>
+        <jboos-transaction-api.version>1.1.1.Final</jboos-transaction-api.version>
+
+        <!-- Spring -->
+        <spring-context.version>5.3.2</spring-context.version>
+        <spring-data-commons.version>2.4.2</spring-data-commons.version>
+        <srping-security-core.version>5.4.2</srping-security-core.version>
+
+        <!-- Test -->
+        <spring-boot-starter-data-mongodb.version>2.4.1</spring-boot-starter-data-mongodb.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>br.com.zup.itau</groupId>
+            <artifactId>itau-auditable-core</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectjweaver.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.transaction</groupId>
+            <artifactId>jboss-transaction-api_1.2_spec</artifactId>
+            <version>${jboos-transaction-api.version}</version>
+        </dependency>
+
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring-context.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+            <version>${spring-data-commons.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${srping-security-core.version}</version>
+        </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <version>${spring-boot-starter-data-mongodb.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>br.com.zup.itau</groupId>
+            <artifactId>itau-auditable-persistence-mongo</artifactId>
+            <version>${parent.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
