@@ -1,6 +1,6 @@
 package org.javers.spring.boot;
 
-import org.apache.groovy.util.Maps;
+import org.javers.common.collections.Maps;
 import org.javers.spring.auditable.CommitPropertiesProvider;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

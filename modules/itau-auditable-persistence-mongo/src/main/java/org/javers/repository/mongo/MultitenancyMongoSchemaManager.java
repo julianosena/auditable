@@ -6,7 +6,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
 import org.bson.Document;
-import org.javers.core.JaversMongoContextHolder;
+import org.javers.core.AuditableContextHolder;
 import org.javers.repository.mongo.model.MongoHeadId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,7 +98,7 @@ class MultitenancyMongoSchemaManager {
     }
 
     MongoDatabase getMongoDatabase(){
-        String databaseName = JaversMongoContextHolder.getContext().getDatabaseName();
+        String databaseName = AuditableContextHolder.getContext().getDatabaseName();
 
         String name = DATABASE_NAME_DEFAULT;
         if(null != databaseName){

@@ -1,6 +1,6 @@
 package org.javers.core;
 
-public class JaversMongoContext {
+public class AuditableContext {
 
     private String databaseName;
 
