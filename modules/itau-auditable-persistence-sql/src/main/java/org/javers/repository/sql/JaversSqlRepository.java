@@ -21,6 +21,7 @@ import org.javers.repository.sql.session.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -184,6 +185,14 @@ public class JaversSqlRepository implements JaversRepository {
     public void ensureSchema() {
         if(sqlRepositoryConfiguration.isSchemaManagementEnabled()) {
             schemaManager.ensureSchema();
+        }
+    }
+
+    public void ensureMultiTenancySchema() {
+        try {
+            schemaManager.ensureMultiTenancySchema();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
