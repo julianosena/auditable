@@ -182,9 +182,7 @@ public class MultitenancyJaversSqlRepository implements JaversRepository {
 
     @Override
     public void ensureSchema() {
-        if(sqlRepositoryConfiguration.isSchemaManagementEnabled()) {
-            schemaManager.ensureSchema();
-        }
+        schemaManager.ensureSchema();
     }
 
     private boolean isEmpty(Collection c) {

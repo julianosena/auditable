@@ -44,7 +44,7 @@ public class MultitenancyJaversSchemaManager extends MultitenacySchemaNameAware 
             ensureTable(e.getKey(), e.getValue());
         }
 
-        alterCommitIdColumnIfNeeded(); // JaVers 2.5 to 2.6 schema migration
+        alterCommitIdColumnIfNeeded();
 
         if(dialect instanceof MsSqlDialect) {
             alterMssqlTextColumns();
@@ -269,7 +269,7 @@ public class MultitenancyJaversSchemaManager extends MultitenacySchemaNameAware 
             return identifier;
         }
         if (metadata.storesLowerCaseIdentifiers()) {
-            return identifier.toLowerCase();
+            return identifier;
         } else {
             return metadata.storesUpperCaseIdentifiers() ? identifier.toUpperCase() : identifier;
         }

@@ -80,6 +80,7 @@ public class MultitenancyJaversTransactionalDecorator implements InitializingBea
     @Transactional
     public Commit commit(String author, Object currentVersion, Map<String, String> commitProperties) {
         registerRollbackListener();
+        this.ensureSchema();
         return delegate.commit(author, currentVersion, commitProperties);
     }
 
