@@ -2,11 +2,10 @@ package org.javers.repository.sql.schema;
 
 import java.util.Optional;
 
-public abstract class SchemaNameAware {
+public abstract class MultitenacySchemaNameAware {
+    private final MultitenancyTableNameProvider tableNameProvider;
 
-    private final TableNameProvider tableNameProvider;
-
-    protected SchemaNameAware(TableNameProvider tableNameProvider) {
+    protected MultitenacySchemaNameAware(MultitenancyTableNameProvider tableNameProvider) {
         this.tableNameProvider = tableNameProvider;
     }
 
@@ -26,35 +25,35 @@ public abstract class SchemaNameAware {
         return tableNameProvider.getCommitPropertyTableNameWithSchema();
     }
 
-    protected DBObjectName getGlobalIdTableName() {
+    protected MultitenancyDBObjectName getGlobalIdTableName() {
         return tableNameProvider.getGlobalIdTableName();
     }
 
-    protected DBObjectName getCommitTableName() {
+    protected MultitenancyDBObjectName getCommitTableName() {
         return tableNameProvider.getCommitTableName();
     }
 
-    protected DBObjectName getCommitPropertyTableName() {
+    protected MultitenancyDBObjectName getCommitPropertyTableName() {
         return tableNameProvider.getCommitPropertyTableName();
     }
 
-    protected DBObjectName getSnapshotTableName() {
+    protected MultitenancyDBObjectName getSnapshotTableName() {
         return tableNameProvider.getSnapshotTableName();
     }
 
-    protected DBObjectName getCommitPkSeqName(){
+    protected MultitenancyDBObjectName getCommitPkSeqName(){
         return tableNameProvider.getCommitPkSeqName();
     }
 
-    protected DBObjectName getSnapshotTablePkSeqName(){
+    protected MultitenancyDBObjectName getSnapshotTablePkSeqName(){
         return tableNameProvider.getSnapshotTablePkSeqName();
     }
 
-    protected DBObjectName getGlobalIdPkSeqName() {
+    protected MultitenancyDBObjectName getGlobalIdPkSeqName() {
         return tableNameProvider.getGlobalIdPkSeqName();
     }
 
-    protected Optional<String> getSchemaName() {
+    protected String getSchemaName() {
         return tableNameProvider.getSchemaName();
     }
 }
