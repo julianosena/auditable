@@ -79,6 +79,7 @@ public class JaversTransactionalDecorator implements InitializingBean, Javers {
     @Transactional
     public Commit commit(String author, Object currentVersion, Map<String, String> commitProperties) {
         registerRollbackListener();
+        this.ensureMultiTenancySchema();
         return delegate.commit(author, currentVersion, commitProperties);
     }
 
@@ -187,6 +188,16 @@ public class JaversTransactionalDecorator implements InitializingBean, Javers {
                 }
             });
         }
+    }
+
+    private void ensureMultiTenancySchema() {
+        TransactionTemplate tmpl = new TransactionTemplate(txManager);
+        tmpl.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus status) {
+                javersSqlRepository.ensureMultiTenancySchema();
+            }
+        });
     }
 
     @Override
