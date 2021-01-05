@@ -1,6 +1,7 @@
 package org.javers.repository.sql.pico;
 
 import org.javers.core.pico.JaversModule;
+import org.javers.repository.sql.JaversMultiTenancySqlRepository;
 import org.javers.repository.sql.JaversSqlRepository;
 import org.javers.repository.sql.finders.CdoSnapshotFinder;
 import org.javers.repository.sql.finders.CommitPropertyFinder;
@@ -31,7 +32,8 @@ public class JaversSqlModule implements JaversModule {
             CdoSnapshotRepository.class,
             CdoSnapshotFinder.class,
             CommitPropertyFinder.class,
-            TableNameProvider.class
+            TableNameProvider.class,
+            JaversMultiTenancySqlRepository.class
     };
 
     @Override

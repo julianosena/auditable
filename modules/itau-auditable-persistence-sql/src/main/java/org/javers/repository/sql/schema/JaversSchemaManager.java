@@ -66,35 +66,6 @@ public class JaversSchemaManager extends SchemaNameAware {
         TheCloser.close(schemaManager, schemaInspector);
     }
 
-    public void ensureMultiTenancySchema() throws SQLException {
-        this.schemaInspector = polyJDBC.schemaInspector();
-        this.schemaManager = polyJDBC.schemaManager();
-
-        Connection connection = this.connectionProvider.getConnection();
-
-        for (Map.Entry<String, Schema> e : schemaFactory.allTablesSchema(dialect).entrySet()) {
-            ensureTable(e.getKey(), e.getValue());
-        }
-
-        alterCommitIdColumnIfNeeded(); // JaVers 2.5 to 2.6 schema migration
-
-        if(dialect instanceof MsSqlDialect) {
-            alterMssqlTextColumns();
-        }
-
-        if(dialect instanceof MysqlDialect) {
-            alterMySqlCommitDateColumn();
-        }
-
-        if(!(dialect instanceof H2Dialect)) {
-            addDbIndexOnOwnerId();
-        }
-
-        addCommitDateInstantColumnIfNeeded();
-
-        TheCloser.close(schemaManager, schemaInspector);
-    }
-
     /**
      * JaVers 5.0 to 5.1 schema migration
      */

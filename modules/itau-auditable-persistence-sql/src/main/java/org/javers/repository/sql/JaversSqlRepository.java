@@ -188,14 +188,6 @@ public class JaversSqlRepository implements JaversRepository {
         }
     }
 
-    public void ensureMultiTenancySchema() {
-        try {
-            schemaManager.ensureMultiTenancySchema();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     private boolean isEmpty(Collection c) {
         return c == null || c.size() == 0;
     }

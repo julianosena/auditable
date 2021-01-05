@@ -4,6 +4,7 @@ import org.javers.common.exception.JaversException;
 import org.javers.common.exception.JaversExceptionCode;
 import org.javers.core.Javers;
 import org.javers.core.JaversBuilder;
+import org.javers.repository.sql.JaversMultiTenancySqlRepository;
 import org.javers.repository.sql.JaversSqlRepository;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -34,7 +35,7 @@ public final class TransactionalJaversBuilder extends JaversBuilder {
         Javers javersCore = super.assembleJaversInstance();
 
         Javers javersTransactional =
-                new JaversTransactionalDecorator(javersCore, getContainerComponent(JaversSqlRepository.class), txManager);
+                new JaversTransactionalDecorator(javersCore, getContainerComponent(JaversSqlRepository.class), txManager, getContainerComponent(JaversMultiTenancySqlRepository.class));
 
         return javersTransactional;
     }

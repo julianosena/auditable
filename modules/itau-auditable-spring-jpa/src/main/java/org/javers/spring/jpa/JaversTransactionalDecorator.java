@@ -16,6 +16,7 @@ import org.javers.core.metamodel.property.Property;
 import org.javers.core.metamodel.type.JaversType;
 import org.javers.repository.jql.GlobalIdDTO;
 import org.javers.repository.jql.JqlQuery;
+import org.javers.repository.sql.JaversMultiTenancySqlRepository;
 import org.javers.repository.sql.JaversSqlRepository;
 import org.javers.shadow.Shadow;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.*;
+
 import javax.transaction.Transactional;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
@@ -46,14 +48,16 @@ public class JaversTransactionalDecorator implements InitializingBean, Javers {
 
     private final Javers delegate;
     private final JaversSqlRepository javersSqlRepository;
+    private final JaversMultiTenancySqlRepository javersMultiTenancySqlRepository;
 
     private final PlatformTransactionManager txManager;
 
-    JaversTransactionalDecorator(Javers delegate, JaversSqlRepository javersSqlRepository, PlatformTransactionManager txManager) {
+    JaversTransactionalDecorator(Javers delegate, JaversSqlRepository javersSqlRepository, PlatformTransactionManager txManager, JaversMultiTenancySqlRepository javersMultiTenancySqlRepository) {
         Validate.argumentsAreNotNull(delegate, javersSqlRepository, txManager);
         this.delegate = delegate;
         this.javersSqlRepository = javersSqlRepository;
         this.txManager = txManager;
+        this.javersMultiTenancySqlRepository = javersMultiTenancySqlRepository;
     }
 
     @Override
@@ -195,7 +199,7 @@ public class JaversTransactionalDecorator implements InitializingBean, Javers {
         tmpl.execute(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus status) {
-                javersSqlRepository.ensureMultiTenancySchema();
+                javersMultiTenancySqlRepository.ensureSchema();
             }
         });
     }
