@@ -54,6 +54,9 @@ public abstract class MultitenacySchemaNameAware {
     }
 
     protected String getSchemaName() {
-        return tableNameProvider.getSchemaName();
+        return new StringBuilder("\"")
+                .append(tableNameProvider.getSchemaName())
+                .append("\"")
+                .toString();
     }
 }
