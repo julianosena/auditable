@@ -18,7 +18,7 @@ public class MultitenancyDBObjectName {
 
     public String nameWithSchema() {
         String schemaDatabaseName = AuditableContextHolder.getContext().getDatabaseSchemaName();
-        return schemaDatabaseName;
+        return schemaDatabaseName + SCHEMA_TABLE_SEP + localName;
     }
 
     @Override
