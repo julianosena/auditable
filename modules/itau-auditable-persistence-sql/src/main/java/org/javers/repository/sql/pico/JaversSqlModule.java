@@ -5,9 +5,8 @@ import org.javers.repository.sql.JaversSqlRepository;
 import org.javers.repository.sql.MultitenancyJaversSqlRepository;
 import org.javers.repository.sql.finders.CdoSnapshotFinder;
 import org.javers.repository.sql.finders.CommitPropertyFinder;
-import org.javers.repository.sql.repositories.CdoSnapshotRepository;
-import org.javers.repository.sql.repositories.CommitMetadataRepository;
-import org.javers.repository.sql.repositories.GlobalIdRepository;
+import org.javers.repository.sql.finders.MultitenancyCdoSnapshotFinder;
+import org.javers.repository.sql.repositories.*;
 import org.javers.repository.sql.schema.*;
 import org.polyjdbc.core.query.QueryRunnerFactory;
 
@@ -29,9 +28,13 @@ public class JaversSqlModule implements JaversModule {
             MultitenancyJaversSchemaManager.class,
             QueryRunnerFactory.class,
             GlobalIdRepository.class,
+            MultitenancyGlobalIdRepository.class,
             CommitMetadataRepository.class,
+            MultitenancyCommitMetadataRepository.class,
             CdoSnapshotRepository.class,
+            MultitenancyCdoSnapshotRepository.class,
             CdoSnapshotFinder.class,
+            MultitenancyCdoSnapshotFinder.class,
             CommitPropertyFinder.class,
             TableNameProvider.class,
             MultitenancyTableNameProvider.class

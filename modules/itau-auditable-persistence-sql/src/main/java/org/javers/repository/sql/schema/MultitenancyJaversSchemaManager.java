@@ -18,7 +18,7 @@ import java.util.Map;
 import static org.javers.repository.sql.schema.FixedSchemaFactory.COMMIT_COMMIT_DATE_INSTANT;
 import static org.javers.repository.sql.schema.FixedSchemaFactory.GLOBAL_ID_OWNER_ID_FK;
 
-public class MultitenancyJaversSchemaManager extends MultitenacySchemaNameAware {
+public class MultitenancyJaversSchemaManager extends MultitenancySchemaNameAware {
     private static final Logger logger = LoggerFactory.getLogger(MultitenancyJaversSchemaManager.class);
 
     private SchemaInspector schemaInspector;
