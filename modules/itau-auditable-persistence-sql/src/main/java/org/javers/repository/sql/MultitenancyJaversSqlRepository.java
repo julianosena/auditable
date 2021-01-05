@@ -12,9 +12,10 @@ import org.javers.repository.api.JaversRepository;
 import org.javers.repository.api.QueryParams;
 import org.javers.repository.api.SnapshotIdentifier;
 import org.javers.repository.sql.finders.CdoSnapshotFinder;
-import org.javers.repository.sql.repositories.CdoSnapshotRepository;
-import org.javers.repository.sql.repositories.CommitMetadataRepository;
-import org.javers.repository.sql.repositories.GlobalIdRepository;
+import org.javers.repository.sql.finders.MultitenancyCdoSnapshotFinder;
+import org.javers.repository.sql.repositories.MultitenancyCdoSnapshotRepository;
+import org.javers.repository.sql.repositories.MultitenancyCommitMetadataRepository;
+import org.javers.repository.sql.repositories.MultitenancyGlobalIdRepository;
 import org.javers.repository.sql.schema.MultitenancyJaversSchemaManager;
 import org.javers.repository.sql.session.Session;
 import org.javers.repository.sql.session.SessionFactory;
@@ -27,22 +28,23 @@ import java.util.stream.Collectors;
 import static org.javers.repository.sql.session.Session.SQL_LOGGER_NAME;
 
 public class MultitenancyJaversSqlRepository implements JaversRepository {
-    private static final Logger logger = LoggerFactory.getLogger(SQL_LOGGER_NAME);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SQL_LOGGER_NAME);
 
     private final SessionFactory sessionFactory;
-    private final CommitMetadataRepository commitRepository;
-    private final GlobalIdRepository globalIdRepository;
-    private final CdoSnapshotRepository cdoSnapshotRepository;
-    private final CdoSnapshotFinder finder;
+    private final MultitenancyCommitMetadataRepository commitRepository;
+    private final MultitenancyGlobalIdRepository globalIdRepository;
+    private final MultitenancyCdoSnapshotRepository cdoSnapshotRepository;
+    private final MultitenancyCdoSnapshotFinder finder;
     private final MultitenancyJaversSchemaManager schemaManager;
 
     private final SqlRepositoryConfiguration sqlRepositoryConfiguration;
 
     public MultitenancyJaversSqlRepository(SessionFactory sessionFactory,
-                                           CommitMetadataRepository commitRepository,
-                                           GlobalIdRepository globalIdRepository,
-                                           CdoSnapshotRepository cdoSnapshotRepository,
-                                           CdoSnapshotFinder finder,
+                                           MultitenancyCommitMetadataRepository commitRepository,
+                                           MultitenancyGlobalIdRepository globalIdRepository,
+                                           MultitenancyCdoSnapshotRepository cdoSnapshotRepository,
+                                           MultitenancyCdoSnapshotFinder finder,
                                            MultitenancyJaversSchemaManager schemaManager,
                                            SqlRepositoryConfiguration sqlRepositoryConfiguration) {
         this.sessionFactory = sessionFactory;

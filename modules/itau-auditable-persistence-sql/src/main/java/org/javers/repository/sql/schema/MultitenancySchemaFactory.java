@@ -9,7 +9,7 @@ import org.polyjdbc.core.util.StringUtils;
 
 import java.util.Map;
 
-public class MultitenancySchemaFactory extends MultitenacySchemaNameAware {
+public class MultitenancySchemaFactory extends MultitenancySchemaNameAware {
     private static final int MAX_INDEX_KEY_LEN_IN_MYSQL = 191;
 
     public static final String GLOBAL_ID_PK =         "global_id_pk";

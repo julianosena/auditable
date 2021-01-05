@@ -2,10 +2,10 @@ package org.javers.repository.sql.schema;
 
 import java.util.Optional;
 
-public abstract class MultitenacySchemaNameAware {
+public abstract class MultitenancySchemaNameAware {
     private final MultitenancyTableNameProvider tableNameProvider;
 
-    protected MultitenacySchemaNameAware(MultitenancyTableNameProvider tableNameProvider) {
+    protected MultitenancySchemaNameAware(MultitenancyTableNameProvider tableNameProvider) {
         this.tableNameProvider = tableNameProvider;
     }
 
