@@ -73,6 +73,7 @@ public class MultitenancyJaversTransactionalDecorator implements InitializingBea
     @Transactional
     public Commit commit(String author, Object currentVersion) {
         registerRollbackListener();
+        this.ensureSchema();
         return delegate.commit(author, currentVersion);
     }
 
@@ -87,24 +88,28 @@ public class MultitenancyJaversTransactionalDecorator implements InitializingBea
     @Override
     @Transactional
     public Commit commitShallowDelete(String author, Object deleted) {
+        this.ensureSchema();
         return delegate.commitShallowDelete(author, deleted);
     }
 
     @Override
     @Transactional
     public Commit commitShallowDelete(String author, Object deleted, Map<String, String> properties) {
+        this.ensureSchema();
         return delegate.commitShallowDelete(author, deleted, properties);
     }
 
     @Override
     @Transactional
     public Commit commitShallowDeleteById(String author, GlobalIdDTO globalId) {
+        this.ensureSchema();
         return delegate.commitShallowDeleteById(author, globalId);
     }
 
     @Override
     @Transactional
     public Commit commitShallowDeleteById(String author, GlobalIdDTO globalId, Map<String, String> properties) {
+        this.ensureSchema();
         return delegate.commitShallowDeleteById(author, globalId, properties);
     }
 
