@@ -233,7 +233,9 @@ public class MultitenancyJaversSchemaManager extends MultitenancySchemaNameAware
 
             DatabaseMetaData metadata = connection.getMetaData();
             String catalog = connection.getCatalog();
-            schemaName = schemaName.replaceAll("\"", "");
+            if(null != schemaName) {
+                schemaName = schemaName.replaceAll("\"", "");
+            }
 
             ResultSet resultSet = metadata.getTables(
                     catalog,
