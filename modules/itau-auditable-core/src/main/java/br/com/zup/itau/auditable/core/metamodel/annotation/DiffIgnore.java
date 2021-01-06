@@ -8,7 +8,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Use {@code DiffIgnore} annotation to mark certain properties
- * or classes as ignored by JaVers.
+ * or classes as ignored by Itaú Auditable.
  *
  * <H2>Property level</H2>
  * Add {@code DiffIgnore} to fields or getters

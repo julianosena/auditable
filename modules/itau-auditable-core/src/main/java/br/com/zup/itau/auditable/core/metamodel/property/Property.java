@@ -99,7 +99,7 @@ public class Property {
     }
 
     /**
-     * Property name used by JaVers, originalName by default, can be changed with @PropertyName.
+     * Property name used by Itaú Auditable, originalName by default, can be changed with @PropertyName.
      */
     public String getName() {
         return this.name;

@@ -36,7 +36,7 @@ import java.util.concurrent.Executor;
 import java.util.stream.Stream;
 
 /**
- * Transactional wrapper for core JaVers instance.
+ * Transactional wrapper for core Itaú Auditable instance.
  * Provides integration with Spring JPA TransactionManager
  *
  * @author bartosz walacik

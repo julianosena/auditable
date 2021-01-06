@@ -26,7 +26,7 @@ class ItauAuditableSpringDataJpaAspectIntegrationTest extends Specification {
     @Autowired
     DummyNoAuditJpaRepository noAuditRepository
 
-    def "should commit to JaVers on audited jpaRepository.save(Object)"() {
+    def "should commit to Itaú Auditable on audited jpaRepository.save(Object)"() {
         given:
         def o = new DummyObject()
 
@@ -37,7 +37,7 @@ class ItauAuditableSpringDataJpaAspectIntegrationTest extends Specification {
         itauAuditable.findSnapshots(byInstanceId(o.id, DummyObject).build()).size() == 1
     }
 
-    def "should commit to JaVers on audited jpaRepository.saveAndFlush(object)"() {
+    def "should commit to Itaú Auditable on audited jpaRepository.saveAndFlush(object)"() {
         given:
         def o = new DummyObject()
 

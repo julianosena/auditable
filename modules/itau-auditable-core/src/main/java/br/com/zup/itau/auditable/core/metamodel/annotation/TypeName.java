@@ -11,7 +11,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Gives a persistent and human-readable <b>type name</b> for Entity or ValueObject.
- * This name is used everywhere by JaVers, instead of a fragile, fully-qualified class name.
+ * This name is used everywhere by Itaú Auditable, instead of a fragile, fully-qualified class name.
  * <br/><br/>
  *
  * Naming types is <b>recommended</b> if you are

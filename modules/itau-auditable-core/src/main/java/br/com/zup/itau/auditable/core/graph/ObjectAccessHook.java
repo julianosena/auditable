@@ -9,7 +9,7 @@ import java.util.Optional;
  * Used for accessing object before commit.
  * i.e. to unproxy hibernate object before comparison
  *
- * Needs to be idempotent because JaVers could call it more than once during diff.
+ * Needs to be idempotent because Itaú Auditable could call it more than once during diff.
  *
  */
 public interface ObjectAccessHook<T> {

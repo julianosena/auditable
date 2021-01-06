@@ -79,7 +79,7 @@ class CaseWithAbstractValueObjectPath extends Specification {
 
       then:
       // This has thrown
-      // ItauAuditableException: PROPERTY_NOT_FOUND: Property 'inputControlList' not found in class 'com.example.itauAuditablepolymorphismissue.model.InputFormGroup'. If the name is correct - check annotations. Properties with @DiffIgnore or @Transient are not visible for JaVers.
+      // ItauAuditableException: PROPERTY_NOT_FOUND: Property 'inputControlList' not found in class 'com.example.itauAuditablepolymorphismissue.model.InputFormGroup'. If the name is correct - check annotations. Properties with @DiffIgnore or @Transient are not visible for Itaú Auditable.
       Changes valueChanges = itauAuditable.findChanges(QueryBuilder.byValueObject(InputForm, path).build())
       println valueChanges.prettyPrint()
 

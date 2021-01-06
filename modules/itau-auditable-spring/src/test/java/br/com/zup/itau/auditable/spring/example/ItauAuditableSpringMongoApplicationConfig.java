@@ -37,7 +37,7 @@ public class ItauAuditableSpringMongoApplicationConfig {
     private static final String DATABASE_NAME = "mydatabase";
 
     /**
-     * Creates JaVers instance backed by {@link MongoRepository}
+     * Creates Itaú Auditable instance backed by {@link MongoRepository}
      */
     @Bean
     public br.com.zup.itau.auditable.core.ItauAuditable itauAuditable() {

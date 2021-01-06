@@ -24,7 +24,7 @@ class DBRefUnproxyObjectAccessHookTest extends Specification {
     ItauAuditable itauAuditable
 
     @Unroll
-    def "should unproxy a LazyLoadingProxy of DBRef before #commitKind commit to JaVers"() {
+    def "should unproxy a LazyLoadingProxy of DBRef before #commitKind commit to Itaú Auditable"() {
         given:
         def refEntity = new MyDummyRefEntity(name: "bert")
         refEntity = dummyRefEntityRepository.save(refEntity)

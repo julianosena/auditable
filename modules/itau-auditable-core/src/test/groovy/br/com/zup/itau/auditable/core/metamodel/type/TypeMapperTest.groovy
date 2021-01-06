@@ -274,7 +274,7 @@ class TypeMapperTest extends Specification {
     }
 
     /**
-     * 'Included' properties are inherited. JaVers should ignore any other property in subclasses as well.
+     * 'Included' properties are inherited. Itaú Auditable should ignore any other property in subclasses as well.
      */
     @Unroll
     def "should ignore all props of subclass when superclass #classType has Included properties definition"(){

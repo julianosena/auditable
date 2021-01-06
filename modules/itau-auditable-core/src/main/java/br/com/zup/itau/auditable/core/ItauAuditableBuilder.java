@@ -58,15 +58,15 @@ import static br.com.zup.itau.auditable.common.validation.Validate.argumentIsNot
 import static br.com.zup.itau.auditable.common.validation.Validate.argumentsAreNotNull;
 
 /**
- * Creates a JaVers instance based on your domain model metadata and custom configuration.
+ * Creates a Itaú Auditable instance based on your domain model metadata and custom configuration.
  * <br/><br/>
  *
- * For example, to build a JaVers instance configured with reasonable defaults:
+ * For example, to build a Itaú Auditable instance configured with reasonable defaults:
  * <pre>
  * ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
  * </pre>
  *
- * To build a JaVers instance with Entity type registered:
+ * To build a Itaú Auditable instance with Entity type registered:
  * <pre>
  * ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable()
  *                              .registerEntity(MyEntity.class)
@@ -101,7 +101,7 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
      * use static factory method {@link ItauAuditableBuilder#itauAuditable()}
      */
     protected ItauAuditableBuilder() {
-        logger.debug("starting up JaVers ...");
+        logger.debug("starting up Itaú Auditable ...");
 
         //conditional plugins
         conditionalTypesPlugins = new HashSet<>();
@@ -127,7 +127,7 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
         repository.ensureSchema();
 
         long boot = System.currentTimeMillis() - bootStart;
-        logger.info("JaVers instance started in {} ms", boot);
+        logger.info("Itaú Auditable instance started in {} ms", boot);
         return itauAuditable;
     }
 
@@ -487,7 +487,7 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
     }
 
     /**
-     * Marks given class as ignored by JaVers.
+     * Marks given class as ignored by Itaú Auditable.
      * <br/><br/>
      *
      * Use this method as an alternative to the {@link DiffIgnore} annotation.

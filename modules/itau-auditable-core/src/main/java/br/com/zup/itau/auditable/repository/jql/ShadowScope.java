@@ -19,7 +19,7 @@ public enum ShadowScope {
     SHALLOW,
 
     /**
-     * JaVers restores commit-deep shadow graph. Referenced
+     * Itaú Auditable restores commit-deep shadow graph. Referenced
      * objects are resolved <b>if they exist</b> in selected commits.
      * <br/><br/>
      *
@@ -30,13 +30,13 @@ public enum ShadowScope {
      *
      * <br/><br/>
      * Commit-deep query is slower than shallow query,
-     * because JaVers executes the additional query to load all
+     * because Itaú Auditable executes the additional query to load all
      * snapshots in commits touched by the main JQL query.
      */
     COMMIT_DEEP,
 
     /**
-     * JaVers tries to restore an original object graph
+     * Itaú Auditable tries to restore an original object graph
      * with (possibly) all object references resolved.
      * <br/><br/>
      *
@@ -48,7 +48,7 @@ public enum ShadowScope {
      * <br/><br/>
      *
      * Deep+ query can be slower than commit-deep query.
-     * JaVers executes up to N additional queries to fill potential gaps in the object graph
+     * Itaú Auditable executes up to N additional queries to fill potential gaps in the object graph
      * (one query per each gap).
      *
      * <br/><br/>
@@ -58,7 +58,7 @@ public enum ShadowScope {
     DEEP_PLUS,
 
     /**
-     * JaVers loads all child ValueObjects owned by selected Entities.
+     * Itaú Auditable loads all child ValueObjects owned by selected Entities.
      * <br/><br/>
      *
      * This scope is implicitly added to all Shadow scopes and can't be disabled.

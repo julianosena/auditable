@@ -34,7 +34,7 @@ public abstract class ClientsClassDefinitionBuilder<T extends ClientsClassDefini
     }
 
     /**
-     * List of class properties to be ignored by JaVers.
+     * List of class properties to be ignored by Itaú Auditable.
      * <br/><br/>
      *
      * Properties can be also ignored with the {@link DiffIgnore} annotation.
@@ -56,7 +56,7 @@ public abstract class ClientsClassDefinitionBuilder<T extends ClientsClassDefini
 
     /**
      * If included properties are defined for a class,
-     * only these properties are visible for JaVers, and the rest is ignored.
+     * only these properties are visible for Itaú Auditable, and the rest is ignored.
      * <br/><br/>
      *
      * Properties can be also included with the {@link DiffInclude} annotation.

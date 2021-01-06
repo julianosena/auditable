@@ -38,7 +38,7 @@ import static br.com.zup.itau.auditable.common.validation.Validate.argumentsAreN
 import static br.com.zup.itau.auditable.repository.jql.InstanceIdDTO.instanceId;
 
 /**
- * JaVers instance
+ * Itaú Auditable instance
  *
  * @author bartosz walacik
  */

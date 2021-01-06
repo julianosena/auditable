@@ -8,15 +8,15 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Use {@code DiffInclude} annotation to tell JaVers which properties to include in diff/commit
+ * Use {@code DiffInclude} annotation to tell Itaú Auditable which properties to include in diff/commit
  * operations for a given class.
- * All other properties in this class and all properties in its subclasses will be ignored by JaVers.
+ * All other properties in this class and all properties in its subclasses will be ignored by Itaú Auditable.
  * <br/>
  *
  * If some properties in a subclass should be included, apply the {@code DiffInclude} annotation on them.
  * <br/><br/>
  *
- * For example, JaVers will ignore {@code bar} in the {@code A} class and both {@code bar} and {@code qux}
+ * For example, Itaú Auditable will ignore {@code bar} in the {@code A} class and both {@code bar} and {@code qux}
  * in the {@code B} class.
  * <pre>
  * class A {

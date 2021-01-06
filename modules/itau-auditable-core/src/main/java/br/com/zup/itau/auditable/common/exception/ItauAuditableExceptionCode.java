@@ -66,7 +66,7 @@ public enum ItauAuditableExceptionCode {
 
     SNAPSHOT_SERIALIZATION_ERROR("error while serializing snapshot of '%s', duplicated property '%s'"),
 
-    PROPERTY_NOT_FOUND("Property '%s' not found in class '%s'. If the name is correct - check annotations. Properties with @DiffIgnore or @Transient are not visible for JaVers."),
+    PROPERTY_NOT_FOUND("Property '%s' not found in class '%s'. If the name is correct - check annotations. Properties with @DiffIgnore or @Transient are not visible for Itaú Auditable."),
 
     SETTER_NOT_FOUND("setter for getter '%s' not found in class '%s'"),
 
@@ -113,7 +113,7 @@ public enum ItauAuditableExceptionCode {
 
     SQL_EXCEPTION("%s\nwhile executing sql: %s"),
 
-    UNSUPPORTED_SQL_DIALECT("dialect '%s' is not supported by JaVers"),
+    UNSUPPORTED_SQL_DIALECT("dialect '%s' is not supported by Itaú Auditable"),
 
     MALFORMED_JQL("Invalid JQL query, %s"),
 

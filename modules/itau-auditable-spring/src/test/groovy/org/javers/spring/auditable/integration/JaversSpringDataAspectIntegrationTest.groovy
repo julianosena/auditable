@@ -26,7 +26,7 @@ class ItauAuditableSpringDataAspectIntegrationTest extends Specification {
     @Autowired
     DummyNoAuditedCrudRepository noAuditRepository
 
-    def "should not fail on JaVers aspect when deleting an object which not exists in JaVers repository"(){
+    def "should not fail on Itaú Auditable aspect when deleting an object which not exists in Itaú Auditable repository"(){
         when:
         repository.deleteById("a")
 
@@ -40,7 +40,7 @@ class ItauAuditableSpringDataAspectIntegrationTest extends Specification {
         notThrown(Exception)
     }
 
-    def "should commit to JaVers on audited crudRepository.save(Object)"() {
+    def "should commit to Itaú Auditable on audited crudRepository.save(Object)"() {
         given:
         def o = new DummyObject()
 
@@ -56,7 +56,7 @@ class ItauAuditableSpringDataAspectIntegrationTest extends Specification {
         snapshots[0].commitMetadata.author == "unauthenticated"
     }
 
-    def "should commit to JaVers on audited crudRepository.save(Iterable)"() {
+    def "should commit to Itaú Auditable on audited crudRepository.save(Iterable)"() {
         given:
         def o1 = new DummyObject()
         def o2 = new DummyObject()

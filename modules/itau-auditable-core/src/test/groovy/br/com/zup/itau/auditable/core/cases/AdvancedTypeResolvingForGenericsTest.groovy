@@ -10,7 +10,7 @@ import spock.lang.Specification
  *
  * To resolve this issue, we added {@link br.com.zup.itau.auditable.common.reflection.ItauAuditableMember},
  * which cures:
- * ItauAuditableException: CLASS_EXTRACTION_ERROR JaVers bootstrap error - Don't know how to extract Class from type 'T'
+ * ItauAuditableException: CLASS_EXTRACTION_ERROR Itaú Auditable bootstrap error - Don't know how to extract Class from type 'T'
  *
  * @author bartosz walacik
  */
