@@ -12,7 +12,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Use PropertyName annotation to give a name for a Class property (getter or field).
  * <br/>
- * This name will be used <b>everywhere</b> by JaVers.
+ * This name will be used <b>everywhere</b> by Itaú Auditable.
  * <br/><br/>
  *
  * This annotation (together with {@link TypeName}) solves the problem of refactoring names while using

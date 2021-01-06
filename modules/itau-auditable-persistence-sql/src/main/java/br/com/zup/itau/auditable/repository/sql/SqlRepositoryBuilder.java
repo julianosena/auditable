@@ -50,7 +50,7 @@ public class SqlRepositoryBuilder extends AbstractContainerBuilder {
 
     /**
      * This function sets a schema to be used for creation and updating tables. When passing a schema name make sure
-     * that the schema has been created in the database before running JaVers. If schemaName is null or empty, the default
+     * that the schema has been created in the database before running Itaú Auditable. If schemaName is null or empty, the default
      * schema is used instead.
      *
      * @since 2.4

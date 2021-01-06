@@ -13,7 +13,7 @@ import spock.lang.Specification
  */
 class TypeMappingPrintDemo extends Specification {
 
-    def "should pretty print JaVers types"() {
+    def "should pretty print Itaú Auditable types"() {
         expect:
         def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 

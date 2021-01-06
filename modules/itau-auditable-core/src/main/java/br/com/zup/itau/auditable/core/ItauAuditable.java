@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 
 
 /**
- * Facade to JaVers instance.<br>
+ * Facade to Itaú Auditable instance.<br>
  * Should be constructed by {@link ItauAuditableBuilder} provided with your domain model configuration.
  * <br/><br/>
  *
@@ -49,10 +49,10 @@ public interface ItauAuditable {
 
     /**
      * Persists a current state of a given domain object graph
-     * in JaVers repository.
+     * in Itaú Auditable repository.
      * <br/><br/>
      *
-     * JaVers applies commit() to given object and all objects navigable from it.
+     * Itaú Auditable applies commit() to given object and all objects navigable from it.
      * You can capture a state of an arbitrary complex object graph with a single commit() call.
      *
      * @see <a href="http://itauAuditable.org/documentation/repository-examples/">http://itauAuditable.org/documentation/repository-examples</a>
@@ -100,7 +100,7 @@ public interface ItauAuditable {
      * and affects only given object.
      * <br/><br/>
      *
-     * This method doesn't delete anything from JaVers repository.
+     * This method doesn't delete anything from Itaú Auditable repository.
      * It just persists 'terminal snapshot' of a given object.
      *
      * @param deleted object to be marked as deleted (Entity or Value Object)
@@ -132,7 +132,7 @@ public interface ItauAuditable {
     /**
      * <h2>Deep compare</h2>
      *
-     * JaVers core function,
+     * Itaú Auditable core function,
      * deeply compares two arbitrary complex object graphs.
      *
      * <br/><br/>
@@ -150,8 +150,8 @@ public interface ItauAuditable {
      *
      * <h2>Flat collection compare</h2>
      * You can also pass object collections here (List, Sets or Maps),
-     * but in this case, JaVers calculates flat collection diff only.
-     * Because it's impossible to determine type of raw collection items, JaVers maps them as Values
+     * but in this case, Itaú Auditable calculates flat collection diff only.
+     * Because it's impossible to determine type of raw collection items, Itaú Auditable maps them as Values
      * and compares using {@link Object#equals(Object)}. <br/>
      * So if you need to deep compare, wrap collections in some Value Objects.
      *
@@ -253,8 +253,8 @@ public interface ItauAuditable {
      *
      * <h2>Query scopes example</h2>
      *
-     * To understand Shadow query scopes, you need to understand how JaVers commit works.<br/>
-     * Remember that JaVers reuses existing snapshots and creates a fresh one
+     * To understand Shadow query scopes, you need to understand how Itaú Auditable commit works.<br/>
+     * Remember that Itaú Auditable reuses existing snapshots and creates a fresh one
      * only if a given object is changed.<br/>
      * The way how objects are committed affects shadow query results.
      *
@@ -510,7 +510,7 @@ public interface ItauAuditable {
     Optional<CdoSnapshot> getHistoricalSnapshot(Object localId, Class entity, LocalDateTime effectiveDate);
 
     /**
-     * If you are serializing JaVers objects like
+     * If you are serializing Itaú Auditable objects like
      * {@link Commit}, {@link Change}, {@link Diff} or {@link CdoSnapshot} to JSON, use this JsonConverter.
      * <br/><br/>
      *
@@ -550,8 +550,8 @@ public interface ItauAuditable {
 
     /**
      * Use ItauAuditableTypes, if you want to: <br/>
-     * - describe your class in the context of JaVers domain model mapping, <br/>
-     * - use JaVers Reflection API to conveniently access your object properties
+     * - describe your class in the context of Itaú Auditable domain model mapping, <br/>
+     * - use Itaú Auditable Reflection API to conveniently access your object properties
      *  (instead of awkward java.lang.reflect API).
      *
      * <br/><br/>

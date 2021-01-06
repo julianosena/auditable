@@ -7,7 +7,7 @@ import static br.com.zup.itau.auditable.common.exception.ItauAuditableExceptionC
  */
 @SuppressWarnings("serial")
 public class ItauAuditableException extends RuntimeException {
-    public static final String BOOTSTRAP_ERROR = "JaVers bootstrap error - ";
+    public static final String BOOTSTRAP_ERROR = "Itaú Auditable bootstrap error - ";
 
     private final ItauAuditableExceptionCode code;
 

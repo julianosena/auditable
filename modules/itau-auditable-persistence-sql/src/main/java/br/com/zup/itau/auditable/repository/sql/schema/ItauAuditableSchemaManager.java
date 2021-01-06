@@ -47,7 +47,7 @@ public class ItauAuditableSchemaManager extends SchemaNameAware {
             ensureTable(e.getKey(), e.getValue());
         }
 
-        alterCommitIdColumnIfNeeded(); // JaVers 2.5 to 2.6 schema migration
+        alterCommitIdColumnIfNeeded(); // Itaú Auditable 2.5 to 2.6 schema migration
 
         if(dialect instanceof MsSqlDialect) {
             alterMssqlTextColumns();
@@ -76,7 +76,7 @@ public class ItauAuditableSchemaManager extends SchemaNameAware {
             ensureTable(e.getKey(), e.getValue());
         }
 
-        alterCommitIdColumnIfNeeded(); // JaVers 2.5 to 2.6 schema migration
+        alterCommitIdColumnIfNeeded(); // Itaú Auditable 2.5 to 2.6 schema migration
 
         if(dialect instanceof MsSqlDialect) {
             alterMssqlTextColumns();
@@ -96,7 +96,7 @@ public class ItauAuditableSchemaManager extends SchemaNameAware {
     }
 
     /**
-     * JaVers 5.0 to 5.1 schema migration
+     * Itaú Auditable 5.0 to 5.1 schema migration
      */
     private void addCommitDateInstantColumnIfNeeded() {
         if (!columnExists(getCommitTableNameWithSchema(), COMMIT_COMMIT_DATE_INSTANT)){
@@ -107,20 +107,20 @@ public class ItauAuditableSchemaManager extends SchemaNameAware {
     }
 
     /**
-     * JaVers 3.9.2 to 3.9.3 schema migration (MySql only)
+     * Itaú Auditable 3.9.2 to 3.9.3 schema migration (MySql only)
      */
     private void alterMySqlCommitDateColumn() {
         ColumnType commitDateColType = getTypeOf(getCommitTableNameWithSchema(), "commit_date");
 
         if (commitDateColType.typeName.equals("TIMESTAMP") &&
             commitDateColType.precision == 19) {
-            logger.info("migrating db schema from JaVers 3.9.2 to 3.9.3 (MySql only) ...");
+            logger.info("migrating db schema from Itaú Auditable 3.9.2 to 3.9.3 (MySql only) ...");
             executeSQL("ALTER TABLE " + getCommitTableNameWithSchema() + " MODIFY commit_date TIMESTAMP(3)");
         }
     }
 
     /**
-     * JaVers 3.11.4 to 3.11.5 schema migration
+     * Itaú Auditable 3.11.4 to 3.11.5 schema migration
      */
     @Deprecated
     private void addDbIndexOnOwnerId() {
@@ -132,13 +132,13 @@ public class ItauAuditableSchemaManager extends SchemaNameAware {
     }
 
     /**
-     * JaVers 2.5 to 2.6 schema migration
+     * Itaú Auditable 2.5 to 2.6 schema migration
      */
     private void alterCommitIdColumnIfNeeded() {
         ColumnType commitIdColType = getTypeOf(getCommitTableNameWithSchema(), "commit_id");
 
         if (commitIdColType.precision == 12) {
-            logger.info("migrating db schema from JaVers 2.5 to 2.6 ...");
+            logger.info("migrating db schema from Itaú Auditable 2.5 to 2.6 ...");
             if (dialect instanceof PostgresDialect) {
                 executeSQL("ALTER TABLE " + getCommitTableNameWithSchema() + " ALTER COLUMN commit_id TYPE numeric(22,2)");
             } else if (dialect instanceof H2Dialect) {
@@ -158,7 +158,7 @@ public class ItauAuditableSchemaManager extends SchemaNameAware {
     }
 
     /**
-     * JaVers 3.3.0 to 3.3.1 MsSql schema migration
+     * Itaú Auditable 3.3.0 to 3.3.1 MsSql schema migration
      *
      * This method is needed for upgrading TEXT columns to VARCHAR(MAX) since TEXT is deprecated.
      */
@@ -176,7 +176,7 @@ public class ItauAuditableSchemaManager extends SchemaNameAware {
     }
 
     private void handleUnsupportedDialect() {
-        logger.error("\nno DB schema migration script for {} :(\nplease contact with JaVers team, itauAuditable@itauAuditable.org",
+        logger.error("\nno DB schema migration script for {} :(\nplease contact with Itaú Auditable team, itauAuditable@itauAuditable.org",
                 dialect.getCode());
     }
 

@@ -22,10 +22,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 @Import(HibernateConfig)
 class ItauAuditableFieldHibernateProxyConfig {
 
-    //.. JaVers setup ..
+    //.. Itaú Auditable setup ..
 
     /**
-     * Creates JaVers instance with {@link ItauAuditableSqlRepository}
+     * Creates Itaú Auditable instance with {@link ItauAuditableSqlRepository}
      */
     @Bean
     ItauAuditable itauAuditable(JpaHibernateConnectionProvider jpaHibernateConnectionProvider,

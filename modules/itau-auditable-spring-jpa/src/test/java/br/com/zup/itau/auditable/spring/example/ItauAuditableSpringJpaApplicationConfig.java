@@ -42,10 +42,10 @@ import java.util.Properties;
 @EnableJpaRepositories({"br.com.zup.itau.auditable.spring.repository"})
 public class ItauAuditableSpringJpaApplicationConfig {
 
-    //.. JaVers setup ..
+    //.. Itaú Auditable setup ..
 
     /**
-     * Creates JaVers instance with {@link ItauAuditableSqlRepository}
+     * Creates Itaú Auditable instance with {@link ItauAuditableSqlRepository}
      */
     @Bean
     public ItauAuditable itauAuditable(PlatformTransactionManager txManager) {
@@ -121,7 +121,7 @@ public class ItauAuditableSpringJpaApplicationConfig {
     public ConnectionProvider jpaConnectionProvider() {
         return new JpaHibernateConnectionProvider();
     }
-    //.. EOF JaVers setup ..
+    //.. EOF Itaú Auditable setup ..
 
 
     //.. Spring-JPA-Hibernate setup ..

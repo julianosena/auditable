@@ -64,12 +64,12 @@ class MongoSchemaManager {
 
         headCollection();
 
-        //schema migration script from JaVers 1.1 to 1.2
+        //schema migration script from Itaú Auditable 1.1 to 1.2
         Document doc = snapshots.find().first();
         if (doc != null) {
             Object stringCommitId = ((Map)doc.get("commitMetadata")).get("id");
             if (stringCommitId instanceof String) {
-                logger.info("executing db migration script, from JaVers 1.1 to 1.2 ...");
+                logger.info("executing db migration script, from Itaú Auditable 1.1 to 1.2 ...");
 
                 Document update = new Document("eval",
                         "function() { \n"+

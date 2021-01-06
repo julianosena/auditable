@@ -15,7 +15,7 @@ class BasicCommitAndQueryExample extends Specification {
 
     def "should commit and query from ItauAuditableRepository"() {
         given:
-        // prepare JaVers instance. By default, JaVers uses InMemoryRepository,
+        // prepare Itaú Auditable instance. By default, Itaú Auditable uses InMemoryRepository,
         // it's useful for testing
         ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 

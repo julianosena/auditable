@@ -139,7 +139,7 @@ public class ItauAuditableSqlRepository implements ItauAuditableRepository {
      * then cache modifications should be rolled back as well.
      * <br/><br/>
      *
-     * JaVers does this automatically in <code>ItauAuditableTransactionalDecorator</code>
+     * Itaú Auditable does this automatically in <code>ItauAuditableTransactionalDecorator</code>
      * from <code>itau-auditable-spring</code> module.
      * If you are using <code>itau-auditable-spring-boot-starter-sql</code>
      * (or directly <code>itau-auditable-spring</code>) you don't need to call this method.

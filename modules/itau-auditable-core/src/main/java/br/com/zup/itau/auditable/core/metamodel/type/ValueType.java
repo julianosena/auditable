@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * Value class in a client's domain model is a simple value holder.
  * <br/>
  *
- * JaVers doesn't interact with internal properties of Values and treats them similarly to primitives.
+ * Itaú Auditable doesn't interact with internal properties of Values and treats them similarly to primitives.
  * <br/><br/>
  *
  * Two Values are compared using {@link Object#equals(Object)} so

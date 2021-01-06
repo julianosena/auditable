@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 /**
- * JaVers commit is similar notion to GIT <i>commit</i> or SVN <i>revision</i>.
+ * Itaú Auditable commit is similar notion to GIT <i>commit</i> or SVN <i>revision</i>.
  * It records <b>change</b> done by user on application data.
  * <br><br>
  *
@@ -82,7 +82,7 @@ public final class Commit {
      *
      * <br/><br/>
      *
-     * Commits persisted by JaVers older then 5.1
+     * Commits persisted by Itaú Auditable older then 5.1
      * have commitDateInstant guessed from commitDate and current {@link TimeZone}
      *
      * @since 5.1

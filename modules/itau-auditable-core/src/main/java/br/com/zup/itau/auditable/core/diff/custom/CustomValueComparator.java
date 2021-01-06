@@ -25,7 +25,7 @@ import br.com.zup.itau.auditable.core.metamodel.type.ValueType;
  */
 public interface CustomValueComparator<T> {
     /**
-     * Called by JaVers to compare two Values.
+     * Called by Itaú Auditable to compare two Values.
      *
      * @param a not null
      * @param b not null

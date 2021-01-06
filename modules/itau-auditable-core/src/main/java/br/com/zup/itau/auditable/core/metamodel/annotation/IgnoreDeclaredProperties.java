@@ -8,12 +8,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Use IgnoreDeclaredProperties annotation to mark
- * all properties <b>declared</b> in a given class as ignored by JaVers.
+ * all properties <b>declared</b> in a given class as ignored by Itaú Auditable.
  * <br/><br/>
  *
- * JaVers still tracks instances of a given class and tracks changes done on properties of
+ * Itaú Auditable still tracks instances of a given class and tracks changes done on properties of
  * its superclass
- * (by contrast, if a class is annotated with {@link DiffIgnore}, JaVers completely ignores instances of
+ * (by contrast, if a class is annotated with {@link DiffIgnore}, Itaú Auditable completely ignores instances of
  * that class).
  *
  * <br/><br/>

@@ -21,7 +21,7 @@ public class Application {
         System.out.println("java.home:                  " + System.getProperty("java.home"));
         System.out.println("os.name & ver:              " + System.getProperty("os.name")+" v."+System.getProperty("os.version"));
 
-        System.out.println(".. building JaVers instance ...");
+        System.out.println(".. building Itaú Auditable instance ...");
 
         try {
             ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();

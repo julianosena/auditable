@@ -16,7 +16,7 @@ import java.util.Optional;
  * only for corner cases like comparing custom Collection types.</b>
  * <br/><br/>
  *
- * JaVers treats a Custom Type as a black box
+ * Itaú Auditable treats a Custom Type as a black box
  * and doesn't take any assumptions about its content or behaviour.
  * It's a "not modeled" type, somehow similar to unbounded wildcard {@code <?>}.
  * <br/><br/>

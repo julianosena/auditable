@@ -17,7 +17,7 @@ public abstract class CorePropertyChangeAppender<T extends PropertyChange> imple
     private static final Logger logger = LoggerFactory.getLogger(CorePropertyChangeAppender.class);
 
     /**
-     * JaVers needs to know actual Class of elements stored in your Collections and Maps. <br/>
+     * Itaú Auditable needs to know actual Class of elements stored in your Collections and Maps. <br/>
      * Wildcards (e.g. Set&lt;?&gt;), unbounded type parameters (e.g. Set&lt;T&gt;) <br/>
      * or missing parameters (e.g. Set) are defaulted to Object.class.
      * <br/><br/>

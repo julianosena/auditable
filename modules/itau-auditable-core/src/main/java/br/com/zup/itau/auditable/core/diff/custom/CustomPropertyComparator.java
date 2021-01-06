@@ -34,7 +34,7 @@ import java.util.Optional;
  */
 public interface CustomPropertyComparator<T, C extends PropertyChange> extends CustomValueComparator<T> {
     /**
-     * Called by JaVers to calculate property-to-property diff
+     * Called by Itaú Auditable to calculate property-to-property diff
      * between two Custom Type objects. Can calculate any of concrete {@link PropertyChange}.
      *
      * <br/><br/>

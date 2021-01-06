@@ -150,7 +150,7 @@ public final class CdoSnapshot extends Cdo {
      * Initial snapshot of given object has version 1, next has version 2.
      * <br/><br/>
      *
-     * <b>Warning!</b> Version field was added in JaVers v. 1.4.4.
+     * <b>Warning!</b> Version field was added in Itaú Auditable v. 1.4.4.
      * All snapshots persisted in ItauAuditableRepository before this release
      * have version 0.
      * <br/>

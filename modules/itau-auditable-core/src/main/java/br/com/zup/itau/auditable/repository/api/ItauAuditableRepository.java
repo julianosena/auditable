@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * <h2>Hints for ItauAuditableRepository implementation</h2>
  * <ul>
  *    <li/>After persisting in database, Commit is considered immutable so it can not be updated.
- *    <li/>Persisting Commit in any kind of database is easy. JaVers provides flexible
+ *    <li/>Persisting Commit in any kind of database is easy. Itaú Auditable provides flexible
  *         JSON serialization/deserialization engine,
  *         designed as abstraction layer between Java types and specific database types.
  *    <li/>Essentially, object-oriented data are persisted as JSON.
@@ -102,7 +102,7 @@ public interface ItauAuditableRepository {
     void setJsonConverter(JsonConverter jsonConverter);
 
     /**
-     * Called at the end of JaVers bootstrap,
+     * Called at the end of Itaú Auditable bootstrap,
      * good place to put database schema update
      */
     void ensureSchema();
