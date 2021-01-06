@@ -10,6 +10,23 @@ public class JvSnapshotDatabase implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public JvSnapshotDatabase() { }
+
+    public JvSnapshotDatabase(Long snapshotPk,
+                              String type,
+                              Long version,
+                              String state,
+                              Set<String> changedProperties,
+                              String managedType) {
+
+        this.snapshotPk = snapshotPk;
+        this.type = type;
+        this.version = version;
+        this.state = state;
+        this.changedProperties = changedProperties;
+        this.managedType = managedType;
+    }
+
     @Id
     @Column(name = "snapshot_pk")
     private Long snapshotPk;

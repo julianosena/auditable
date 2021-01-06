@@ -12,7 +12,7 @@ public class JvGlobalIdDatabase implements Serializable {
 
     @Id
     @Column(name = "global_id_pk")
-    private Long globalId;
+    private Long globalIdPk;
 
     @Column(name = "local_id")
     private Long localId;
@@ -29,13 +29,29 @@ public class JvGlobalIdDatabase implements Serializable {
     @OneToMany(mappedBy = "globalId", fetch = FetchType.LAZY)
     private List<JvSnapshotDatabase> jvSnapshots;
 
+    public JvGlobalIdDatabase() { }
 
-    public Long getGlobalId() {
-        return globalId;
+    public JvGlobalIdDatabase(Long globalIdPk,
+                              Long localId,
+                              String fragment,
+                              String typeName,
+                              Long ownerIdFk,
+                              List<JvSnapshotDatabase> jvSnapshots) {
+
+        this.globalIdPk = globalIdPk;
+        this.localId = localId;
+        this.fragment = fragment;
+        this.typeName = typeName;
+        this.ownerIdFk = ownerIdFk;
+        this.jvSnapshots = jvSnapshots;
     }
 
-    public void setGlobalId(Long globalId) {
-        this.globalId = globalId;
+    public Long getGlobalIdPk() {
+        return globalIdPk;
+    }
+
+    public void setGlobalIdPk(Long globalIdPk) {
+        this.globalIdPk = globalIdPk;
     }
 
     public Long getLocalId() {

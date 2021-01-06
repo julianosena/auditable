@@ -1,9 +1,12 @@
 package br.com.zup.itau.auditable.spring.boot.sql.usecase;
 
+import br.com.zup.itau.auditable.spring.boot.sql.domain.Snapshot;
 import br.com.zup.itau.auditable.spring.boot.sql.gateway.GetRevisionsByIdAndTypeGateway;
 import br.com.zup.itau.auditable.spring.boot.sql.usecase.exception.GetRevisionsByIdAndTypeUseCaseException;
 import br.com.zup.itau.auditable.usecase.exception.ItauAuditableUseCaseException;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class GetRevisionsByIdAndTypeUseCase {
