@@ -1,4 +1,4 @@
-package org.javers.repository.sql.integration.opendatabases
+package br.com.zup.itau.auditable.repository.sql.integration.opendatabases
 
 /**
  * @author Ian Agius

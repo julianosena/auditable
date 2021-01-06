@@ -1,6 +1,6 @@
-package org.javers.repository.sql.schema
+package br.com.zup.itau.auditable.repository.sql.schema
 
-import org.javers.repository.sql.SqlRepositoryConfiguration
+import br.com.zup.itau.auditable.repository.sql.SqlRepositoryConfiguration
 import spock.lang.Specification
 
 class TableNameProviderTest extends Specification {

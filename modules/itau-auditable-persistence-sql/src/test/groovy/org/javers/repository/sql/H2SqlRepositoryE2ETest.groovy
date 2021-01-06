@@ -1,16 +1,16 @@
-package org.javers.repository.sql
+package br.com.zup.itau.auditable.repository.sql
 
-import org.javers.common.exception.JaversException
-import org.javers.common.exception.JaversExceptionCode
-import org.javers.core.JaversBuilder
-import org.javers.core.model.SnapshotEntity
+import br.com.zup.itau.auditable.common.exception.ItauAuditableException
+import br.com.zup.itau.auditable.common.exception.ItauAuditableExceptionCode
+import br.com.zup.itau.auditable.core.ItauAuditableBuilder
+import br.com.zup.itau.auditable.core.model.SnapshotEntity
 
 import java.sql.Connection
 import java.sql.DriverManager
 
-import static org.javers.repository.sql.SqlRepositoryBuilder.sqlRepository
+import static br.com.zup.itau.auditable.repository.sql.SqlRepositoryBuilder.sqlRepository
 
-class H2SqlRepositoryE2ETest extends JaversSqlRepositoryE2ETest {
+class H2SqlRepositoryE2ETest extends ItauAuditableSqlRepositoryE2ETest {
 
     @Override
     Connection createConnection() {
@@ -34,8 +34,8 @@ class H2SqlRepositoryE2ETest extends JaversSqlRepositoryE2ETest {
 
     def "should fail when schema is not created"(){
         given:
-        def javers = JaversBuilder.javers()
-                .registerJaversRepository(sqlRepository()
+        def javers = ItauAuditableBuilder.javers()
+                .registerItauAuditableRepository(sqlRepository()
                 .withConnectionProvider({ DriverManager.getConnection("jdbc:h2:mem:empty-test") } as ConnectionProvider)
                 .withSchemaManagementEnabled(false)
                 .withDialect(getDialect())
@@ -49,8 +49,8 @@ class H2SqlRepositoryE2ETest extends JaversSqlRepositoryE2ETest {
         javers.commit("author", new SnapshotEntity(id: 1))
 
         then:
-        JaversException e = thrown()
-        e.code == JaversExceptionCode.SQL_EXCEPTION
+        ItauAuditableException e = thrown()
+        e.code == ItauAuditableExceptionCode.SQL_EXCEPTION
     }
 
     /**
@@ -67,7 +67,7 @@ class H2SqlRepositoryE2ETest extends JaversSqlRepositoryE2ETest {
         execute("alter sequence "+ schemaManager.commitPkSeqName +" restart with 1")
         execute("alter sequence "+ schemaManager.globalIdPkSeqName +" restart with 1")
         execute("alter sequence "+ schemaManager.snapshotTablePkSeqName +" restart with 1")
-        def sqlRepository = (JaversSqlRepository) repository
+        def sqlRepository = (ItauAuditableSqlRepository) repository
         sqlRepository.evictSequenceAllocationCache()
         sqlRepository.evictCache()
 

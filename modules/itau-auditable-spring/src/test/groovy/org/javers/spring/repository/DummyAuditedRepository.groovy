@@ -1,8 +1,8 @@
-package org.javers.spring.repository
+package br.com.zup.itau.auditable.spring.repository
 
-import org.javers.spring.annotation.JaversAuditable
-import org.javers.spring.annotation.JaversAuditableDelete
-import org.javers.spring.model.DummyObject
+import br.com.zup.itau.auditable.spring.annotation.ItauAuditableAuditable
+import br.com.zup.itau.auditable.spring.annotation.ItauAuditableAuditableDelete
+import br.com.zup.itau.auditable.spring.model.DummyObject
 import org.springframework.stereotype.Repository
 
 /**
@@ -11,22 +11,22 @@ import org.springframework.stereotype.Repository
 @Repository
 class DummyAuditedRepository {
 
-    @JaversAuditable
+    @ItauAuditableAuditable
     void save(DummyObject obj){
       //... omitted
     }
 
-    @JaversAuditable
+    @ItauAuditableAuditable
     void saveAndFail(DummyObject obj) {
         throw new RuntimeException()
     }
 
-    @JaversAuditable
+    @ItauAuditableAuditable
     void saveTwo(DummyObject obj, obj2){
         //... omitted
     }
 
-    @JaversAuditable
+    @ItauAuditableAuditable
     void saveAll(Iterable<DummyObject> objetcs){
         //... omitted
     }
@@ -36,30 +36,30 @@ class DummyAuditedRepository {
         null
     }
 
-    @JaversAuditableDelete
+    @ItauAuditableAuditableDelete
     void delete(DummyObject obj) {
         //... omitted
     }
 
-    @JaversAuditableDelete(entity = DummyObject)
+    @ItauAuditableAuditableDelete(entity = DummyObject)
     void deleteById(String id) {
     }
 
-    @JaversAuditableDelete(entity = DummyObject.class)
+    @ItauAuditableAuditableDelete(entity = DummyObject.class)
     void deleteAllById(Iterable<String> ids) {
     }
 
-    @JaversAuditableDelete
+    @ItauAuditableAuditableDelete
     void deleteByIdNoClass(String id) {
     }
 
 
-    @JaversAuditableDelete
+    @ItauAuditableAuditableDelete
     void deleteTwo(DummyObject obj, obj2) {
         //... omitted
     }
 
-    @JaversAuditableDelete
+    @ItauAuditableAuditableDelete
     void deleteAll(Iterable<DummyObject> objetcs) {
         //... omitted
     }

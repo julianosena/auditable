@@ -6,7 +6,7 @@
         </encoder>
     </appender>
 
-    <logger name="org.javers.SQL" level="DEBUG"/>
+    <logger name="br.com.zup.itau.auditable.SQL" level="DEBUG"/>
 
     <root level="info">
         <appender-ref ref="STDOUT" />

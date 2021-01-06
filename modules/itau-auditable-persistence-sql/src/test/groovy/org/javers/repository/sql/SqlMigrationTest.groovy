@@ -1,7 +1,7 @@
-package org.javers.repository.sql
+package br.com.zup.itau.auditable.repository.sql
 
-import org.javers.core.Javers
-import org.javers.repository.jql.QueryBuilder
+import br.com.zup.itau.auditable.core.ItauAuditable
+import br.com.zup.itau.auditable.repository.jql.QueryBuilder
 import spock.lang.Ignore
 import spock.lang.Specification
 
@@ -9,7 +9,7 @@ import java.math.RoundingMode
 import java.sql.Connection
 import java.sql.DriverManager
 
-import static org.javers.core.JaversBuilder.javers
+import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
 
 /**
  * @author bartosz walacik
@@ -18,7 +18,7 @@ import static org.javers.core.JaversBuilder.javers
 class SqlMigrationTest extends Specification{
 
     Connection dbConnection
-    Javers javers
+    ItauAuditable javers
 
     static def n = 1000
     static def updates = 200
@@ -44,7 +44,7 @@ class SqlMigrationTest extends Specification{
                 .sqlRepository()
                 .withConnectionProvider(connectionProvider)
                 .withDialect(DialectName.ORACLE).build()
-        javers = javers().registerJaversRepository(sqlRepository).build()
+        javers = javers().registerItauAuditableRepository(sqlRepository).build()
     }
 
     def cleanup() {

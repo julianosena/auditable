@@ -1,4 +1,4 @@
-package org.javers.spring.auditable.integration
+package br.com.zup.itau.auditable.spring.auditable.integration
 
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoClients

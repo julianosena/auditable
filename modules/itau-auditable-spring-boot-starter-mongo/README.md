@@ -3,7 +3,7 @@
 ### Using Spring Boot MongoDB starter settings
 
 Spring Boot automatically configures a `MongoClient` instance.
-Javers starter uses this instance by default.
+ItauAuditable starter uses this instance by default.
 
 ```yaml
 spring:
@@ -14,12 +14,12 @@ spring:
 Please refer to the spring-boot-starter-data-mongodb 
 [reference documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-nosql.html#boot-features-mongodb) for details on how to configure MongoDB.
 
-### Using Javers Spring Boot MongoDB starter settings
+### Using ItauAuditable Spring Boot MongoDB starter settings
 
 Sometimes it could be necessary to use a different MongoDB instance
-for persisting Javers data.
+for persisting ItauAuditable data.
 
-To use a dedicated instance of MongoDB, configure Javers as shown below:
+To use a dedicated instance of MongoDB, configure ItauAuditable as shown below:
 
 ```yaml
 javers:
@@ -43,7 +43,7 @@ javers:
 Either `host` or `uri` has to set.
 
 #### MongoClientSettings
-If better control is required over how Javers configures the `MongoClient` instance,
+If better control is required over how ItauAuditable configures the `MongoClient` instance,
 you can configure a `MongoClientSettings` bean named `javersMongoClientSettings`.
 If there is no such bean, default client options are used. 
 

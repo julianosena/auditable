@@ -1,15 +1,15 @@
-package org.javers.repository.sql
+package br.com.zup.itau.auditable.repository.sql
 
 import groovy.sql.Sql
-import org.javers.core.JaversRepositoryShadowE2ETest
-import org.javers.core.cases.Case207Arrays
-import org.javers.core.cases.Case208DateTimeTypes
-import org.javers.core.model.DummyAddress
-import org.javers.core.model.SnapshotEntity
-import org.javers.repository.api.JaversRepository
-import org.javers.repository.jql.QueryBuilder
-import org.javers.repository.sql.schema.JaversSchemaManager
-import org.javers.repository.sql.schema.TableNameProvider
+import br.com.zup.itau.auditable.core.ItauAuditableRepositoryShadowE2ETest
+import br.com.zup.itau.auditable.core.cases.Case207Arrays
+import br.com.zup.itau.auditable.core.cases.Case208DateTimeTypes
+import br.com.zup.itau.auditable.core.model.DummyAddress
+import br.com.zup.itau.auditable.core.model.SnapshotEntity
+import br.com.zup.itau.auditable.repository.api.ItauAuditableRepository
+import br.com.zup.itau.auditable.repository.jql.QueryBuilder
+import br.com.zup.itau.auditable.repository.sql.schema.ItauAuditableSchemaManager
+import br.com.zup.itau.auditable.repository.sql.schema.TableNameProvider
 import spock.lang.Shared
 
 import java.sql.Connection
@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 import static groovyx.gpars.GParsPool.withPool
 
-abstract class JaversSqlRepositoryE2ETest extends JaversRepositoryShadowE2ETest {
+abstract class ItauAuditableSqlRepositoryE2ETest extends ItauAuditableRepositoryShadowE2ETest {
     @Shared String globalIdTableName
     @Shared String commitTableName
     @Shared String snapshotTableName
@@ -33,7 +33,7 @@ abstract class JaversSqlRepositoryE2ETest extends JaversRepositoryShadowE2ETest 
 
     protected abstract String getSchema()
 
-    @Shared JaversSchemaManager schemaManager
+    @Shared ItauAuditableSchemaManager schemaManager
 
     protected Connection getConnection() {
         connection.get()
@@ -65,7 +65,7 @@ abstract class JaversSqlRepositoryE2ETest extends JaversRepositoryShadowE2ETest 
     }
 
     @Override
-    protected JaversRepository prepareJaversRepository() {
+    protected ItauAuditableRepository prepareItauAuditableRepository() {
         def repository = SqlRepositoryBuilder
                 .sqlRepository()
                 .withConnectionProvider({ getConnection() } as ConnectionProvider)
@@ -100,15 +100,15 @@ abstract class JaversSqlRepositoryE2ETest extends JaversRepositoryShadowE2ETest 
 
     def "should not create jv_ tables if they already exists"(){
       given:
-      def firstJavers = javers
+      def firstItauAuditable = javers
       println "javers" + javers
 
       when:
-      buildJaversInstance()
+      buildItauAuditableInstance()
       println "javers" + javers
 
       then:
-      firstJavers != javers
+      firstItauAuditable != javers
     }
 
     def "should select Head using max CommitId and not table PK"(){

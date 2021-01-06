@@ -1,7 +1,7 @@
-package org.javers.repository.sql
+package br.com.zup.itau.auditable.repository.sql
 
 import org.h2.tools.Server
-import org.javers.core.Javers
+import br.com.zup.itau.auditable.core.ItauAuditable
 import spock.lang.Ignore
 import spock.lang.Specification
 
@@ -9,7 +9,7 @@ import java.math.RoundingMode
 import java.sql.Connection
 import java.sql.DriverManager
 
-import static org.javers.core.JaversBuilder.javers
+import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
 
 /**
  * @author bartosz walacik
@@ -18,7 +18,7 @@ import static org.javers.core.JaversBuilder.javers
 class SqlPerformanceTest extends Specification{
 
     Connection dbConnection;
-    Javers javers;
+    ItauAuditable javers;
 
     def setup() {
         Server.createTcpServer().start()
@@ -35,7 +35,7 @@ class SqlPerformanceTest extends Specification{
                 .sqlRepository()
                 .withConnectionProvider(connectionProvider)
                 .withDialect(DialectName.POSTGRES).build()
-        javers = javers().registerJaversRepository(sqlRepository).build()
+        javers = javers().registerItauAuditableRepository(sqlRepository).build()
 
         clearTables()
     }

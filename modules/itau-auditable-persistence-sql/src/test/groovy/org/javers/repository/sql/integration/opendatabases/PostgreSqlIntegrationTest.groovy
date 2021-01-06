@@ -1,12 +1,12 @@
-package org.javers.repository.sql.integration.opendatabases
+package br.com.zup.itau.auditable.repository.sql.integration.opendatabases
 
-import org.javers.repository.sql.DialectName
-import org.javers.repository.sql.JaversSqlRepositoryE2ETest
+import br.com.zup.itau.auditable.repository.sql.DialectName
+import br.com.zup.itau.auditable.repository.sql.ItauAuditableSqlRepositoryE2ETest
 
 import java.sql.Connection
 import java.sql.DriverManager
 
-class PostgreSqlIntegrationTest extends JaversSqlRepositoryE2ETest {
+class PostgreSqlIntegrationTest extends ItauAuditableSqlRepositoryE2ETest {
 
     @Override
     Connection createConnection() {

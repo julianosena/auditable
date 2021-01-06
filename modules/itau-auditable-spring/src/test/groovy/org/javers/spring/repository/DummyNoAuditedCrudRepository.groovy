@@ -1,6 +1,6 @@
-package org.javers.spring.repository
+package br.com.zup.itau.auditable.spring.repository
 
-import org.javers.spring.model.DummyObject
+import br.com.zup.itau.auditable.spring.model.DummyObject
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 

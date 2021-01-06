@@ -1,7 +1,7 @@
-package org.javers.spring.repository
+package br.com.zup.itau.auditable.spring.repository
 
-import org.javers.spring.annotation.JaversAuditableAsync
-import org.javers.spring.model.DummyObject
+import br.com.zup.itau.auditable.spring.annotation.ItauAuditableAuditableAsync
+import br.com.zup.itau.auditable.spring.model.DummyObject
 import org.springframework.stereotype.Repository
 
 /**
@@ -10,22 +10,22 @@ import org.springframework.stereotype.Repository
 @Repository
 class DummyAuditedAsyncRepository {
 
-    @JaversAuditableAsync
+    @ItauAuditableAuditableAsync
     void save(DummyObject obj){
       //... omitted
     }
 
-    @JaversAuditableAsync
+    @ItauAuditableAuditableAsync
     void saveAndFail(DummyObject obj) {
         throw new RuntimeException()
     }
 
-    @JaversAuditableAsync
+    @ItauAuditableAuditableAsync
     void saveTwo(DummyObject obj, obj2){
         //... omitted
     }
 
-    @JaversAuditableAsync
+    @ItauAuditableAuditableAsync
     void saveAll(Iterable<DummyObject> objetcs){
         //... omitted
     }

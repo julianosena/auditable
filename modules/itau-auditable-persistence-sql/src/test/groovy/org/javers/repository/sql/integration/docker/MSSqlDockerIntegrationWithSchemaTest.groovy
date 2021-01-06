@@ -1,7 +1,7 @@
-package org.javers.repository.sql.integration.docker
+package br.com.zup.itau.auditable.repository.sql.integration.docker
 
-import org.javers.repository.sql.DialectName
-import org.javers.repository.sql.JaversSqlRepositoryE2ETest
+import br.com.zup.itau.auditable.repository.sql.DialectName
+import br.com.zup.itau.auditable.repository.sql.ItauAuditableSqlRepositoryE2ETest
 import org.testcontainers.containers.MSSQLServerContainer
 import org.testcontainers.spock.Testcontainers
 import spock.lang.Shared
@@ -10,7 +10,7 @@ import java.sql.Connection
 import java.sql.DriverManager
 
 @Testcontainers
-class MSSqlDockerIntegrationWithSchemaTest extends JaversSqlRepositoryE2ETest {
+class MSSqlDockerIntegrationWithSchemaTest extends ItauAuditableSqlRepositoryE2ETest {
 
     @Shared
     public MSSQLServerContainer mssqlserver = new MSSQLServerContainer()

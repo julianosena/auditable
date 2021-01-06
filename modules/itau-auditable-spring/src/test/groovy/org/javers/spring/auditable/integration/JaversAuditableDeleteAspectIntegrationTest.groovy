@@ -1,25 +1,25 @@
-package org.javers.spring.auditable.integration
+package br.com.zup.itau.auditable.spring.auditable.integration
 
-import org.javers.common.exception.JaversException
-import org.javers.common.exception.JaversExceptionCode
-import org.javers.core.Javers
-import org.javers.repository.jql.QueryBuilder
-import org.javers.spring.model.DummyObject
-import org.javers.spring.repository.DummyAuditedRepository
+import br.com.zup.itau.auditable.common.exception.ItauAuditableException
+import br.com.zup.itau.auditable.common.exception.ItauAuditableExceptionCode
+import br.com.zup.itau.auditable.core.ItauAuditable
+import br.com.zup.itau.auditable.repository.jql.QueryBuilder
+import br.com.zup.itau.auditable.spring.model.DummyObject
+import br.com.zup.itau.auditable.spring.repository.DummyAuditedRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 @ContextConfiguration(classes = [TestApplicationConfig])
-class JaversAuditableDeleteAspectIntegrationTest extends Specification {
+class ItauAuditableAuditableDeleteAspectIntegrationTest extends Specification {
 
     @Autowired
-    Javers javers
+    ItauAuditable javers
 
     @Autowired
     DummyAuditedRepository repository
 
-    def "should commit single argument when method is annotated with @JaversAuditableDelete"() {
+    def "should commit single argument when method is annotated with @ItauAuditableAuditableDelete"() {
         given: "one arg test"
         def o = new DummyObject()
 
@@ -34,7 +34,7 @@ class JaversAuditableDeleteAspectIntegrationTest extends Specification {
         snapshots[1].initial
     }
 
-    def "should commit few arguments when method is annotated with @JaversAuditableDelete"() {
+    def "should commit few arguments when method is annotated with @ItauAuditableAuditableDelete"() {
         given:
         def o1 = new DummyObject()
         def o2 = new DummyObject()
@@ -54,7 +54,7 @@ class JaversAuditableDeleteAspectIntegrationTest extends Specification {
         }
     }
 
-    def "should commit with properties provided by CommitPropertiesProvider when method is annotated with @JaversAuditableDelete"(){
+    def "should commit with properties provided by CommitPropertiesProvider when method is annotated with @ItauAuditableAuditableDelete"(){
         given:
         def o = new DummyObject()
 
@@ -70,7 +70,7 @@ class JaversAuditableDeleteAspectIntegrationTest extends Specification {
         snapshots[1].initial
     }
 
-    def "should commit iterable argument when method is annotated with @JaversAuditableDelete"() {
+    def "should commit iterable argument when method is annotated with @ItauAuditableAuditableDelete"() {
         given:
         def objects = [new DummyObject(), new DummyObject()]
 
@@ -89,7 +89,7 @@ class JaversAuditableDeleteAspectIntegrationTest extends Specification {
         }
     }
 
-    def "should commit delete by Id when a method is annotated with @JaversAuditableDelete"() {
+    def "should commit delete by Id when a method is annotated with @ItauAuditableAuditableDelete"() {
         given:
         def o = new DummyObject()
 
@@ -104,7 +104,7 @@ class JaversAuditableDeleteAspectIntegrationTest extends Specification {
         snapshots[1].initial
     }
 
-    def "should commit by Ids iterable when a method is annotated with @JaversAuditableDelete"() {
+    def "should commit by Ids iterable when a method is annotated with @ItauAuditableAuditableDelete"() {
         given:
         def objects = [new DummyObject(), new DummyObject()]
 
@@ -123,7 +123,7 @@ class JaversAuditableDeleteAspectIntegrationTest extends Specification {
         }
     }
 
-    def "should throw the exception if no entity parameter is given when deleting by Id using @JaversAuditableDelete"() {
+    def "should throw the exception if no entity parameter is given when deleting by Id using @ItauAuditableAuditableDelete"() {
         given:
         def o = new DummyObject()
 
@@ -132,8 +132,8 @@ class JaversAuditableDeleteAspectIntegrationTest extends Specification {
         repository.deleteByIdNoClass(o.id)
 
         then:
-        JaversException e = thrown()
+        ItauAuditableException e = thrown()
         println e
-        e.code == JaversExceptionCode.WRONG_USAGE_OF_JAVERS_AUDITABLE_DELETE
+        e.code == ItauAuditableExceptionCode.WRONG_USAGE_OF_JAVERS_AUDITABLE_DELETE
     }
 }

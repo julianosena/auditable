@@ -1,6 +1,6 @@
-package org.javers.spring.model
+package br.com.zup.itau.auditable.spring.model
 
-import org.javers.core.metamodel.annotation.Id
+import br.com.zup.itau.auditable.core.metamodel.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
 /**

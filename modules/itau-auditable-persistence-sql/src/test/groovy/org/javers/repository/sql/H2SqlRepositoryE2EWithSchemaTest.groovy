@@ -1,4 +1,4 @@
-package org.javers.repository.sql
+package br.com.zup.itau.auditable.repository.sql
 
 import java.sql.Connection
 import java.sql.DriverManager

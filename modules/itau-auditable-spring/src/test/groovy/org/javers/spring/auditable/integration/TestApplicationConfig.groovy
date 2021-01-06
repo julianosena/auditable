@@ -1,8 +1,8 @@
-package org.javers.spring.auditable.integration
+package br.com.zup.itau.auditable.spring.auditable.integration
 
 import com.mongodb.client.MongoClient
-import org.javers.spring.auditable.CommitPropertiesProvider
-import org.javers.spring.example.JaversSpringMongoApplicationConfig
+import br.com.zup.itau.auditable.spring.auditable.CommitPropertiesProvider
+import br.com.zup.itau.auditable.spring.example.ItauAuditableSpringMongoApplicationConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
@@ -11,10 +11,10 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories
 
 @Configuration
-@ComponentScan(basePackages = "org.javers.spring.repository")
-@EnableMongoRepositories(["org.javers.spring.repository"])
+@ComponentScan(basePackages = "br.com.zup.itau.auditable.spring.repository")
+@EnableMongoRepositories(["br.com.zup.itau.auditable.spring.repository"])
 @EnableAspectJAutoProxy
-class TestApplicationConfig extends JaversSpringMongoApplicationConfig {
+class TestApplicationConfig extends ItauAuditableSpringMongoApplicationConfig {
 
     @Autowired
     EmbeddedMongoFactory.EmbeddedMongo embeddedMongo

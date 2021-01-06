@@ -1,32 +1,32 @@
-package org.javers.spring.auditable.integration
+package br.com.zup.itau.auditable.spring.auditable.integration
 
-import org.javers.core.Javers
-import org.javers.repository.jql.QueryBuilder
-import org.javers.spring.auditable.aspect.JaversAuditableAspectAsync
-import org.javers.spring.model.DummyObject
-import org.javers.spring.repository.DummyAuditedAsyncRepository
+import br.com.zup.itau.auditable.core.ItauAuditable
+import br.com.zup.itau.auditable.repository.jql.QueryBuilder
+import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAuditableAspectAsync
+import br.com.zup.itau.auditable.spring.model.DummyObject
+import br.com.zup.itau.auditable.spring.repository.DummyAuditedAsyncRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
-import static org.javers.repository.jql.QueryBuilder.byInstanceId
+import static br.com.zup.itau.auditable.repository.jql.QueryBuilder.byInstanceId
 
 @ContextConfiguration(classes = [TestApplicationConfig])
-class JaversAuditableAspectAsyncIntegrationTest extends Specification {
+class ItauAuditableAuditableAspectAsyncIntegrationTest extends Specification {
 
     @Autowired
-    Javers javers
+    ItauAuditable javers
 
     @Autowired
-    JaversAuditableAspectAsync javersAuditableAspectAsync
+    ItauAuditableAuditableAspectAsync javersAuditableAspectAsync
 
     @Autowired
     DummyAuditedAsyncRepository repository
 
     @Autowired
-    JaversAuditableAspectAsync aspectAsync
+    ItauAuditableAuditableAspectAsync aspectAsync
 
-    def "should asynchronously commit a method's argument when annotated with @JaversAuditableAsync"() {
+    def "should asynchronously commit a method's argument when annotated with @ItauAuditableAuditableAsync"() {
         given:
         def o = new DummyObject()
 
@@ -52,7 +52,7 @@ class JaversAuditableAspectAsyncIntegrationTest extends Specification {
 
     }
 
-    def "should asynchronously commit two method's arguments when annotated with @JaversAuditableAsync"() {
+    def "should asynchronously commit two method's arguments when annotated with @ItauAuditableAuditableAsync"() {
         given:
         def o1 = new DummyObject()
         def o2 = new DummyObject()
@@ -74,7 +74,7 @@ class JaversAuditableAspectAsyncIntegrationTest extends Specification {
         javersAuditableAspectAsync.lastAsyncCommit.get().isDone()
     }
 
-    def "should asynchronously commit an iterable argument when method is annotated with @JaversAuditableAsync"() {
+    def "should asynchronously commit an iterable argument when method is annotated with @ItauAuditableAuditableAsync"() {
         given:
         List objects = (1..20).collect{new DummyObject()}
 

@@ -1,11 +1,11 @@
-package org.javers.repository.sql
+package br.com.zup.itau.auditable.repository.sql
 
-import org.javers.repository.jql.NewPerformanceTest
+import br.com.zup.itau.auditable.repository.jql.NewPerformanceTest
 import spock.lang.Ignore
 
 import java.sql.Connection
 import java.sql.DriverManager
-import static org.javers.core.JaversBuilder.javers
+import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
 
 @Ignore
 class NewSqlPerformanceTest extends NewPerformanceTest {
@@ -27,7 +27,7 @@ class NewSqlPerformanceTest extends NewPerformanceTest {
                 .sqlRepository()
                 .withConnectionProvider(connectionProvider)
                 .withDialect(DialectName.POSTGRES).build()
-        javers = javers().registerJaversRepository(sqlRepository).build()
+        javers = javers().registerItauAuditableRepository(sqlRepository).build()
     }
 
     @Override

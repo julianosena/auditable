@@ -8,8 +8,8 @@
         </encoder>
     </appender>
 
-    <logger name="org.javers.JQL" level="debug"/>
-    <logger name="org.javers.TypeMapper" level="debug"/>
+    <logger name="br.com.zup.itau.auditable.JQL" level="debug"/>
+    <logger name="br.com.zup.itau.auditable.TypeMapper" level="debug"/>
 
     <root level="info">
         <appender-ref ref="STDOUT" />

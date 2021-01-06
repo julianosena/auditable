@@ -1,23 +1,23 @@
-package org.javers.spring.auditable.integration
+package br.com.zup.itau.auditable.spring.auditable.integration
 
-import org.javers.core.Javers
-import org.javers.repository.jql.QueryBuilder
-import org.javers.spring.model.DummyObject
-import org.javers.spring.repository.DummyAuditedRepository
+import br.com.zup.itau.auditable.core.ItauAuditable
+import br.com.zup.itau.auditable.repository.jql.QueryBuilder
+import br.com.zup.itau.auditable.spring.model.DummyObject
+import br.com.zup.itau.auditable.spring.repository.DummyAuditedRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 @ContextConfiguration(classes = [TestApplicationConfig])
-class JaversAuditableAspectIntegrationTest extends Specification {
+class ItauAuditableAuditableAspectIntegrationTest extends Specification {
 
     @Autowired
-    Javers javers
+    ItauAuditable javers
 
     @Autowired
     DummyAuditedRepository repository
 
-    def "should commit a method's argument when annotated with @JaversAuditable"() {
+    def "should commit a method's argument when annotated with @ItauAuditableAuditable"() {
         given:
         def o = new DummyObject()
 
@@ -41,7 +41,7 @@ class JaversAuditableAspectIntegrationTest extends Specification {
         javers.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build()).size() == 0
     }
 
-    def "should commit method's arguments when annotated with @JaversAuditable"() {
+    def "should commit method's arguments when annotated with @ItauAuditableAuditable"() {
         given:
         def o1 = new DummyObject()
         def o2 = new DummyObject()
@@ -66,7 +66,7 @@ class JaversAuditableAspectIntegrationTest extends Specification {
         snapshot.commitMetadata.properties["key"] == "ok"
     }
 
-    def "should commit iterable argument when method is annotated with @JaversAuditable"() {
+    def "should commit iterable argument when method is annotated with @ItauAuditableAuditable"() {
         given:
         def objects = [new DummyObject(), new DummyObject()]
 

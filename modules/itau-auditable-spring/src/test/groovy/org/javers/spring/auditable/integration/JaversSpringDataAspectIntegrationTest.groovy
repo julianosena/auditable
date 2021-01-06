@@ -1,24 +1,24 @@
-package org.javers.spring.auditable.integration
+package br.com.zup.itau.auditable.spring.auditable.integration
 
-import org.javers.core.Javers
-import org.javers.spring.model.DummyObject
-import org.javers.spring.repository.DummyAuditedCrudRepository
-import org.javers.spring.repository.DummyNoAuditedCrudRepository
+import br.com.zup.itau.auditable.core.ItauAuditable
+import br.com.zup.itau.auditable.spring.model.DummyObject
+import br.com.zup.itau.auditable.spring.repository.DummyAuditedCrudRepository
+import br.com.zup.itau.auditable.spring.repository.DummyNoAuditedCrudRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static org.javers.repository.jql.QueryBuilder.byInstanceId
+import static br.com.zup.itau.auditable.repository.jql.QueryBuilder.byInstanceId
 
 @ContextConfiguration(classes = [TestApplicationConfig])
-class JaversSpringDataAspectIntegrationTest extends Specification {
+class ItauAuditableSpringDataAspectIntegrationTest extends Specification {
     @Autowired
     ApplicationContext context
 
     @Autowired
-    Javers javers
+    ItauAuditable javers
 
     @Autowired
     DummyAuditedCrudRepository repository

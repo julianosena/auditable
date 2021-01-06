@@ -1,7 +1,7 @@
-package org.javers.repository.sql.integration.docker
+package br.com.zup.itau.auditable.repository.sql.integration.docker
 
-import org.javers.repository.sql.DialectName
-import org.javers.repository.sql.JaversSqlRepositoryE2ETest
+import br.com.zup.itau.auditable.repository.sql.DialectName
+import br.com.zup.itau.auditable.repository.sql.ItauAuditableSqlRepositoryE2ETest
 import org.testcontainers.containers.OracleContainer
 import org.testcontainers.spock.Testcontainers
 import org.testcontainers.utility.DockerImageName
@@ -11,7 +11,7 @@ import java.sql.Connection
 import java.sql.DriverManager
 
 @Testcontainers
-class OracleDockerIntegrationWithSchemaTest extends JaversSqlRepositoryE2ETest {
+class OracleDockerIntegrationWithSchemaTest extends ItauAuditableSqlRepositoryE2ETest {
 
     //docker image built by https://github.com/wnameless/docker-oracle-xe-11g.git
     @Shared

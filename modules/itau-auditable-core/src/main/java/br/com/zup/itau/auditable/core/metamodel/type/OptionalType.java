@@ -1,0 +1,64 @@
+package br.com.zup.itau.auditable.core.metamodel.type;
+
+import br.com.zup.itau.auditable.common.collections.EnumerableFunction;
+import br.com.zup.itau.auditable.common.validation.Validate;
+import br.com.zup.itau.auditable.core.metamodel.object.EnumerationAwareOwnerContext;
+import br.com.zup.itau.auditable.core.metamodel.object.OwnerContext;
+
+import java.lang.reflect.Type;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
+
+/**
+ * @author bartosz.walacik
+ */
+public class OptionalType extends CollectionType {
+
+    /** for TypeFactory.spawnFromPrototype() */
+    public OptionalType(Type baseJavaType) {
+        super(baseJavaType);
+    }
+
+    public OptionalType() {
+        super(java.util.Optional.class);
+    }
+
+    @Override
+    public Object map(Object sourceOptional_, EnumerableFunction mapFunction, OwnerContext owner) {
+        Validate.argumentsAreNotNull(sourceOptional_, mapFunction);
+        Optional sourceOptional = (Optional)sourceOptional_;
+        return sourceOptional.map(o -> mapFunction.apply(o, new EnumerationAwareOwnerContext(owner)));
+    }
+
+    @Override
+    public Object map(Object sourceOptional_, Function mapFunction) {
+        Validate.argumentsAreNotNull(sourceOptional_, mapFunction);
+        Optional sourceOptional = (Optional)sourceOptional_;
+        return sourceOptional.map(o -> mapFunction.apply(o));
+    }
+
+    @Override
+    protected Stream<Object> items(Object source) {
+        if (source == null) {
+            return Stream.empty();
+        }
+        Optional sourceOptional = (Optional)source;
+        return (Stream)sourceOptional.map(it -> Stream.of(it)).orElse(Stream.empty());
+    }
+
+    @Override
+    public boolean isEmpty(Object optional){
+        return optional == null || !((Optional)optional).isPresent();
+    }
+
+    @Override
+    public Object empty() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Class<?> getEnumerableInterface() {
+        return Optional.class;
+    }
+}
