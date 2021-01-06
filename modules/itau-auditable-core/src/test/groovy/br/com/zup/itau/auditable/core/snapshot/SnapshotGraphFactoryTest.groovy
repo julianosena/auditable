@@ -13,20 +13,20 @@ import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.instanceId
  */
 class SnapshotGraphFactoryTest extends Specification {
 
-    @Shared ItauAuditableTestBuilder javers
+    @Shared ItauAuditableTestBuilder itauAuditable
     @Shared SnapshotGraphFactory snapshotGraphFactory
 
     def setup(){
-        javers = ItauAuditableTestBuilder.javersTestAssembly()
-        snapshotGraphFactory = javers.getContainerComponent(SnapshotGraphFactory)
+        itauAuditable = ItauAuditableTestBuilder.itauAuditableTestAssembly()
+        snapshotGraphFactory = itauAuditable.getContainerComponent(SnapshotGraphFactory)
     }
 
     def "should create SnapshotGraph with snapshots of committed objects "() {
         given:
         def oldRef = new SnapshotEntity(id: 2, intProperty:2)
-        javers.javers().commit("user",oldRef)
+        itauAuditable.itauAuditable().commit("user",oldRef)
         def cdo = new SnapshotEntity(id: 1, entityRef: oldRef)
-        def liveGraph = javers.createLiveGraph(cdo)
+        def liveGraph = itauAuditable.createLiveGraph(cdo)
 
         when:
         def snapshotGraph = snapshotGraphFactory.createLatest(liveGraph.globalIds())

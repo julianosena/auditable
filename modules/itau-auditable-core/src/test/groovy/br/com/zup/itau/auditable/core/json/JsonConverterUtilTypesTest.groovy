@@ -12,14 +12,14 @@ import spock.lang.Unroll
  */
 class JsonConverterUtilTypesTest extends Specification{
     @Shared
-    def javers = new ItauAuditableBuilder().withPrettyPrint(false).build()
+    def itauAuditable = new ItauAuditableBuilder().withPrettyPrint(false).build()
 
     @Unroll
     def "should convert #expectedType (#givenValue) to and from JSON"(){
         expect:
-        javers.jsonConverter.toJson( givenValue ) == expectedJson
-        javers.jsonConverter.fromJson( expectedJson, expectedType ) == givenValue
-        javers.getTypeMapping(expectedType) instanceof ValueType
+        itauAuditable.jsonConverter.toJson( givenValue ) == expectedJson
+        itauAuditable.jsonConverter.fromJson( expectedJson, expectedType ) == givenValue
+        itauAuditable.getTypeMapping(expectedType) instanceof ValueType
 
         where:
         expectedType << [UUID, Currency, URI, URL, File]

@@ -17,10 +17,10 @@ public class Case250BetterExceptionMessage extends Specification {
     @Unroll
     def "should throw nice error message when committing top-level value"() {
         given:
-        ItauAuditable javers = ItauAuditableBuilder.javers().build();
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
         when:
-        javers.commit("z",val)
+        itauAuditable.commit("z",val)
 
         then:
         ItauAuditableException e = thrown()
@@ -34,10 +34,10 @@ public class Case250BetterExceptionMessage extends Specification {
     @Unroll
     def "should throw nice error message when comparing top-level values"() {
         given:
-        ItauAuditable javers = ItauAuditableBuilder.javers().build();
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
         when:
-        javers.compare(val, val);
+        itauAuditable.compare(val, val);
 
         then:
         ItauAuditableException e = thrown()

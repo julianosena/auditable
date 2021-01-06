@@ -12,7 +12,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import spock.lang.Specification
 
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 import static br.com.zup.itau.auditable.core.json.builder.ChangeTestBuilder.valueChange
 import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.instanceId
 import static br.com.zup.itau.auditable.core.model.DummyUserWithValues.dummyUserWithDate
@@ -24,7 +24,7 @@ class ValueChangeTypeAdapterTest extends Specification {
 
     def "should serialize ValueChange" () {
         given:
-        JsonConverter jsonConverter = javersTestAssembly().jsonConverter
+        JsonConverter jsonConverter = itauAuditableTestAssembly().jsonConverter
         ValueChange change = valueChange(new DummyUser(name:"kaz"),"flag",true,false)
 
         when:
@@ -42,7 +42,7 @@ class ValueChangeTypeAdapterTest extends Specification {
 
     def "should deserialize ValueChange"() {
         given:
-            JsonConverter jsonConverter = javersTestAssembly().jsonConverter
+            JsonConverter jsonConverter = itauAuditableTestAssembly().jsonConverter
             def json = new JsonBuilder()
             json {
                 property  "bigFlag"
@@ -69,7 +69,7 @@ class ValueChangeTypeAdapterTest extends Specification {
 
     def "should serialize ValueChange with Values using custom TypeAdapter" () {
         given:
-        JsonConverter jsonConverter = javersTestAssembly().jsonConverter
+        JsonConverter jsonConverter = itauAuditableTestAssembly().jsonConverter
         def dob = LocalDateTime.now()
         ValueChange change = valueChange(dummyUserWithDate("kaz"),"dob",null, dob)
 
@@ -84,7 +84,7 @@ class ValueChangeTypeAdapterTest extends Specification {
 
     def "should deserialize ValueChange with Values using custom TypeAdapter"() {
         given:
-        JsonConverter jsonConverter = javersTestAssembly().jsonConverter
+        JsonConverter jsonConverter = itauAuditableTestAssembly().jsonConverter
         def json = new JsonBuilder()
         json {
             property  "dob"
@@ -108,7 +108,7 @@ class ValueChangeTypeAdapterTest extends Specification {
 
     def "should be nullSafe when writing ValueChange" () {
         given:
-        JsonConverter jsonConverter = javersTestAssembly().jsonConverter
+        JsonConverter jsonConverter = itauAuditableTestAssembly().jsonConverter
         ValueChange change = valueChange(new DummyUser(name:"kaz"),"bigFlag",null, null)
 
         when:

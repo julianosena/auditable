@@ -12,13 +12,13 @@ import org.springframework.core.annotation.Order;
 /**
  * Commits all arguments passed to save(), delete() and saveAndFlush() methods
  * in Spring Data JpaRepository
- * when repositories are annotated with (class-level) @ItauAuditableSpringDataAuditable.
+ * when repositories are annotated with (class-level) @ItauAuditableSpringData.
  */
 @Aspect
 @Order(0)
-public class ItauAuditableSpringDataJpaAuditableRepositoryAspect extends AbstractSpringAuditableRepositoryAspect {
-    public ItauAuditableSpringDataJpaAuditableRepositoryAspect(ItauAuditable javers, AuthorProvider authorProvider, CommitPropertiesProvider commitPropertiesProvider) {
-        super(javers, authorProvider, commitPropertiesProvider);
+public class ItauAuditableSpringDataJpaRepositoryAspect extends AbstractSpringAuditableRepositoryAspect {
+    public ItauAuditableSpringDataJpaRepositoryAspect(ItauAuditable itauAuditable, AuthorProvider authorProvider, CommitPropertiesProvider commitPropertiesProvider) {
+        super(itauAuditable, authorProvider, commitPropertiesProvider);
     }
 
     @AfterReturning("execution(public * delete(..)) && this(org.springframework.data.repository.CrudRepository)")

@@ -15,9 +15,9 @@ public class DiffAppendersModule extends LateInstantiatingModule {
 
     private final Class<? extends PropertyChangeAppender<ListChange>> listChangeAppender;
 
-    public DiffAppendersModule(ItauAuditableCoreConfiguration javersCoreConfiguration, MutablePicoContainer container) {
-        super(javersCoreConfiguration, container);
-        this.listChangeAppender = javersCoreConfiguration.getListCompareAlgorithm().getAppenderClass();
+    public DiffAppendersModule(ItauAuditableCoreConfiguration itauAuditableCoreConfiguration, MutablePicoContainer container) {
+        super(itauAuditableCoreConfiguration, container);
+        this.listChangeAppender = itauAuditableCoreConfiguration.getListCompareAlgorithm().getAppenderClass();
     }
 
     @Override

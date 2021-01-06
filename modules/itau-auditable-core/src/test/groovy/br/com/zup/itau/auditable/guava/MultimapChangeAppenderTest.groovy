@@ -25,8 +25,8 @@ import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.*
 class MultimapChangeAppenderTest extends AbstractDiffAppendersTest {
 
     MultimapChangeAppender multimapChangeAppender() {
-        def javers = ItauAuditableTestBuilder.javersTestAssembly()
-        new MultimapChangeAppender(javers.typeMapper)
+        def itauAuditable = ItauAuditableTestBuilder.itauAuditableTestAssembly()
+        new MultimapChangeAppender(itauAuditable.typeMapper)
     }
 
     def "should append changes on Multimaps of primitives "(){

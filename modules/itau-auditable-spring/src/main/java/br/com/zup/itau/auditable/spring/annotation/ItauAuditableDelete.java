@@ -1,7 +1,7 @@
 package br.com.zup.itau.auditable.spring.annotation;
 
 import br.com.zup.itau.auditable.core.ItauAuditable;
-import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAuditableAspect;
+import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAspect;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
  * Usage:
  *
  * <pre>
- *    {@literal @}ItauAuditableAuditableDelete
+ *    {@literal @}ItauAuditableDelete
  *     void delete(DummyEntity entity) {
  *         ...
  *     }
@@ -27,16 +27,16 @@ import java.lang.annotation.Target;
  * or:
  *
  * <pre>
- *    {@literal @}ItauAuditableAuditableDelete(entity = DummyEntity)
+ *    {@literal @}ItauAuditableDelete(entity = DummyEntity)
  *     void deleteById(String id) {
  *         ...
  *     }
  * </pre>
- * @see ItauAuditableAuditableAspect
+ * @see ItauAuditableAspect
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-public @interface ItauAuditableAuditableDelete {
+public @interface ItauAuditableDelete {
 
     /**
      * Entity class, required only when deleting by id, for example:

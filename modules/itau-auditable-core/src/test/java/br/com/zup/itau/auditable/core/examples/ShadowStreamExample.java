@@ -15,19 +15,19 @@ public class ShadowStreamExample {
     @Test
     public void shouldFindShadowsAndStream() {
         // given
-        ItauAuditable javers = ItauAuditableBuilder.javers().build();
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
         Employee frodo = new Employee("Frodo");
         frodo.addSubordinate(new Employee("Sam"));
 
-        javers.commit("author", frodo);
+        itauAuditable.commit("author", frodo);
 
         //when
         IntStream.range(1,10).forEach( i -> {
             frodo.setSalary(1_000 * i);
-            javers.commit("author", frodo);
+            itauAuditable.commit("author", frodo);
         });
 
-        Stream<Shadow<Employee>> shadows = javers.findShadowsAndStream(
+        Stream<Shadow<Employee>> shadows = itauAuditable.findShadowsAndStream(
                 QueryBuilder.byInstanceId("Frodo", Employee.class).build());
 
         //then

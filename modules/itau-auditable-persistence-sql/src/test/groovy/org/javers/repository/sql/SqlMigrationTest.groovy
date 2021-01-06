@@ -9,7 +9,7 @@ import java.math.RoundingMode
 import java.sql.Connection
 import java.sql.DriverManager
 
-import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
+import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.itauAuditable
 
 /**
  * @author bartosz walacik
@@ -18,7 +18,7 @@ import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
 class SqlMigrationTest extends Specification{
 
     Connection dbConnection
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     static def n = 1000
     static def updates = 200
@@ -28,11 +28,11 @@ class SqlMigrationTest extends Specification{
     def setup() {
         start = System.currentTimeMillis()
 
-        //dbConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/javers", "javers", "javers")
+        //dbConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/itauAuditable", "itauAuditable", "itauAuditable")
 
-        //dbConnection = DriverManager.getConnection("jdbc:mysql://192.168.99.100:32774/javers_db", "javers", "javers");
+        //dbConnection = DriverManager.getConnection("jdbc:mysql://192.168.99.100:32774/itauAuditable_db", "itauAuditable", "itauAuditable");
 
-        dbConnection = DriverManager.getConnection("jdbc:oracle:thin:@192.168.99.100:49161:xe", "javers", "javers");
+        dbConnection = DriverManager.getConnection("jdbc:oracle:thin:@192.168.99.100:49161:xe", "itauAuditable", "itauAuditable");
 
         //dbConnection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;DatabaseName=polly", "polly", "polly");
 
@@ -44,7 +44,7 @@ class SqlMigrationTest extends Specification{
                 .sqlRepository()
                 .withConnectionProvider(connectionProvider)
                 .withDialect(DialectName.ORACLE).build()
-        javers = javers().registerItauAuditableRepository(sqlRepository).build()
+        itauAuditable = itauAuditable().registerItauAuditableRepository(sqlRepository).build()
     }
 
     def cleanup() {
@@ -58,10 +58,10 @@ class SqlMigrationTest extends Specification{
         when:
         n.times {
             def root = MigrationEntity.produce(it * 100, 9)
-            javers.commit("author", root)
+            itauAuditable.commit("author", root)
 
             root.change()
-            javers.commit("author", root)
+            itauAuditable.commit("author", root)
 
             dbConnection.commit()
         }
@@ -80,34 +80,34 @@ class SqlMigrationTest extends Specification{
 
     def "should query after migration"() {
         expect:
-        javers.findSnapshots(QueryBuilder.byClass(MigrationEntity).limit(n*100).build()).size() == 2 * n * 10
-        javers.findSnapshots(QueryBuilder.byClass(MigrationValueObject).limit(n*100).build()).size() == 2 * n * 10
-        javers.findSnapshots(QueryBuilder.byClass(AnotherValueObject).limit(n*100).build()).size() == 2 * n * 10
+        itauAuditable.findSnapshots(QueryBuilder.byClass(MigrationEntity).limit(n*100).build()).size() == 2 * n * 10
+        itauAuditable.findSnapshots(QueryBuilder.byClass(MigrationValueObject).limit(n*100).build()).size() == 2 * n * 10
+        itauAuditable.findSnapshots(QueryBuilder.byClass(AnotherValueObject).limit(n*100).build()).size() == 2 * n * 10
 
-        javers.findSnapshots(QueryBuilder.byValueObject(MigrationEntity, 'vo').limit(n*n).build()).size() == 2 * n * 10
-        javers.findSnapshots(QueryBuilder.byValueObject(MigrationEntity, 'anotherVo').limit(n*n).build()).size() == 2 * n * 10
+        itauAuditable.findSnapshots(QueryBuilder.byValueObject(MigrationEntity, 'vo').limit(n*n).build()).size() == 2 * n * 10
+        itauAuditable.findSnapshots(QueryBuilder.byValueObject(MigrationEntity, 'anotherVo').limit(n*n).build()).size() == 2 * n * 10
 
-        javers.findSnapshots(QueryBuilder.byInstanceId(100, MigrationEntity).build()).size() == 2
+        itauAuditable.findSnapshots(QueryBuilder.byInstanceId(100, MigrationEntity).build()).size() == 2
 
-        javers.findSnapshots(QueryBuilder.byValueObjectId(100, MigrationEntity, 'vo').build()).size() == 2
-        javers.findSnapshots(QueryBuilder.byValueObjectId(100, MigrationEntity, 'anotherVo').build()).size() == 2
+        itauAuditable.findSnapshots(QueryBuilder.byValueObjectId(100, MigrationEntity, 'vo').build()).size() == 2
+        itauAuditable.findSnapshots(QueryBuilder.byValueObjectId(100, MigrationEntity, 'anotherVo').build()).size() == 2
     }
 
     def "should do inserts & updates after migration"() {
         when:
         updates.times {
             def root = MigrationEntity.produce(it * 100 + n * 100, 9)
-            javers.commit("author", root)
+            itauAuditable.commit("author", root)
             root.change()
-            javers.commit("author", root)
+            itauAuditable.commit("author", root)
 
             dbConnection.commit()
         }
 
         then:
-        javers.findSnapshots(QueryBuilder.byClass(MigrationEntity).limit(n*100).build()).size() == 2 * n * 10 + 2 * updates * 10
-        javers.findSnapshots(QueryBuilder.byClass(MigrationValueObject).limit(n*100).build()).size() == 2 * n * 10 + 2 * updates * 10
-        javers.findSnapshots(QueryBuilder.byClass(AnotherValueObject).limit(n*100).build()).size() == 2 * n * 10 + 2 * updates * 10
+        itauAuditable.findSnapshots(QueryBuilder.byClass(MigrationEntity).limit(n*100).build()).size() == 2 * n * 10 + 2 * updates * 10
+        itauAuditable.findSnapshots(QueryBuilder.byClass(MigrationValueObject).limit(n*100).build()).size() == 2 * n * 10 + 2 * updates * 10
+        itauAuditable.findSnapshots(QueryBuilder.byClass(AnotherValueObject).limit(n*100).build()).size() == 2 * n * 10 + 2 * updates * 10
     }
 
     def stop(long start, int times){

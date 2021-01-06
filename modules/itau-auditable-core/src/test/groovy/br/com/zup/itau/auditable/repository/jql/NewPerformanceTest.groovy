@@ -9,7 +9,7 @@ import java.math.RoundingMode
 
 abstract class NewPerformanceTest extends Specification {
 
-    ItauAuditable javers = ItauAuditableBuilder.javers().build()
+    ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build()
     def start
 
     def "should init database - insert and updates"() {
@@ -21,10 +21,10 @@ abstract class NewPerformanceTest extends Specification {
         when:
         n.times {
             def root = NewPerformanceEntity.produce(10)
-            javers.commit("author", root, [os: "android", country: "pl"])
+            itauAuditable.commit("author", root, [os: "android", country: "pl"])
 
             root.change()
-            javers.commit("author", root, [os: "a" + it, lang: "pl", country: "de"])
+            itauAuditable.commit("author", root, [os: "a" + it, lang: "pl", country: "de"])
 
             commitDatabase()
         }
@@ -39,11 +39,11 @@ abstract class NewPerformanceTest extends Specification {
         start()
 
         when:
-        javers.findSnapshots(QueryBuilder.byClass(NewPerformanceEntity).limit(100).build()).size() == 100
-        javers.findSnapshots(QueryBuilder.byClass(MigrationValueObject).limit(100).build()).size() == 100
-        javers.findSnapshots(QueryBuilder.byClass(AnotherValueObject).limit(100).build()).size() == 100
-        javers.findSnapshots(QueryBuilder.byValueObject(NewPerformanceEntity, 'vo').limit(100).build()).size() == 100
-        javers.findSnapshots(QueryBuilder.byValueObject(NewPerformanceEntity, 'anotherVo').limit(100).build()).size() == 100
+        itauAuditable.findSnapshots(QueryBuilder.byClass(NewPerformanceEntity).limit(100).build()).size() == 100
+        itauAuditable.findSnapshots(QueryBuilder.byClass(MigrationValueObject).limit(100).build()).size() == 100
+        itauAuditable.findSnapshots(QueryBuilder.byClass(AnotherValueObject).limit(100).build()).size() == 100
+        itauAuditable.findSnapshots(QueryBuilder.byValueObject(NewPerformanceEntity, 'vo').limit(100).build()).size() == 100
+        itauAuditable.findSnapshots(QueryBuilder.byValueObject(NewPerformanceEntity, 'anotherVo').limit(100).build()).size() == 100
 
         then:
         stop(5)
@@ -58,9 +58,9 @@ abstract class NewPerformanceTest extends Specification {
         def n = 30
         n.times {
             def id = n * 100
-            assert javers.findSnapshots(QueryBuilder.byInstanceId(id, NewPerformanceEntity).build()).size() == 2
-            assert javers.findSnapshots(QueryBuilder.byValueObjectId(id, NewPerformanceEntity, 'vo').build()).size() == 2
-            assert javers.findSnapshots(QueryBuilder.byValueObjectId(id, NewPerformanceEntity, 'anotherVo').build()).size() == 2
+            assert itauAuditable.findSnapshots(QueryBuilder.byInstanceId(id, NewPerformanceEntity).build()).size() == 2
+            assert itauAuditable.findSnapshots(QueryBuilder.byValueObjectId(id, NewPerformanceEntity, 'vo').build()).size() == 2
+            assert itauAuditable.findSnapshots(QueryBuilder.byValueObjectId(id, NewPerformanceEntity, 'anotherVo').build()).size() == 2
         }
 
         then:
@@ -76,14 +76,14 @@ abstract class NewPerformanceTest extends Specification {
         int n = 10
 
         n.times {
-            assert javers.findSnapshots(QueryBuilder.byClass(NewPerformanceEntity)
+            assert itauAuditable.findSnapshots(QueryBuilder.byClass(NewPerformanceEntity)
                     .withCommitProperty("os", "a" + it)
                     .build()).size() == 3
-            assert javers.findSnapshots(QueryBuilder.byClass(AnotherValueObject)
+            assert itauAuditable.findSnapshots(QueryBuilder.byClass(AnotherValueObject)
                     .withCommitProperty("lang", "pl")
                     .withCommitProperty("os", "a" + it)
                     .build()).size() == 3
-            assert javers.findSnapshots(QueryBuilder.byValueObject(NewPerformanceEntity, "vo")
+            assert itauAuditable.findSnapshots(QueryBuilder.byValueObject(NewPerformanceEntity, "vo")
                     .withCommitProperty("country", "de")
                     .withCommitProperty("lang", "pl")
                     .withCommitProperty("os", "a" + it)
@@ -104,7 +104,7 @@ abstract class NewPerformanceTest extends Specification {
         n.times {
             def id = n * 100
             def query = QueryBuilder.byInstanceId(id, NewPerformanceEntity).withChildValueObjects().build()
-            assert javers.findSnapshots(query).size() == 6
+            assert itauAuditable.findSnapshots(query).size() == 6
         }
 
         then:

@@ -6,7 +6,7 @@ import br.com.zup.itau.auditable.core.ItauAuditableBuilder
 import spock.lang.Specification
 
 /**
- * https://github.com/javers/javers/issues/77
+ * https://github.com/itauAuditable/itauAuditable/issues/77
  *
  * To resolve this issue, we added {@link br.com.zup.itau.auditable.common.reflection.ItauAuditableMember},
  * which cures:
@@ -18,10 +18,10 @@ class AdvancedTypeResolvingForGenericsTest extends Specification{
 
     def "should resolve actual types of Generic fields when inherited from Generic superclass"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build();
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
         when:
-        def jType = javers.getTypeMapping(ConcreteWithActualType)
+        def jType = itauAuditable.getTypeMapping(ConcreteWithActualType)
 
         then:
         jType.getProperty("id").genericType == String

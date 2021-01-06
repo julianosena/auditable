@@ -31,6 +31,6 @@ class OracleDockerIntegrationWithSchemaTest extends ItauAuditableSqlRepositoryE2
     }
 
     String getSchema() {
-        return "javers"
+        return "itauAuditable"
     }
 }

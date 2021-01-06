@@ -9,7 +9,7 @@ class ItauAuditableMongoStarterDedicatedMongoByUriTest extends ItauAuditableMong
 
     def "should read dedicated mongo configuration from URI"(){
         expect:
-        javersProperties.mongodb
-        javersProperties.mongodb.uri == "mongodb://localhost:${ItauAuditableMongoStarterDedicatedMongoTest.PORT}/itau-auditable-dedicated"
+        itauAuditableProperties.mongodb
+        itauAuditableProperties.mongodb.uri == "mongodb://localhost:${ItauAuditableMongoStarterDedicatedMongoTest.PORT}/itau-auditable-dedicated"
     }
 }

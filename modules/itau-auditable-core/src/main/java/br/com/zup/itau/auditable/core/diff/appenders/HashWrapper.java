@@ -57,8 +57,8 @@ public class HashWrapper {
         return map;
     }
 
-    private static boolean hasCustomValueComparator(ItauAuditableType javersType) {
-        return (javersType instanceof CustomComparableType &&
-                ((CustomComparableType) javersType).hasCustomValueComparator());
+    private static boolean hasCustomValueComparator(ItauAuditableType itauAuditableType) {
+        return (itauAuditableType instanceof CustomComparableType &&
+                ((CustomComparableType) itauAuditableType).hasCustomValueComparator());
     }
 }

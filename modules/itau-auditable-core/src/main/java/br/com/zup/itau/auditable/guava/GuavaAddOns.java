@@ -25,8 +25,8 @@ public class GuavaAddOns extends ConditionalTypesPlugin {
     }
 
     @Override
-    public void beforeAssemble(ItauAuditableBuilder javersBuilder) {
-        javersBuilder.registerJsonAdvancedTypeAdapter(new MultimapTypeAdapter());
-        javersBuilder.registerJsonAdvancedTypeAdapter(new MultisetTypeAdapter());
+    public void beforeAssemble(ItauAuditableBuilder itauAuditableBuilder) {
+        itauAuditableBuilder.registerJsonAdvancedTypeAdapter(new MultimapTypeAdapter());
+        itauAuditableBuilder.registerJsonAdvancedTypeAdapter(new MultisetTypeAdapter());
     }
 }

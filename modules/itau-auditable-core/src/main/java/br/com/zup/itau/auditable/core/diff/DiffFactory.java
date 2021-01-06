@@ -34,13 +34,13 @@ public class DiffFactory {
     private final List<NodeChangeAppender> nodeChangeAppenders;
     private final List<PropertyChangeAppender> propertyChangeAppender;
     private final LiveGraphFactory graphFactory;
-    private final ItauAuditableCoreConfiguration javersCoreConfiguration;
+    private final ItauAuditableCoreConfiguration itauAuditableCoreConfiguration;
 
-    public DiffFactory(TypeMapper typeMapper, List<NodeChangeAppender> nodeChangeAppenders, List<PropertyChangeAppender> propertyChangeAppender, LiveGraphFactory graphFactory, ItauAuditableCoreConfiguration javersCoreConfiguration) {
+    public DiffFactory(TypeMapper typeMapper, List<NodeChangeAppender> nodeChangeAppenders, List<PropertyChangeAppender> propertyChangeAppender, LiveGraphFactory graphFactory, ItauAuditableCoreConfiguration itauAuditableCoreConfiguration) {
         this.typeMapper = typeMapper;
         this.nodeChangeAppenders = nodeChangeAppenders;
         this.graphFactory = graphFactory;
-        this.javersCoreConfiguration = javersCoreConfiguration;
+        this.itauAuditableCoreConfiguration = itauAuditableCoreConfiguration;
 
         //sort by priority
         Collections.sort(propertyChangeAppender, (p1, p2) -> ((Integer)p1.priority()).compareTo(p2.priority()));
@@ -72,7 +72,7 @@ public class DiffFactory {
     public Diff singleTerminal(GlobalId removedId, CommitMetadata commitMetadata){
         Validate.argumentsAreNotNull(removedId, commitMetadata);
 
-        DiffBuilder diff = new DiffBuilder(javersCoreConfiguration.getPrettyValuePrinter());
+        DiffBuilder diff = new DiffBuilder(itauAuditableCoreConfiguration.getPrettyValuePrinter());
         diff.addChange(new ObjectRemoved(removedId, empty(), of(commitMetadata)));
 
         return diff.build();
@@ -105,7 +105,7 @@ public class DiffFactory {
      * Graph scope appender
      */
     private Diff createAndAppendChanges(GraphPair graphPair) {
-        DiffBuilder diff = new DiffBuilder(javersCoreConfiguration.getPrettyValuePrinter());
+        DiffBuilder diff = new DiffBuilder(itauAuditableCoreConfiguration.getPrettyValuePrinter());
 
         //calculate node scope diff
         for (NodeChangeAppender appender : nodeChangeAppenders) {
@@ -113,7 +113,7 @@ public class DiffFactory {
         }
 
         //calculate snapshot of NewObjects
-        if (javersCoreConfiguration.isNewObjectsSnapshot()) {
+        if (itauAuditableCoreConfiguration.isNewObjectsSnapshot()) {
             for (ObjectNode node : graphPair.getOnlyOnRight()) {
                 FakeNodePair pair = new FakeNodePair(node, graphPair.getCommitMetadata());
                 appendPropertyChanges(diff, pair);
@@ -138,15 +138,15 @@ public class DiffFactory {
                 continue;
             }
 
-            ItauAuditableType javersType = property.getType();
+            ItauAuditableType itauAuditableType = property.getType();
 
-            appendChanges(diff, pair, property, javersType);
+            appendChanges(diff, pair, property, itauAuditableType);
         }
     }
 
-    private void appendChanges(DiffBuilder diff, NodePair pair, ItauAuditableProperty property, ItauAuditableType javersType) {
+    private void appendChanges(DiffBuilder diff, NodePair pair, ItauAuditableProperty property, ItauAuditableType itauAuditableType) {
         for (PropertyChangeAppender appender : propertyChangeAppender) {
-            if (! appender.supports(javersType)){
+            if (! appender.supports(itauAuditableType)){
                 continue;
             }
 

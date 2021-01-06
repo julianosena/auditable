@@ -29,6 +29,6 @@ class MSSqlDockerIntegrationWithSchemaTest extends ItauAuditableSqlRepositoryE2E
     }
 
     String getSchema() {
-        return "javers"
+        return "itauAuditable"
     }
 }

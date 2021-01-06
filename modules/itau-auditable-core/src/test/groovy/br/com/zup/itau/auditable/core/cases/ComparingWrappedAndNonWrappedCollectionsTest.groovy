@@ -30,8 +30,8 @@ class ListContainer {
 class BeanScanning extends ComparingWrappedAndNonWrappedCollectionsTest {
 
     @Override
-    ItauAuditable javers() {
-        ItauAuditableBuilder.javers().withMappingStyle(MappingStyle.BEAN).build()
+    ItauAuditable itauAuditable() {
+        ItauAuditableBuilder.itauAuditable().withMappingStyle(MappingStyle.BEAN).build()
     }
 }
 
@@ -39,24 +39,24 @@ class BeanScanning extends ComparingWrappedAndNonWrappedCollectionsTest {
 class FieldScanning extends ComparingWrappedAndNonWrappedCollectionsTest {
 
     @Override
-    ItauAuditable javers() {
-        ItauAuditableBuilder.javers().withMappingStyle(MappingStyle.FIELD).build()
+    ItauAuditable itauAuditable() {
+        ItauAuditableBuilder.itauAuditable().withMappingStyle(MappingStyle.FIELD).build()
     }
 }
 
 abstract class ComparingWrappedAndNonWrappedCollectionsTest extends Specification {
 
-    abstract ItauAuditable javers()
+    abstract ItauAuditable itauAuditable()
 
     @Unroll
     def "should return the same diff for wrapped and non wrapped collections"() {
 
         given:
-        ItauAuditable javers = javers()
+        ItauAuditable itauAuditable = itauAuditable()
 
         when:
-        Diff diffDirect = javers.compareCollections(oldVersion, currentVersion, DummyUser)
-        Diff diffWithContainer = javers.compare(wrap(oldVersion), wrap(currentVersion))
+        Diff diffDirect = itauAuditable.compareCollections(oldVersion, currentVersion, DummyUser)
+        Diff diffWithContainer = itauAuditable.compare(wrap(oldVersion), wrap(currentVersion))
 
         then:
         diffDirect.changes.size() == diffWithContainer.changes.size()

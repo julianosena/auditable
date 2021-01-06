@@ -9,7 +9,7 @@ import java.math.RoundingMode
 import java.sql.Connection
 import java.sql.DriverManager
 
-import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
+import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.itauAuditable
 
 /**
  * @author bartosz walacik
@@ -18,12 +18,12 @@ import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
 class SqlPerformanceTest extends Specification{
 
     Connection dbConnection;
-    ItauAuditable javers;
+    ItauAuditable itauAuditable;
 
     def setup() {
         Server.createTcpServer().start()
         //dbConnection = DriverManager.getConnection("jdbc:h2:tcp://localhost:9092/mem:test;TRACE_LEVEL_SYSTEM_OUT=2")
-        dbConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/javers", "javers", "javers")
+        dbConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/itauAuditable", "itauAuditable", "itauAuditable")
         //dbConnection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "polly", "polly");
         //dbConnection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;DatabaseName=polly", "polly", "polly");
 
@@ -35,7 +35,7 @@ class SqlPerformanceTest extends Specification{
                 .sqlRepository()
                 .withConnectionProvider(connectionProvider)
                 .withDialect(DialectName.POSTGRES).build()
-        javers = javers().registerItauAuditableRepository(sqlRepository).build()
+        itauAuditable = itauAuditable().registerItauAuditableRepository(sqlRepository).build()
 
         clearTables()
     }
@@ -47,7 +47,7 @@ class SqlPerformanceTest extends Specification{
         when:
         n.times {
             def root = produce(it*100, 9)
-            javers.commit("author",root)
+            itauAuditable.commit("author",root)
             dbConnection.commit()
         }
         stop(start, n)
@@ -64,7 +64,7 @@ class SqlPerformanceTest extends Specification{
         when:
         n.times {
             root.change()
-            javers.commit("author",root)
+            itauAuditable.commit("author",root)
             dbConnection.commit()
         }
         stop(start, n)

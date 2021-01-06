@@ -31,17 +31,17 @@ class CaseWithChangedPropertyType extends Specification {
 
     def "should allow for property type change, from LocalDateTime to Instant"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         def localDateNow = LocalDateTime.now()
         def instantNow = Instant.now()
 
-        javers.commit("author", new Model1(id: 1, datetime: localDateNow))
-        javers.commit("author", new Model2(id: 1, datetime: instantNow))
+        itauAuditable.commit("author", new Model1(id: 1, datetime: localDateNow))
+        itauAuditable.commit("author", new Model2(id: 1, datetime: instantNow))
 
 
         when:
-        def snapshots = javers.findSnapshots(byInstanceId(1, "ModelWithDateTime").build())
+        def snapshots = itauAuditable.findSnapshots(byInstanceId(1, "ModelWithDateTime").build())
 
         then:
         snapshots.size() == 2
@@ -50,7 +50,7 @@ class CaseWithChangedPropertyType extends Specification {
         LocalDateTime.parse(snapshots[1].getPropertyValue("datetime")) == localDateNow
 
         when:
-        def changes = javers.findChanges(byInstanceId(1, "ModelWithDateTime").build())
+        def changes = itauAuditable.findChanges(byInstanceId(1, "ModelWithDateTime").build())
 
         then:
         println changes.prettyPrint()
@@ -58,7 +58,7 @@ class CaseWithChangedPropertyType extends Specification {
         changes[0] instanceof ValueChange
 
         when:
-        def shadows = javers.findShadows(byInstanceId(1, "ModelWithDateTime").build())
+        def shadows = itauAuditable.findShadows(byInstanceId(1, "ModelWithDateTime").build())
 
         then:
         shadows.size() == 2

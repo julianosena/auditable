@@ -8,7 +8,7 @@ import br.com.zup.itau.auditable.core.json.JsonConverter
 import br.com.zup.itau.auditable.core.model.DummyUser
 import spock.lang.Specification
 
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 import static br.com.zup.itau.auditable.core.json.builder.ChangeTestBuilder.objectRemoved
 import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.instanceId
 
@@ -18,7 +18,7 @@ import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.instanceId
 class ObjectRemovedTypeAdapterTest extends Specification {
     def "should serialize ObjectRemoved"() {
         given:
-        JsonConverter jsonConverter = javersTestAssembly().jsonConverter
+        JsonConverter jsonConverter = itauAuditableTestAssembly().jsonConverter
         def change = objectRemoved(new DummyUser(name:"kaz"))
 
         when:
@@ -34,7 +34,7 @@ class ObjectRemovedTypeAdapterTest extends Specification {
 
     def "should deserialize ObjectRemoved"() {
         given:
-        JsonConverter jsonConverter = javersTestAssembly().jsonConverter
+        JsonConverter jsonConverter = itauAuditableTestAssembly().jsonConverter
         def json = new JsonBuilder()
         json {
             changeType "ObjectRemoved"

@@ -16,16 +16,16 @@ import br.com.zup.itau.auditable.core.model.SnapshotEntity
 import spock.lang.Specification
 
 import static br.com.zup.itau.auditable.common.exception.ItauAuditableExceptionCode.VALUE_OBJECT_IS_NOT_SUPPORTED_AS_MAP_KEY
-import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
+import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.itauAuditable
 
 /**
  * @author akrystian
  */
 class GuavaAddOnE2ETest extends Specification {
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     void setup() {
-        javers = javers().build()
+        itauAuditable = itauAuditable().build()
     }
 
     def "should detect changes in Multiset of primitives"() {
@@ -34,7 +34,7 @@ class GuavaAddOnE2ETest extends Specification {
         def right = new SnapshotEntity(multiSetOfPrimitives: HashMultiset.create(rightList))
 
         when:
-        def diff = javers.compare(left, right)
+        def diff = itauAuditable.compare(left, right)
 
         then:
         diff.changes.size() == 1
@@ -55,7 +55,7 @@ class GuavaAddOnE2ETest extends Specification {
         def right = new SnapshotEntity(multiSetOfPrimitives: HashMultiset.create(rightList))
 
         when:
-        def diff = javers.compare(left, right)
+        def diff = itauAuditable.compare(left, right)
 
         then:
         diff.changes.size() == 0
@@ -73,7 +73,7 @@ class GuavaAddOnE2ETest extends Specification {
         def right = new SnapshotEntity(multiSetValueObject: HashMultiset.create(rightList))
 
         when:
-        def diff = javers.compare(left, right)
+        def diff = itauAuditable.compare(left, right)
 
         then:
         def actualContainerChanges = getContainerChanges(diff.changes)
@@ -99,7 +99,7 @@ class GuavaAddOnE2ETest extends Specification {
         ))
 
         when:
-        def diff = javers.compare(left, right)
+        def diff = itauAuditable.compare(left, right)
 
         then:
         diff.changes.size() == 1
@@ -117,7 +117,7 @@ class GuavaAddOnE2ETest extends Specification {
         def right = new SnapshotEntity(multiSetValueObject: HashMultiset.create(leftList))
 
         when:
-        def diff = javers.compare(left, right)
+        def diff = itauAuditable.compare(left, right)
 
         then:
         diff.changes.size() == 0
@@ -134,7 +134,7 @@ class GuavaAddOnE2ETest extends Specification {
         def right = new SnapshotEntity(multiMapOfPrimitives: HashMultimap.create(rightList))
 
         when:
-        def diff = javers.compare(left, right)
+        def diff = itauAuditable.compare(left, right)
 
         then:
         diff.changes.size() == 1
@@ -157,7 +157,7 @@ class GuavaAddOnE2ETest extends Specification {
         def right = new SnapshotEntity(multimapPrimitiveToValueObject: rightMultimap)
 
         when:
-        def diff = javers.compare(left, right)
+        def diff = itauAuditable.compare(left, right)
 
         then:
         def actualContainerChanges = getContainerChanges(diff.changes)
@@ -189,7 +189,7 @@ class GuavaAddOnE2ETest extends Specification {
         def right = new SnapshotEntity(multiMapOfPrimitives: HashMultimap.create(leftList))
 
         when:
-        def diff = javers.compare(left, right)
+        def diff = itauAuditable.compare(left, right)
 
         then:
         diff.changes.size() == 0
@@ -206,7 +206,7 @@ class GuavaAddOnE2ETest extends Specification {
         def right = new SnapshotEntity(multimapPrimitiveToValueObject: HashMultimap.create(leftList))
 
         when:
-        def diff = this.javers.compare(left, right)
+        def diff = this.itauAuditable.compare(left, right)
 
         then:
         diff.changes.size() == 0
@@ -224,7 +224,7 @@ class GuavaAddOnE2ETest extends Specification {
         def right = new SnapshotEntity(multiMapPrimitiveToEntity:rightList)
 
         when:
-        def diff = javers.compare(left, right)
+        def diff = itauAuditable.compare(left, right)
 
         then:
         diff.changes.size() == 1
@@ -254,7 +254,7 @@ class GuavaAddOnE2ETest extends Specification {
         ))
 
         when:
-        def diff = javers.compare(left, right)
+        def diff = itauAuditable.compare(left, right)
 
         then:
         diff.changes.size() == 2
@@ -270,7 +270,7 @@ class GuavaAddOnE2ETest extends Specification {
                 MultimapBuilder.create(["NY": [new SnapshotEntity(id:2, entityRef: new SnapshotEntity(id:3))]]))
 
         when:
-        def diff = javers.compare(left, right)
+        def diff = itauAuditable.compare(left, right)
         println diff.prettyPrint()
 
         then:

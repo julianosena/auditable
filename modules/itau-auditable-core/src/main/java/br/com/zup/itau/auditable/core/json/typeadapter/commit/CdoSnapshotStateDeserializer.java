@@ -48,14 +48,14 @@ class CdoSnapshotStateDeserializer {
         return builder.build();
     }
 
-    private Object decodePropertyValue(JsonElement propertyElement, JsonDeserializationContext context, Optional<ItauAuditableProperty> javersPropertyOptional) {
+    private Object decodePropertyValue(JsonElement propertyElement, JsonDeserializationContext context, Optional<ItauAuditableProperty> itauAuditablePropertyOptional) {
 
-        if (!javersPropertyOptional.isPresent()) {
+        if (!itauAuditablePropertyOptional.isPresent()) {
             return decodePropertyValueUsingJsonType(propertyElement, context);
         }
 
-        ItauAuditableProperty javersProperty = javersPropertyOptional.get();
-        ItauAuditableType expectedItauAuditableType = javersProperty.getType();
+        ItauAuditableProperty itauAuditableProperty = itauAuditablePropertyOptional.get();
+        ItauAuditableType expectedItauAuditableType = itauAuditableProperty.getType();
 
         // if primitives on both sides, they should match, otherwise, expectedType is ignored
         if (unmatchedPrimitivesOnBothSides(expectedItauAuditableType, propertyElement)) {
@@ -69,16 +69,16 @@ class CdoSnapshotStateDeserializer {
         }
 
         try {
-            Type expectedJavaType = typeMapper.getDehydratedType(javersProperty.getGenericType());
-            if (javersProperty.getType() instanceof TokenType) {
+            Type expectedJavaType = typeMapper.getDehydratedType(itauAuditableProperty.getGenericType());
+            if (itauAuditableProperty.getType() instanceof TokenType) {
                 return deserializeValueWithTypeGuessing(propertyElement, context);
             } else {
                 return context.deserialize(propertyElement, expectedJavaType);
             }
         } catch (JsonSyntaxException | DateTimeParseException e) {
-            logger.info("Can't deserialize type-safely the Snapshot property: "+ javersProperty +
+            logger.info("Can't deserialize type-safely the Snapshot property: "+ itauAuditableProperty +
                         ". JSON value: "+propertyElement +
-                        ". Looks like a type mismatch after refactoring of " + javersProperty.getDeclaringClass().getSimpleName()+
+                        ". Looks like a type mismatch after refactoring of " + itauAuditableProperty.getDeclaringClass().getSimpleName()+
                         " class.");
             // when users's class is refactored, persisted property value
             // can have different type than expected
@@ -135,10 +135,10 @@ class CdoSnapshotStateDeserializer {
         return unmatchedPrimitivesOnBothSides(itemType, firstItem);
     }
 
-    private boolean matches(PrimitiveOrValueType javersPrimitive, JsonPrimitive jsonPrimitive) {
-        return (jsonPrimitive.isNumber() && javersPrimitive.isNumber()) ||
-               (jsonPrimitive.isString() && javersPrimitive.isStringy()) ||
-               (jsonPrimitive.isBoolean() && javersPrimitive.isBoolean());
+    private boolean matches(PrimitiveOrValueType itauAuditablePrimitive, JsonPrimitive jsonPrimitive) {
+        return (jsonPrimitive.isNumber() && itauAuditablePrimitive.isNumber()) ||
+               (jsonPrimitive.isString() && itauAuditablePrimitive.isStringy()) ||
+               (jsonPrimitive.isBoolean() && itauAuditablePrimitive.isBoolean());
 
     }
 

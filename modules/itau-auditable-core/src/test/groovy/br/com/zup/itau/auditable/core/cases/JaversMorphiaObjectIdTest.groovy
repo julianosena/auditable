@@ -6,14 +6,14 @@ import br.com.zup.itau.auditable.repository.jql.QueryBuilder
 import spock.lang.Specification
 
 /**
- * https://github.com/javers/javers/issues/64
+ * https://github.com/itauAuditable/itauAuditable/issues/64
  *
  * @author bartosz walacik
  */
 class ItauAuditableMorphiaObjectIdTest extends Specification {
     def "should compare Entities with Morphia ObjectId as @Id"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build();
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
         def id = ObjectId.get();
 
@@ -22,8 +22,8 @@ class ItauAuditableMorphiaObjectIdTest extends Specification {
         entity2.setDescription("A new description");
 
         when:
-        def diff = javers.compare(entity1, entity2)
-        println("diff: " + javers.getJsonConverter().toJson(diff))
+        def diff = itauAuditable.compare(entity1, entity2)
+        println("diff: " + itauAuditable.getJsonConverter().toJson(diff))
 
         then:
         diff.getPropertyChanges("_description").size() == 1
@@ -31,19 +31,19 @@ class ItauAuditableMorphiaObjectIdTest extends Specification {
 
     def "should allow committing and querying by Morphia ObjectId"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build();
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build();
         def id1 = ObjectId.get();
         def entity1 = new MongoStoredEntity(id1, "alg1", "1.0", "name1");
 
         def id2 = ObjectId.get();
         def entity2 = new MongoStoredEntity(id2, "alg1", "1.0", "name2");
 
-        javers.commit("author",entity1)
-        def commit = javers.commit("author",entity2)
-        //println (javers.jsonConverter.toJson(commit.snapshots))
+        itauAuditable.commit("author",entity1)
+        def commit = itauAuditable.commit("author",entity2)
+        //println (itauAuditable.jsonConverter.toJson(commit.snapshots))
 
         when:
-        def list = javers.findSnapshots(QueryBuilder.byInstanceId(id2, MongoStoredEntity).build())
+        def list = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(id2, MongoStoredEntity).build())
 
         then:
         commit.snapshots.size() == 1

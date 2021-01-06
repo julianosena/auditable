@@ -17,7 +17,7 @@ import br.com.zup.itau.auditable.core.metamodel.object.InstanceId
  * @author bartosz walacik
  */
 class ChangeTestBuilder {
-    static GlobalIdFactory globalIdFactory = ItauAuditableTestBuilder.javersTestAssembly().globalIdFactory
+    static GlobalIdFactory globalIdFactory = ItauAuditableTestBuilder.itauAuditableTestAssembly().globalIdFactory
 
     static NewObject newObject(Object newObject) {
         InstanceId globalId = instanceId(newObject)

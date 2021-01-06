@@ -16,19 +16,19 @@ import java.time.LocalDate
 
 
 class ItauAuditableRepositoryIdE2ETest extends Specification {
-    @Shared ItauAuditable javers = ItauAuditableBuilder.javers().build()
+    @Shared ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
     def "should support Value as Entity Id"(){
         given:
         def cdo  = new DummyEntityWithEmbeddedId(point: new DummyPoint(1,2), someVal: 5)
 
         when:
-        javers.commit("author", cdo)
+        itauAuditable.commit("author", cdo)
 
         then:
-        javers.getTypeMapping(DummyPoint) instanceof ValueType
+        itauAuditable.getTypeMapping(DummyPoint) instanceof ValueType
 
-        def snapshot = javers.getLatestSnapshot(new DummyPoint(1,2), DummyEntityWithEmbeddedId).get()
+        def snapshot = itauAuditable.getLatestSnapshot(new DummyPoint(1,2), DummyEntityWithEmbeddedId).get()
         snapshot.globalId.value().endsWith("DummyEntityWithEmbeddedId/1,2")
         snapshot.globalId.cdoId == new DummyPoint(1,2)
     }
@@ -39,10 +39,10 @@ class ItauAuditableRepositoryIdE2ETest extends Specification {
         def category = new CategoryC(longId)
 
         when:
-        javers.commit("author",category)
+        itauAuditable.commit("author",category)
 
         then:
-        javers.getLatestSnapshot(longId, CategoryC).get().globalId.cdoId == longId
+        itauAuditable.getLatestSnapshot(longId, CategoryC).get().globalId.cdoId == longId
     }
 
     class EntityWithVOId {
@@ -62,9 +62,9 @@ class ItauAuditableRepositoryIdE2ETest extends Specification {
         def second = new EntityWithVOId(id: new ValueObjectAsId(id: 1, value:5), value:6)
 
         when:
-        javers.commit("author", first)
-        javers.commit("author", second)
-        def snapshot = javers.getLatestSnapshot(new ValueObjectAsId(id: 1, value:5), EntityWithVOId).get()
+        itauAuditable.commit("author", first)
+        itauAuditable.commit("author", second)
+        def snapshot = itauAuditable.getLatestSnapshot(new ValueObjectAsId(id: 1, value:5), EntityWithVOId).get()
 
         then:
         snapshot.globalId.value().endsWith("EntityWithVOId/1,5")
@@ -91,9 +91,9 @@ class ItauAuditableRepositoryIdE2ETest extends Specification {
         def second = new DummyWithEntityId(entityAsId: new EntityAsId(id: 1, value:5), value:6)
 
         when:
-        javers.commit("author", first)
-        javers.commit("author", second)
-        def snapshot = javers.getLatestSnapshot(new EntityAsId(id: 1), DummyWithEntityId).get()
+        itauAuditable.commit("author", first)
+        itauAuditable.commit("author", second)
+        def snapshot = itauAuditable.getLatestSnapshot(new EntityAsId(id: 1), DummyWithEntityId).get()
 
         then:
 
@@ -116,9 +116,9 @@ class ItauAuditableRepositoryIdE2ETest extends Specification {
         def second = new Person(name: "mad", surname: "kaz", dob: LocalDate.of(2019,01,01), data: 2)
 
         when:
-        javers.commit("author", first)
-        javers.commit("author", second)
-        def snapshot = javers.getLatestSnapshot(
+        itauAuditable.commit("author", first)
+        itauAuditable.commit("author", second)
+        def snapshot = itauAuditable.getLatestSnapshot(
                 [
                     name: "mad",
                     surname: "kaz",

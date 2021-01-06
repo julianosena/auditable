@@ -1,15 +1,15 @@
 # How to contribute
 
 ## Issues
-You can report a **Bug** or a **Feature Request** to our [github issues](http://github.com/javers/javers/issues/).
-**Questions** should be asked at [stackoverflow.com](http://stackoverflow.com/questions/tagged/javers?sort=newest).
+You can report a **Bug** or a **Feature Request** to our [github issues](http://github.com/itauAuditable/itauAuditable/issues/).
+**Questions** should be asked at [stackoverflow.com](http://stackoverflow.com/questions/tagged/itauAuditable?sort=newest).
 
 ## Guidelines for Bug Reporting
 
 Bug Reports have to contain:
 
 1. Clear description of your **expectations versus reality**
-1. [**Runnable test case**](https://github.com/javers/javers/tree/master/itau-auditable-core/src/test/groovy/org/javers/core/cases) which isolates the bug and allows us to easily reproduce it on our laptops.
+1. [**Runnable test case**](https://github.com/itauAuditable/itauAuditable/tree/master/itau-auditable-core/src/test/groovy/org/itauAuditable/core/cases) which isolates the bug and allows us to easily reproduce it on our laptops.
    You can push this test case to your fork of this repository. 
 
 ## Guidelines for Contributors
@@ -23,7 +23,7 @@ Before you start to work please read these guidelines:
 
 1. Create the **issue** with a full description of the new Feature
 1. **Consult** the design with the JaVers team.
-   You can chat with us on [gitter](https://gitter.im/javers/javers)
+   You can chat with us on [gitter](https://gitter.im/itauAuditable/itauAuditable)
 1. Source code should be written in **Java8**.
 1. We aren't crazy about **code formatting** standards.
    Use 4 spaces to indent. Don't change the formatting of existing code.

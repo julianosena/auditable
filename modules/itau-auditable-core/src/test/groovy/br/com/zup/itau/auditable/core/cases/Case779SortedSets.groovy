@@ -40,16 +40,16 @@ class Case779SortedSets extends Specification {
     @Test
     def "should work with objects using Sets"() {
         given:
-        ItauAuditable javers = ItauAuditableBuilder.javers().build()
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         MasterWithSet master = new MasterWithSet()
         master.id = "X"
         master.set = [new Detail("data 2"), new Detail("data 1")] as Set
 
-        javers.commit("anonymous", master)
+        itauAuditable.commit("anonymous", master)
 
         when:
-        def snapshots = javers.findSnapshots(QueryBuilder.byClass(MasterWithSet).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(MasterWithSet).build())
 
         then:
         snapshots
@@ -58,7 +58,7 @@ class Case779SortedSets extends Specification {
     @Test
     def "should work with objects using SortedSets"() {
         given:
-        ItauAuditable javers = ItauAuditableBuilder.javers().build()
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         MasterWithSortedSet master = new MasterWithSortedSet()
         master.id = "X"
@@ -67,10 +67,10 @@ class Case779SortedSets extends Specification {
         master.sortedSet.add(new Detail("data 2"))
         master.sortedSet.add(new Detail("data 1"))
 
-        javers.commit("anonymous", master)
+        itauAuditable.commit("anonymous", master)
 
         when:
-        def snapshots = javers.findSnapshots(QueryBuilder.byClass(MasterWithSortedSet).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(MasterWithSortedSet).build())
 
         then:
         snapshots

@@ -35,12 +35,12 @@ public class OpBoxCaseClassExtractionError extends Specification {
 
     def "should not fail when spawning ShallowReferenceType from prototype"(){
         given:
-        def javers = ItauAuditableBuilder.javers().build();
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build();
         def d1 = new DataSource(name: "name", paramPrototype: new ParamPrototype(name:"p1"))
         def d2 = new DataSource(name: "name", paramPrototype: new ParamPrototype(name:"p2"))
 
         when:
-        def diff = javers.compare(d1, d2)
+        def diff = itauAuditable.compare(d1, d2)
 
         then:
         diff.changes.size() == 1
@@ -48,23 +48,23 @@ public class OpBoxCaseClassExtractionError extends Specification {
 
     def "should allow defining ShallowReference in ItauAuditableBuilder"(){
         given:
-        def javers = ItauAuditableBuilder.javers()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
             .registerEntity(EntityDefinitionBuilder.entityDefinition(DataSource).withShallowReference().withIdPropertyName("name").build())
             .build()
 
         expect:
-        javers.getTypeMapping(DataSource).idProperty.name == "name"
-        javers.getTypeMapping(DataSource).properties.size() == 0
+        itauAuditable.getTypeMapping(DataSource).idProperty.name == "name"
+        itauAuditable.getTypeMapping(DataSource).properties.size() == 0
     }
 
     def "should allow defining EntityType in ItauAuditableBuilder"(){
         given:
-        def javers = ItauAuditableBuilder.javers()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
                 .registerEntity(EntityDefinitionBuilder.entityDefinition(DataSource).withIdPropertyName("name").build())
                 .build()
 
         expect:
-        javers.getTypeMapping(DataSource).idProperty.name == "name"
-        javers.getTypeMapping(DataSource).properties.size() == 2
+        itauAuditable.getTypeMapping(DataSource).idProperty.name == "name"
+        itauAuditable.getTypeMapping(DataSource).properties.size() == 2
     }
 }

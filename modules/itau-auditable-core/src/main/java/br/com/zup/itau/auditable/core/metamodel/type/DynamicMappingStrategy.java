@@ -24,7 +24,7 @@ public class DynamicMappingStrategy {
         if (ignoredClassesStrategy != null && type instanceof Class) {
             Class<?> clazz = (Class) type;
             if (ignoredClassesStrategy.isIgnored(clazz)) {
-                logger.debug("javersType of '{}' mapped as IgnoredType by {}",
+                logger.debug("itauAuditableType of '{}' mapped as IgnoredType by {}",
                         clazz.getSimpleName(),ignoredClassesStrategy.getClass().getName());
                 return Optional.of(new IgnoredType(clazz));
             }

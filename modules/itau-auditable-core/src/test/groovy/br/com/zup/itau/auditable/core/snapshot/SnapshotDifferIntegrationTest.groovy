@@ -15,7 +15,7 @@ import spock.lang.Unroll
 import java.time.LocalDate
 
 import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.instanceId
-import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
+import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.itauAuditable
 import static br.com.zup.itau.auditable.core.model.DummyUser.dummyUser
 
 /**
@@ -25,12 +25,12 @@ class SnapshotDifferIntegrationTest extends Specification {
 
     def "shouldn't add NewObject changes to change history by default"() {
         given:
-        def javers = javers().build()
-        javers.commit("some.login", new DummyAddress("London"))   //initial commit
-        javers.commit("some.login", new DummyAddress("London 1")) //change commit
+        def itauAuditable = itauAuditable().build()
+        itauAuditable.commit("some.login", new DummyAddress("London"))   //initial commit
+        itauAuditable.commit("some.login", new DummyAddress("London 1")) //change commit
 
         when:
-        def changes = javers.findChanges(
+        def changes = itauAuditable.findChanges(
             QueryBuilder.byClass(DummyAddress).build())
 
         then:
@@ -40,12 +40,12 @@ class SnapshotDifferIntegrationTest extends Specification {
 
     def "should add NewObject changes to change history for initial commit when required"() {
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def user = new DummyUser("kaz")
-        javers.commit("some.login", user) //initial commit
+        itauAuditable.commit("some.login", user) //initial commit
 
         when:
-        def changes = javers.findChanges(QueryBuilder.byInstanceId("kaz",DummyUser).withNewObjectChanges(true).build())
+        def changes = itauAuditable.findChanges(QueryBuilder.byInstanceId("kaz",DummyUser).withNewObjectChanges(true).build())
 
         then:
         changes.size() == 2
@@ -61,13 +61,13 @@ class SnapshotDifferIntegrationTest extends Specification {
 
     def "should add ObjectRemoved to change history for terminal commit"() {
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def user = new DummyUser("kaz")
-        javers.commit("some.login", user)
-        javers.commitShallowDelete("some.login", user)
+        itauAuditable.commit("some.login", user)
+        itauAuditable.commitShallowDelete("some.login", user)
 
         when:
-        def changes = javers.findChanges(QueryBuilder.byInstanceId("kaz",DummyUser).build())
+        def changes = itauAuditable.findChanges(QueryBuilder.byInstanceId("kaz",DummyUser).build())
 
         then:
         changes.size() == 1
@@ -79,12 +79,12 @@ class SnapshotDifferIntegrationTest extends Specification {
     @Unroll
     def "should recreate #expectedChangeType.simpleName from two persisted snapshots"() {
         given:
-        def javers = javers().build()
-        javers.commit("some.login", oldCdo)
-        javers.commit("some.login", newCdo)
+        def itauAuditable = itauAuditable().build()
+        itauAuditable.commit("some.login", oldCdo)
+        itauAuditable.commit("some.login", newCdo)
 
         when:
-        def changes = javers.findChanges(QueryBuilder.byInstanceId("kaz",DummyUser).build())
+        def changes = itauAuditable.findChanges(QueryBuilder.byInstanceId("kaz",DummyUser).build())
 
         then:
         def change = changes[0]
@@ -109,12 +109,12 @@ class SnapshotDifferIntegrationTest extends Specification {
     @Unroll
     def "should recreate ListChange ElementValueChange for #propertyName"() {
         given:
-        def javers = javers().build()
-        javers.commit("some.login", oldCdo)
-        javers.commit("some.login", newCdo)
+        def itauAuditable = itauAuditable().build()
+        itauAuditable.commit("some.login", oldCdo)
+        itauAuditable.commit("some.login", newCdo)
 
         when:
-        def changes = javers.findChanges(QueryBuilder.byInstanceId(1,SnapshotEntity).build())
+        def changes = itauAuditable.findChanges(QueryBuilder.byInstanceId(1,SnapshotEntity).build())
 
         then:
         def change = changes[0]

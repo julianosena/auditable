@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.instanceId
 import static br.com.zup.itau.auditable.core.json.builder.ChangeTestBuilder.createMetadata
 import static br.com.zup.itau.auditable.core.json.builder.ChangeTestBuilder.setChange
@@ -24,8 +24,8 @@ class ContainerChangeTypeAdapterTest extends Specification{
     @Unroll
     def "should deserialize #changeType_.simpleName with references"()  {
         given:
-            def javers = javersTestAssembly()
-            JsonConverter jsonConverter = javers.jsonConverter
+            def itauAuditable = itauAuditableTestAssembly()
+            JsonConverter jsonConverter = itauAuditable.jsonConverter
 
             def json = new JsonBuilder()
             json  {
@@ -109,10 +109,10 @@ class ContainerChangeTypeAdapterTest extends Specification{
     @Unroll
     def "should serialize #changeType.simpleName with references"()  {
         given:
-            def javers = javersTestAssembly()
+            def itauAuditable = itauAuditableTestAssembly()
             def cdo = new SnapshotEntity(id:1)
-            def ref2  = javers.instanceId(new SnapshotEntity(id:2))
-            def ref3 =  javers.instanceId(new SnapshotEntity(id:3))
+            def ref2  = itauAuditable.instanceId(new SnapshotEntity(id:2))
+            def ref3 =  itauAuditable.instanceId(new SnapshotEntity(id:3))
             def elementChanges = [new ElementValueChange(1, ref2, ref3),
                                   new ValueAdded  (2, ref2),
                                   new ValueRemoved(3, ref3)]
@@ -120,7 +120,7 @@ class ContainerChangeTypeAdapterTest extends Specification{
             def change = changeType.newInstance(createMetadata(cdo, propertyName), elementChanges)
 
         when:
-            def jsonText = javers.jsonConverter.toJson(change)
+            def jsonText = itauAuditable.jsonConverter.toJson(change)
 
         then:
             def json = new JsonSlurper().parseText(jsonText)
@@ -157,7 +157,7 @@ class ContainerChangeTypeAdapterTest extends Specification{
     @Unroll
     def "should serialize #changeType.simpleName with Values using custom TypeAdapter"()  {
         given:
-            def javers = javersTestAssembly()
+            def itauAuditable = itauAuditableTestAssembly()
             def cdo = new SnapshotEntity(id:1)
 
             def elementChanges = [new ElementValueChange(1, new LocalDate(2001,1,1), new LocalDate(2001,1,2)),
@@ -167,7 +167,7 @@ class ContainerChangeTypeAdapterTest extends Specification{
             def change = changeType.newInstance(createMetadata(cdo, propertyName), elementChanges)
 
         when:
-            def jsonText = javers.jsonConverter.toJson(change)
+            def jsonText = itauAuditable.jsonConverter.toJson(change)
 
         then:
             def json = new JsonSlurper().parseText(jsonText)
@@ -198,9 +198,9 @@ class ContainerChangeTypeAdapterTest extends Specification{
     }
 
     @Unroll
-    def "should deserialize #changeType_.simpleName with #javersType"()  {
+    def "should deserialize #changeType_.simpleName with #itauAuditableType"()  {
         given:
-        def jsonConverter = javersTestAssembly().jsonConverter
+        def jsonConverter = itauAuditableTestAssembly().jsonConverter
 
         def json = new JsonBuilder()
         json  {
@@ -259,7 +259,7 @@ class ContainerChangeTypeAdapterTest extends Specification{
         val2given    << [11]*2 + ["2001-01-11"]*2
         val1expected << [10]*2 + [new LocalDate(2001,1,10)]*2
         val2expected << [11]*2 + [new LocalDate(2001,1,11)]*2
-        javersType   << ["Primitives"]*2 + ["Values"]*2
+        itauAuditableType   << ["Primitives"]*2 + ["Values"]*2
         changeType_  << [ListChange, ArrayChange] * 2
         propertyName << ["listOfIntegers","arrayOfIntegers","listOfDates","arrayOfDates",]
     }
@@ -267,7 +267,7 @@ class ContainerChangeTypeAdapterTest extends Specification{
     @Unroll
     def "should serialize #changeType.simpleName with Primitives" () {
         given:
-            def javers = javersTestAssembly()
+            def itauAuditable = itauAuditableTestAssembly()
             def cdo = new SnapshotEntity(id:1)
 
             def elementChanges = [new ElementValueChange(1, 11, 12),
@@ -277,7 +277,7 @@ class ContainerChangeTypeAdapterTest extends Specification{
             def change = changeType.newInstance(createMetadata(cdo, propertyName), elementChanges)
 
         when:
-            def jsonText = javers.jsonConverter.toJson(change)
+            def jsonText = itauAuditable.jsonConverter.toJson(change)
 
         then:
             def json = new JsonSlurper().parseText(jsonText)
@@ -309,12 +309,12 @@ class ContainerChangeTypeAdapterTest extends Specification{
 
     def "should serialize SetChange with Primitives" () {
         given:
-        def javers = javersTestAssembly()
+        def itauAuditable = itauAuditableTestAssembly()
         def elementChanges = [new ValueAdded  (20), new ValueRemoved(30)]
         def change = setChange(new SnapshotEntity(id:1), "setOfIntegers", elementChanges)
 
         when:
-        def jsonText = javers.jsonConverter.toJson(change)
+        def jsonText = itauAuditable.jsonConverter.toJson(change)
 
         then:
         def json = new JsonSlurper().parseText(jsonText)
@@ -336,7 +336,7 @@ class ContainerChangeTypeAdapterTest extends Specification{
 
     def "should deserialize SetChange with Primitives"()  {
         given:
-        def jsonConverter = javersTestAssembly().jsonConverter
+        def jsonConverter = itauAuditableTestAssembly().jsonConverter
 
         def json = new JsonBuilder()
         json  {

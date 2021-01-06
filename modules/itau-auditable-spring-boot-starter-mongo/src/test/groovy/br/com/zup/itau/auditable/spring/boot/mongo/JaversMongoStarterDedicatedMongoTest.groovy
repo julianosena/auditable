@@ -22,19 +22,19 @@ abstract class ItauAuditableMongoStarterDedicatedMongoTest extends Specification
     @Shared def embeddedMongo = EmbeddedMongoFactory.create(PORT)
 
     @Autowired
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Autowired
-    ItauAuditableMongoProperties javersProperties
+    ItauAuditableMongoProperties itauAuditableProperties
 
     @Autowired
     DummyEntityRepository dummyEntityRepository
 
-    def "should connect to Mongo configured with javers.mongodb properties"() {
+    def "should connect to Mongo configured with itauAuditable.mongodb properties"() {
         when:
         def dummyEntity = new DummyEntity(UUID.randomUUID().hashCode())
-        javers.commit("a", dummyEntity)
-        def snapshots = javers.findSnapshots(QueryBuilder.byInstance(dummyEntity).build())
+        itauAuditable.commit("a", dummyEntity)
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstance(dummyEntity).build())
 
         MongoDatabase dedicatedDb = MongoClients.create("mongodb://localhost:$PORT").getDatabase("itau-auditable-dedicated")
 

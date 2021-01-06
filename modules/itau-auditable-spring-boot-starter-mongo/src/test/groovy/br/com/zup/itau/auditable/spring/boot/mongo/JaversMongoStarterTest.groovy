@@ -17,35 +17,35 @@ import spock.lang.Specification
 class ItauAuditableMongoStarterTest extends Specification{
 
     @Autowired
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Autowired
-    ItauAuditableMongoProperties javersProperties
+    ItauAuditableMongoProperties itauAuditableProperties
 
     @Autowired
     AuthorProvider provider
 
     def "shoudUseDbNameFromMongoStarter"(){
         expect:
-        javers.repository.delegate.mongoSchemaManager.mongo.name == "spring-mongo"
+        itauAuditable.repository.delegate.mongoSchemaManager.mongo.name == "spring-mongo"
     }
 
     def "shouldReadConfigurationFromYml"() {
         expect:
-        javersProperties.algorithm == "levenshtein_distance"
-        javersProperties.mappingStyle == "bean"
-        !javersProperties.newObjectSnapshot
-        !javersProperties.prettyPrint
-        javersProperties.typeSafeValues
-        javersProperties.commitIdGenerator == "random"
-        javersProperties.documentDbCompatibilityEnabled == true
-        javersProperties.objectAccessHook == "br.com.zup.itau.auditable.spring.boot.mongo.DummyDBRefUnproxyObjectAccessHook"
-        javersProperties.snapshotsCacheSize == 100
+        itauAuditableProperties.algorithm == "levenshtein_distance"
+        itauAuditableProperties.mappingStyle == "bean"
+        !itauAuditableProperties.newObjectSnapshot
+        !itauAuditableProperties.prettyPrint
+        itauAuditableProperties.typeSafeValues
+        itauAuditableProperties.commitIdGenerator == "random"
+        itauAuditableProperties.documentDbCompatibilityEnabled == true
+        itauAuditableProperties.objectAccessHook == "br.com.zup.itau.auditable.spring.boot.mongo.DummyDBRefUnproxyObjectAccessHook"
+        itauAuditableProperties.snapshotsCacheSize == 100
     }
 
     def "shouldReadBeanMappingStyleFromYml"() {
         expect:
-        javers.getTypeMapping(DummyEntity) instanceof EntityType
+        itauAuditable.getTypeMapping(DummyEntity) instanceof EntityType
     }
 
     def "shouldHaveSpringSecurityAuthorProviderWhenSpringSecurityOnClasspath"() {

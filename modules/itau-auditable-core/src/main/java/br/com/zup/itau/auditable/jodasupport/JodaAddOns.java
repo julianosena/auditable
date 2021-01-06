@@ -25,8 +25,8 @@ public class JodaAddOns extends ConditionalTypesPlugin {
     }
 
     @Override
-    public void beforeAssemble(ItauAuditableBuilder javersBuilder) {
-        javersBuilder.registerValueTypeAdapter(new LocalDateTimeTypeAdapter());
-        javersBuilder.registerValueTypeAdapter(new LocalDateTypeAdapter());
+    public void beforeAssemble(ItauAuditableBuilder itauAuditableBuilder) {
+        itauAuditableBuilder.registerValueTypeAdapter(new LocalDateTimeTypeAdapter());
+        itauAuditableBuilder.registerValueTypeAdapter(new LocalDateTypeAdapter());
     }
 }

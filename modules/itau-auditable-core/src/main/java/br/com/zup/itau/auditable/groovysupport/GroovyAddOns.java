@@ -9,8 +9,8 @@ import br.com.zup.itau.auditable.core.ItauAuditableBuilder;
  */
 public class GroovyAddOns extends ConditionalTypesPlugin {
     @Override
-    public void beforeAssemble(ItauAuditableBuilder javersBuilder) {
+    public void beforeAssemble(ItauAuditableBuilder itauAuditableBuilder) {
         Class<?> metaClass = ReflectionUtil.classForName("groovy.lang.MetaClass");
-        javersBuilder.registerIgnoredClass(metaClass);
+        itauAuditableBuilder.registerIgnoredClass(metaClass);
     }
 }

@@ -11,11 +11,11 @@ class H2SqlRepositoryE2EWithSchemaTest extends H2SqlRepositoryE2ETest {
     @Override
     Connection createConnection() {
         DriverManager.getConnection(
-                "jdbc:h2:mem:javers;INIT=create schema if not exists javers")
+                "jdbc:h2:mem:itauAuditable;INIT=create schema if not exists itauAuditable")
     }
 
     @Override
     String getSchema() {
-        return "javers"
+        return "itauAuditable"
     }
 }

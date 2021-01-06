@@ -13,15 +13,15 @@ import spock.lang.Specification
 class ItauAuditableMongoStarterIntegrationTest extends Specification{
 
     @Autowired
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Autowired
     DummyEntityRepository dummyEntityRepository
 
-    def "should build default javers instance with auto-audit aspect" () {
+    def "should build default itauAuditable instance with auto-audit aspect" () {
         when:
         def dummyEntity = dummyEntityRepository.save(new DummyEntity(UUID.randomUUID().hashCode()))
-        def snapshots = javers
+        def snapshots = itauAuditable
                 .findSnapshots(QueryBuilder.byInstanceId(dummyEntity.id, DummyEntity).build())
 
         then:
@@ -32,6 +32,6 @@ class ItauAuditableMongoStarterIntegrationTest extends Specification{
 
     def "should scan given packages for classes with @TypeName"() {
         expect:
-        javers.getTypeMapping("AnotherEntity") instanceof EntityType
+        itauAuditable.getTypeMapping("AnotherEntity") instanceof EntityType
     }
 }

@@ -9,8 +9,8 @@ import br.com.zup.itau.auditable.core.model.DummyUser
 import br.com.zup.itau.auditable.repository.jql.QueryBuilder
 import spock.lang.Specification
 
-import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.itauAuditable
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 import static br.com.zup.itau.auditable.core.json.builder.ChangeTestBuilder.newObject
 import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.instanceId
 
@@ -20,7 +20,7 @@ import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.instanceId
 class NewObjectTypeAdapterTest extends Specification {
     def "should serialize NewObject"() {
         given:
-        JsonConverter jsonConverter = javersTestAssembly().jsonConverter
+        JsonConverter jsonConverter = itauAuditableTestAssembly().jsonConverter
         def change = newObject(new DummyUser(name:"kaz"))
 
         when:
@@ -36,7 +36,7 @@ class NewObjectTypeAdapterTest extends Specification {
 
     def "should deserialize NewObject"() {
         given:
-        JsonConverter jsonConverter = javersTestAssembly().jsonConverter
+        JsonConverter jsonConverter = itauAuditableTestAssembly().jsonConverter
         def json = new JsonBuilder()
         json {
             changeType "NewObject"
@@ -56,15 +56,15 @@ class NewObjectTypeAdapterTest extends Specification {
 
     def "should serialize Change with CommitMetadata unwrapped from Optional"() {
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def dummyUser = new DummyUser(name: "bob")
-        javers.commit("author", dummyUser)
-        def changes = javers
+        itauAuditable.commit("author", dummyUser)
+        def changes = itauAuditable
                 .findChanges(QueryBuilder.byInstanceId("bob", DummyUser.class)
                 .withNewObjectChanges(true).build())
         def change = changes[1]
         when:
-        def jsonText = javers.jsonConverter.toJson(change)
+        def jsonText = itauAuditable.jsonConverter.toJson(change)
 
         then:
         change.commitMetadata instanceof Optional

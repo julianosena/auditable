@@ -1,7 +1,7 @@
 package br.com.zup.itau.auditable.spring.annotation;
 
 import br.com.zup.itau.auditable.core.ItauAuditable;
-import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAuditableAspectAsync;
+import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAspectAsync;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -21,10 +21,10 @@ import java.util.concurrent.Executor;
  *
  * <b>Important!</b> Works with MongoDB, not implemented for SQL repositories.
  *
- * @see ItauAuditableAuditableAspectAsync
+ * @see ItauAuditableAspectAsync
  * @author Razi
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-public @interface ItauAuditableAuditableAsync {
+public @interface ItauAuditableAsync {
 }

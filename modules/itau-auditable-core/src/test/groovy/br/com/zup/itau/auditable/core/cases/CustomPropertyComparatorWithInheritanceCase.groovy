@@ -60,7 +60,7 @@ class CustomPropertyComparatorWithInheritanceCase extends Specification {
 
 	def "should use CustomPropertyComparator for all subclasses"(){
 		given:
-		def javers = ItauAuditableBuilder.javers()
+		def itauAuditable = ItauAuditableBuilder.itauAuditable()
 				.registerCustomComparator(new SimpleValueComparator(), SimpleValue).build()
 
 		when:
@@ -68,7 +68,7 @@ class CustomPropertyComparatorWithInheritanceCase extends Specification {
 		w1.level = new IntValue(1)
 		MightyWizard w2 = new MightyWizard();
 		w2.level = new IntValue(2)
-		def diff = javers.compare(w1, w2)
+		def diff = itauAuditable.compare(w1, w2)
 		then:
 		diff.changes.size() == 1
 	}

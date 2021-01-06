@@ -18,10 +18,10 @@ class GroovyDiffExample extends Specification {
 
     def "should calculate diff for GroovyObjects"(){
       given:
-      def javers = ItauAuditableBuilder.javers().build()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
       when:
-      def diff = javers.compare(
+      def diff = itauAuditable.compare(
           new Person('bob','Uncle'),
           new Person('bob','Martin')
       )

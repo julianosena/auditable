@@ -58,13 +58,13 @@ class CustomPropertyComparatorE2ETest extends Specification {
         def right = new AddressesList([new DummyAddress(city:"ny"), new DummyAddress(city:null),
                                        new DummyAddress(city:"ny", street: "some")])
 
-        def javers = ItauAuditableBuilder.javers()
-        registerComparator(javers)
-        javers.withListCompareAlgorithm(listCompareAlgorithm)
-        javers = javers.build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
+        registerComparator(itauAuditable)
+        itauAuditable.withListCompareAlgorithm(listCompareAlgorithm)
+        itauAuditable = itauAuditable.build()
 
         when:
-        def diff = javers.compare(left, right)
+        def diff = itauAuditable.compare(left, right)
 
         then:
         println(diff.prettyPrint())
@@ -102,12 +102,12 @@ class CustomPropertyComparatorE2ETest extends Specification {
         def right = new AddressesSet([new DummyAddress(city:"ny"),
                                       new DummyAddress(city:"ny", street: "some")] as Set)
 
-        def javers = ItauAuditableBuilder.javers()
-        registerComparator(javers)
-        javers = javers.build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
+        registerComparator(itauAuditable)
+        itauAuditable = itauAuditable.build()
 
         when:
-        def diff = javers.compare(left, right)
+        def diff = itauAuditable.compare(left, right)
 
         then:
         println(diff.prettyPrint())
@@ -135,13 +135,13 @@ class CustomPropertyComparatorE2ETest extends Specification {
         def left =  new DummyAddress(city:"NY", moreCities: ["LA"])
         def right = new DummyAddress(city:"NY", moreCities: ["la", "Paris"])
 
-        def javers = ItauAuditableBuilder.javers()
-        registerComparator(javers)
-        javers.withListCompareAlgorithm(listCompareAlgorithm)
-        javers = javers.build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
+        registerComparator(itauAuditable)
+        itauAuditable.withListCompareAlgorithm(listCompareAlgorithm)
+        itauAuditable = itauAuditable.build()
 
         when:
-        def diff = javers.compare(left,right)
+        def diff = itauAuditable.compare(left,right)
 
         then:
         diff.changes.size() == 1
@@ -170,12 +170,12 @@ class CustomPropertyComparatorE2ETest extends Specification {
         def left =  new SetOfStrings(strings: ["LA"])
         def right = new SetOfStrings(strings: ["la", "Paris"])
 
-        def javers = ItauAuditableBuilder.javers()
-        registerComparator(javers)
-        javers = javers.build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
+        registerComparator(itauAuditable)
+        itauAuditable = itauAuditable.build()
 
         when:
-        def diff = javers.compare(left,right)
+        def diff = itauAuditable.compare(left,right)
 
         then:
         println(diff.prettyPrint())
@@ -205,12 +205,12 @@ class CustomPropertyComparatorE2ETest extends Specification {
         def left =  new MapOfStrings(strings: ["LA":"paris", "AAA":"aa"])
         def right = new MapOfStrings(strings: ["la":"PARIS", "aAa":"bb"])
 
-        def javers = ItauAuditableBuilder.javers()
-        registerComparator(javers)
-        javers = javers.build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
+        registerComparator(itauAuditable)
+        itauAuditable = itauAuditable.build()
 
         when:
-        def diff = javers.compare(left,right)
+        def diff = itauAuditable.compare(left,right)
 
         then:
         println(diff.prettyPrint())
@@ -238,13 +238,13 @@ class CustomPropertyComparatorE2ETest extends Specification {
         def left =  new DummyAddress(city:"NY", moreCities: leftList)
         def right = new DummyAddress(city:"NY", moreCities: rightList)
 
-        def javers = ItauAuditableBuilder.javers()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
                 .registerCustomType(String, new CaseIgnoringCustomComparator())
                 .withListCompareAlgorithm(AS_SET)
                 .build()
 
         when:
-        def diff = javers.compare(left,right)
+        def diff = itauAuditable.compare(left,right)
 
         then:
         println diff.prettyPrint()
@@ -291,19 +291,19 @@ class CustomPropertyComparatorE2ETest extends Specification {
         def right = new DummyAddress(city:"Paris", kind:OFFICE)
 
         when:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         then:
-        javers.compare(left,right).changes.size() == 2
+        itauAuditable.compare(left,right).changes.size() == 2
 
         when:
-        javers = ItauAuditableBuilder.javers()
+        itauAuditable = ItauAuditableBuilder.itauAuditable()
                 .registerCustomType(String, new DummyCustomPropertyComparator() )
                 .registerCustomType(DummyAddress.Kind, new DummyCustomPropertyComparator(), )
                 .build()
 
         then:
-        javers.compare(left,right).changes.size() == 0
+        itauAuditable.compare(left,right).changes.size() == 0
     }
 
     private class CustomMultimapFakeComparator implements CustomPropertyComparator<Multimap, MapChange>{
@@ -324,11 +324,11 @@ class CustomPropertyComparatorE2ETest extends Specification {
         given:
         def left =  new GuavaObject(multimap: Multimaps.forMap(["a":1]))
         def right = new GuavaObject(multimap: Multimaps.forMap(["a":2]))
-        def javers = ItauAuditableBuilder.javers()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
                 .registerCustomType(Multimap, new CustomMultimapFakeComparator()).build()
 
         when:
-        def diff = javers.compare(left,right)
+        def diff = itauAuditable.compare(left,right)
 
         then:
         diff.changes.size() == 1

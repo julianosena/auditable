@@ -30,9 +30,9 @@ class CacheEvictSpringConfig extends HibernateConfig {
     }
 
     @Bean
-    ItauAuditable javers(ItauAuditableSqlRepository sqlRepository, PlatformTransactionManager txManager) {
+    ItauAuditable itauAuditable(ItauAuditableSqlRepository sqlRepository, PlatformTransactionManager txManager) {
         TransactionalItauAuditableBuilder
-                .javers()
+                .itauAuditable()
                 .withTxManager(txManager)
                 .registerItauAuditableRepository(sqlRepository)
                 .build()

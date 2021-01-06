@@ -34,23 +34,23 @@ import static java.time.LocalDate.now
  */
 abstract class ShadowFactoryTest extends Specification {
 
-    @Shared ItauAuditableTestBuilder javersTestAssembly
+    @Shared ItauAuditableTestBuilder itauAuditableTestAssembly
     @Shared ShadowFactory shadowFactory
-    @Shared ItauAuditable javers
+    @Shared ItauAuditable itauAuditable
 
     def setupSpec() {
-        javersTestAssembly = ItauAuditableTestBuilder.javersTestAssembly()
-        shadowFactory = javersTestAssembly.shadowFactory
-        javers = javersTestAssembly.javers()
+        itauAuditableTestAssembly = ItauAuditableTestBuilder.itauAuditableTestAssembly()
+        shadowFactory = itauAuditableTestAssembly.shadowFactory
+        itauAuditable = itauAuditableTestAssembly.itauAuditable()
     }
 
     @Unroll
     def "should create Shadows with #what"(){
       when:
-      javers.commit("author",v1())
-      javers.commit("author",v2())
+      itauAuditable.commit("author",v1())
+      itauAuditable.commit("author",v2())
 
-      def snapshots = javers.findSnapshots(QueryBuilder.anyDomainObject().build())
+      def snapshots = itauAuditable.findSnapshots(QueryBuilder.anyDomainObject().build())
       def shadowV1 = shadowFactory.createShadow(snapshots[1])
       def shadowV2 = shadowFactory.createShadow(snapshots[0])
 
@@ -116,10 +116,10 @@ abstract class ShadowFactoryTest extends Specification {
       def e = new SnapshotEntity(id:1,
                                  entityRef: new SnapshotEntity(id:2, intProperty:2),
                                  valueObjectRef: new DummyAddress("unavailable ref"))
-      javers.commit("author", e)
+      itauAuditable.commit("author", e)
 
       when:
-      def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
+      def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
       def shadow = shadowFactory.createShadow(snapshots[0], snapshotEntitySnapshotSupplier())
 
       then:
@@ -136,10 +136,10 @@ abstract class ShadowFactoryTest extends Specification {
     def "should resolve Entity with ShallowReference"(){
       given:
       def e = new SnapshotEntity(id:1, shallowPhone:new ShallowPhone(11, "123", new CategoryC(1, "some")))
-      javers.commit("author", e)
+      itauAuditable.commit("author", e)
 
       when:
-      def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
+      def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
       def shadow = shadowFactory.createShadow(snapshots[0], byIdSupplier())
 
       then:
@@ -151,10 +151,10 @@ abstract class ShadowFactoryTest extends Specification {
 
     def "should resolve Property with ShallowReference"() {
       def e = new PhoneWithShallowCategory(id:1, shallowCategory: new CategoryC(2, "cat1"))
-      javers.commit("author", e)
+      itauAuditable.commit("author", e)
 
       when:
-      def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1, PhoneWithShallowCategory).build())
+      def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, PhoneWithShallowCategory).build())
       def shadow = shadowFactory.createShadow(snapshots[0], byIdSupplier())
 
       then:
@@ -167,10 +167,10 @@ abstract class ShadowFactoryTest extends Specification {
         given:
         def e = new SnapshotEntity(id:1, entityRef: new SnapshotEntity(id:2, intProperty:2))
         e.entityRef.entityRef = e
-        javers.commit("author", e)
+        itauAuditable.commit("author", e)
 
         when:
-        def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
         def shadow = shadowFactory.createShadow(snapshots[0], byIdSupplier())
 
         then:
@@ -184,10 +184,10 @@ abstract class ShadowFactoryTest extends Specification {
     @Unroll
     def "should support #container of Entities"(){
         given:
-        javers.commit("author", cdo)
+        itauAuditable.commit("author", cdo)
 
         when:
-        def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
         def shadow = shadowFactory.createShadow(snapshots[0], byIdSupplier())
 
         then:
@@ -222,11 +222,11 @@ abstract class ShadowFactoryTest extends Specification {
       }
       node.entityRef = cdo
 
-      javers.commit("author", cdo)
+      itauAuditable.commit("author", cdo)
 
 
       when:
-      def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
+      def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
       def shadow = shadowFactory.createShadow(snapshots[0], byIdSupplier())
 
       then:
@@ -243,10 +243,10 @@ abstract class ShadowFactoryTest extends Specification {
         given:
         def cdo = new SnapshotEntity(id:1,
                 setOfValueObjects: [new DummyAddress('London'), new DummyAddress('Paris')])
-        javers.commit("author", cdo)
+        itauAuditable.commit("author", cdo)
 
         when:
-        def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
         def shadow = shadowFactory.createShadow(snapshots[0], byIdSupplier())
 
         then:
@@ -260,10 +260,10 @@ abstract class ShadowFactoryTest extends Specification {
     @Unroll
     def "should support Map with #content"(){
         given:
-        javers.commit("author", cdo)
+        itauAuditable.commit("author", cdo)
 
         when:
-        def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
         def shadow = shadowFactory.createShadow(snapshots[0], byIdSupplier())
 
         then:
@@ -284,10 +284,10 @@ abstract class ShadowFactoryTest extends Specification {
         given:
         def cdo = new SnapshotEntity(id: 1,
                 multiMapPrimitiveToEntity: MultimapBuilder.create(["NY": [new SnapshotEntity(id:2), new SnapshotEntity(id:3)]]))
-        javers.commit("author", cdo)
+        itauAuditable.commit("author", cdo)
 
         when:
-        def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
         def shadow = shadowFactory.createShadow(snapshots[0], byIdSupplier())
 
         then:
@@ -298,10 +298,10 @@ abstract class ShadowFactoryTest extends Specification {
         given:
         def cdo = new SnapshotEntity(id: 1,
                 multiSetOfEntities: HashMultiset.create([new SnapshotEntity(id:2), new SnapshotEntity(id:2)]))
-        javers.commit("author", cdo)
+        itauAuditable.commit("author", cdo)
 
         when:
-        def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
         def shadow = shadowFactory.createShadow(snapshots[0], byIdSupplier())
 
         then:
@@ -311,10 +311,10 @@ abstract class ShadowFactoryTest extends Specification {
     def "should manage changed class name"(){
       given:
       def cdo = new OldEntityWithTypeAlias(id:1.0, val:1)
-      javers.commit("author", cdo)
+      itauAuditable.commit("author", cdo)
 
       when:
-      def snapshot = javers.findSnapshots(QueryBuilder.byInstanceId(1.0, NewEntityWithTypeAlias).build())[0]
+      def snapshot = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1.0, NewEntityWithTypeAlias).build())[0]
       snapshot = simulatePersistence(snapshot)
       def shadow = shadowFactory.createShadow(snapshot, { it -> null })
 
@@ -326,10 +326,10 @@ abstract class ShadowFactoryTest extends Specification {
     def "should skip missing properties"(){
       given:
       def cdo = new OldEntity(id:1)
-      javers.commit("author", cdo)
+      itauAuditable.commit("author", cdo)
 
       when:
-      def snapshot = javers.findSnapshots(QueryBuilder.byInstanceId(1, OldEntity).build())[0]
+      def snapshot = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, OldEntity).build())[0]
       def extendedSnapshot = CdoSnapshotBuilder.emptyCopyOf(snapshot)
             .withState(new CdoSnapshotState([value:2])).build()
 
@@ -343,16 +343,16 @@ abstract class ShadowFactoryTest extends Specification {
 
     //deserialize and serialize to simulate real ItauAuditableRepository
     CdoSnapshot simulatePersistence(CdoSnapshot snapshot) {
-        javers.getJsonConverter().fromJson(javers.getJsonConverter().toJson(snapshot), CdoSnapshot)
+        itauAuditable.getJsonConverter().fromJson(itauAuditable.getJsonConverter().toJson(snapshot), CdoSnapshot)
     }
 
     def "should not break on polymorfic Collection"() {
       given:
       def cdo = new SnapshotEntity(id: 1, polymorficList: [new LocalDate(2017,1,1), new LocalDate(2017,1,2) ])
-      javers.commit("author", cdo)
-      def snapshot = javers.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())[0]
+      itauAuditable.commit("author", cdo)
+      def snapshot = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())[0]
       //serialize & deserialize
-      snapshot = javers.getJsonConverter().fromJson(javers.getJsonConverter().toJson(snapshot), CdoSnapshot)
+      snapshot = itauAuditable.getJsonConverter().fromJson(itauAuditable.getJsonConverter().toJson(snapshot), CdoSnapshot)
 
       when:
       def shadow = shadowFactory.createShadow(snapshot, byIdSupplier())
@@ -371,10 +371,10 @@ abstract class ShadowFactoryTest extends Specification {
     def "should use @PropertyName when creating Shadows"(){
         given:
         def e = new EntityWithPropertyName(id:1, someField: "s")
-        javers.commit("author", e)
+        itauAuditable.commit("author", e)
 
         when:
-        EntityWithPropertyName shadow = javers.findShadows(QueryBuilder.byInstance(e).build()).get(0).get()
+        EntityWithPropertyName shadow = itauAuditable.findShadows(QueryBuilder.byInstance(e).build()).get(0).get()
 
         then:
         shadow.id == 1
@@ -384,9 +384,9 @@ abstract class ShadowFactoryTest extends Specification {
     BiFunction byIdSupplier() {
         return { s, id ->
             if (id instanceof InstanceId) {
-                return javers.findSnapshots(QueryBuilder.byInstanceId(id.cdoId, Class.forName(id.typeName)).build())[0]
+                return itauAuditable.findSnapshots(QueryBuilder.byInstanceId(id.cdoId, Class.forName(id.typeName)).build())[0]
             } else {
-                return javers.findSnapshots(QueryBuilder.byValueObject(SnapshotEntity, id.fragment).build())[0]
+                return itauAuditable.findSnapshots(QueryBuilder.byValueObject(SnapshotEntity, id.fragment).build())[0]
             }
         } as BiFunction
     }
@@ -394,7 +394,7 @@ abstract class ShadowFactoryTest extends Specification {
     BiFunction snapshotEntitySnapshotSupplier() {
         return { s, id ->
             if (id instanceof InstanceId && id.cdoId) {
-                return javers.findSnapshots(QueryBuilder.byInstanceId(id.cdoId, SnapshotEntity).build())[0]
+                return itauAuditable.findSnapshots(QueryBuilder.byInstanceId(id.cdoId, SnapshotEntity).build())[0]
             }
             null
         }

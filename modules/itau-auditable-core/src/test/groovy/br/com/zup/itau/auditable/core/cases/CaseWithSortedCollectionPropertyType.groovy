@@ -11,13 +11,13 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 /**
- * see https://github.com/javers/javers/issues/888
+ * see https://github.com/itauAuditable/itauAuditable/issues/888
  */
 class CaseWithSortedCollectionPropertyType extends Specification {
 
     @Shared
-    def javers = ItauAuditableBuilder
-            .javers()
+    def itauAuditable = ItauAuditableBuilder
+            .itauAuditable()
             .registerValueObject(DummyValueObject)
             .build()
 
@@ -29,7 +29,7 @@ class CaseWithSortedCollectionPropertyType extends Specification {
         def b = new DummyEntity(id:1, valueObjectSet: [new DummyValueObject("bar")] as Set)
 
         when:
-        def diff = javers.compare(a, b)
+        def diff = itauAuditable.compare(a, b)
 
         then:
         diff.getChangesByType(SetChange).size() == 1
@@ -46,7 +46,7 @@ class CaseWithSortedCollectionPropertyType extends Specification {
         def b = new DummyEntity(id:1, valueObjectSortedSet: new TreeSet() + new DummyValueObject("bar"))
 
         when:
-        def diff = javers.compare(a, b)
+        def diff = itauAuditable.compare(a, b)
 
         then:
         diff.getChangesByType(SetChange).size() == 1
@@ -62,7 +62,7 @@ class CaseWithSortedCollectionPropertyType extends Specification {
         def b = new DummyEntity(id:1, valueObjectMap:["3": new DummyValueObject("bar")])
 
         when:
-        def diff = javers.compare(a, b)
+        def diff = itauAuditable.compare(a, b)
 
         then:
         diff.getChangesByType(MapChange)[0].entryAddedChanges.size() == 1
@@ -77,7 +77,7 @@ class CaseWithSortedCollectionPropertyType extends Specification {
         def b = new DummyEntity(id:1, valueObjectSortedMap:sortedMap)
 
         when:
-        def diff = javers.compare(a, b)
+        def diff = itauAuditable.compare(a, b)
 
         then:
         diff.getChangesByType(MapChange)[0].entryAddedChanges.size() == 1

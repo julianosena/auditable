@@ -23,7 +23,7 @@ import java.time.LocalDateTime
 import java.time.ZonedDateTime
 
 import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.instanceId
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 import static br.com.zup.itau.auditable.core.model.DummyUser.dummyUser
 
 /**
@@ -31,7 +31,7 @@ import static br.com.zup.itau.auditable.core.model.DummyUser.dummyUser
  */
 class CdoSnapshotTypeAdapterTest extends Specification {
     @Shared
-    ItauAuditableTestBuilder javers = javersTestAssembly()
+    ItauAuditableTestBuilder itauAuditable = itauAuditableTestAssembly()
 
     @Shared
     def now = ZonedDateTime.now()
@@ -41,7 +41,7 @@ class CdoSnapshotTypeAdapterTest extends Specification {
         def snapshot = createSnapshot( new DummyUser(name:"kaz", age:5) )
 
         when:
-        def jsonText = javers.jsonConverter.toJson(snapshot)
+        def jsonText = itauAuditable.jsonConverter.toJson(snapshot)
 
         then:
         def json = new JsonSlurper().parseText(jsonText)
@@ -471,19 +471,19 @@ class CdoSnapshotTypeAdapterTest extends Specification {
     }
 
     CdoSnapshot createSnapshot(def entity) {
-        def entityCdo = javers.createLiveNode(entity)
-        javers.snapshotFactory.createInitial(entityCdo, someCommitMetadata())
+        def entityCdo = itauAuditable.createLiveNode(entity)
+        itauAuditable.snapshotFactory.createInitial(entityCdo, someCommitMetadata())
     }
 
     String toJson(def entity) {
         CdoSnapshot snapshot = createSnapshot(entity)
-        def jsonText = javers.jsonConverter.toJson(snapshot)
+        def jsonText = itauAuditable.jsonConverter.toJson(snapshot)
         println jsonText
         jsonText
     }
 
     CdoSnapshot fromJson(String jsonText) {
-        javers.jsonConverter.fromJson(jsonText, CdoSnapshot)
+        itauAuditable.jsonConverter.fromJson(jsonText, CdoSnapshot)
     }
 
 

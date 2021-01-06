@@ -12,8 +12,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ListWithChildClassesTest {
-    private ItauAuditable javers = ItauAuditableBuilder
-            .javers()
+    private ItauAuditable itauAuditable = ItauAuditableBuilder
+            .itauAuditable()
             .build();
 
     @Test
@@ -21,10 +21,10 @@ public class ListWithChildClassesTest {
         Container container1 = new Container(Collections.singletonList(new StringField("StringField","String value")));
         Container container2 = new Container(Collections.singletonList(new ListField("ArrayField", Arrays.asList("V1", "V2"))));
 
-        Diff diff = javers.compare(container1, container2);
+        Diff diff = itauAuditable.compare(container1, container2);
         assertThat(diff).isNotNull();
 
-        Diff diff2 = javers.compare(container2, container1);
+        Diff diff2 = itauAuditable.compare(container2, container1);
         assertThat(diff2).isNotNull();
     }
 

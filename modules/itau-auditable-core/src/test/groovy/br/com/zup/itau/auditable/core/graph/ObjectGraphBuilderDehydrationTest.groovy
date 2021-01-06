@@ -7,10 +7,10 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 class ObjectGraphBuilderDehydrationTest extends Specification {
-    @Shared ItauAuditableTestBuilder javers = ItauAuditableTestBuilder.javersTestAssembly()
+    @Shared ItauAuditableTestBuilder itauAuditable = ItauAuditableTestBuilder.itauAuditableTestAssembly()
 
     ObjectGraphBuilder newBuilder(){
-        new ObjectGraphBuilder(javers.typeMapper, javers.liveCdoFactory)
+        new ObjectGraphBuilder(itauAuditable.typeMapper, itauAuditable.liveCdoFactory)
     }
 
     def "should provide dehydrated property value for List of references"(){

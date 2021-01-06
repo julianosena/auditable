@@ -5,7 +5,7 @@ import spock.lang.Specification
 
 import java.math.RoundingMode
 
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 
 /**
  * @author bartosz walacik
@@ -13,7 +13,7 @@ import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTest
 class JsonConverterBasicTest extends Specification{
 
     @Shared
-    def jsonConverter = javersTestAssembly().jsonConverter
+    def jsonConverter = itauAuditableTestAssembly().jsonConverter
 
     def shouldConvertIntToJson() {
         when:

@@ -26,12 +26,12 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
     def "should run basic Stream query - Entity Shadows byInstanceId() in SHALLOW scope"(){
       given:
       def entity = new SnapshotEntity(id: 1, intProperty: 1)
-      javers.commit("a", entity)
+      itauAuditable.commit("a", entity)
       entity.intProperty = 2
-      javers.commit("a", entity)
+      itauAuditable.commit("a", entity)
 
       when:
-      def shadows = javers.findShadowsAndStream(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
+      def shadows = itauAuditable.findShadowsAndStream(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
                           .collect(Collectors.toList())
                           .collect{it.get()}
 
@@ -49,12 +49,12 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
         def entity = new SnapshotEntity(id: 1, intProperty: 0)
         20.times {
             entity.intProperty = it
-            javers.commit("a", entity)
+            itauAuditable.commit("a", entity)
         }
 
         when:
         def query = QueryBuilder.byInstanceId(1, SnapshotEntity).limit(5).build()
-        def shadows = javers.findShadowsAndStream(query)
+        def shadows = itauAuditable.findShadowsAndStream(query)
                 .limit(12)
                 .collect(Collectors.toList())
 
@@ -81,12 +81,12 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
         def entity = new SnapshotEntity(id: 1, intProperty: 0)
         20.times {
             entity.intProperty = it
-            javers.commit("a", entity)
+            itauAuditable.commit("a", entity)
         }
 
         when:
         def query = QueryBuilder.byInstanceId(1, SnapshotEntity).limit(5).build()
-        def shadows = javers.findShadowsAndStream(query)
+        def shadows = itauAuditable.findShadowsAndStream(query)
                 .collect(Collectors.toList())
 
         then:
@@ -102,7 +102,7 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
 
     def "should not allow for setting skip in Stream query"(){
       when:
-      javers.findShadowsAndStream(byInstanceId(1, SnapshotEntity).skip(5).build())
+      itauAuditable.findShadowsAndStream(byInstanceId(1, SnapshotEntity).skip(5).build())
 
       then:
       ItauAuditableException e = thrown()
@@ -112,17 +112,17 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
     def "should reuse references loaded in previous Stream queries"() {
         given:
         def ref = new SnapshotEntity(id: 2,)
-        javers.commit("a", ref)
+        itauAuditable.commit("a", ref)
 
         def e = new SnapshotEntity(id: 1, entityRef: ref )
         15.times {
             e.intProperty = it
-            javers.commit("a", e)
+            itauAuditable.commit("a", e)
         }
 
         when:
         def query = byInstanceId(1, SnapshotEntity).limit(5).withScopeDeepPlus(1).build()
-        def shadows = javers.findShadowsAndStream(query)
+        def shadows = itauAuditable.findShadowsAndStream(query)
                 .collect(Collectors.toList())
                 .collect{it.get()}
 
@@ -152,11 +152,11 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
             }
             //println ("commit: e.intProperty:" + e.intProperty)
             //println ("        e.valueObjectRef.street:" + e.valueObjectRef.street)
-            javers.commit("a", e)
+            itauAuditable.commit("a", e)
         }
 
         when:
-        def shadows = javers.findShadowsAndStream(query)
+        def shadows = itauAuditable.findShadowsAndStream(query)
                 .skip(5)
                 .limit(5)
                 .collect(Collectors.toList())
@@ -195,11 +195,11 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
         given:
         def ref1 = new SnapshotEntity(id: 2)
         def ref2 = new SnapshotEntity(id: 3)
-        javers.commit("a", ref1)
-        javers.commit("a", ref2)
+        itauAuditable.commit("a", ref1)
+        itauAuditable.commit("a", ref2)
 
         def entity = new SnapshotEntity(id: 1, listOfEntities: [ref1,ref2])
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
 
         when:
         def query = byInstanceId(1, SnapshotEntity)
@@ -207,8 +207,8 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
                 .withCommitId(valueOf("543434.0")) //non-existing commitId
                 .build()
 
-        def snapshots = javers.findSnapshots(query)
-        def shadows = javers.findShadows(query)
+        def snapshots = itauAuditable.findSnapshots(query)
+        def shadows = itauAuditable.findShadows(query)
 
         then:
         snapshots.size() == 0
@@ -219,20 +219,20 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
       given:
       def eRef = new SnapshotEntity(id: 2, intProperty: 2)
       def e = new SnapshotEntity(id: 1, intProperty: 1, entityRef: eRef)
-      javers.commit("a", e)
+      itauAuditable.commit("a", e)
 
       e.intProperty = 30
       eRef.intProperty = 3
-      javers.commit("a", eRef)
-      javers.commit("a", e)
+      itauAuditable.commit("a", eRef)
+      itauAuditable.commit("a", e)
 
       e.intProperty = 33
       eRef.intProperty = 4
-      javers.commit("a", eRef)
-      javers.commit("a", e)
+      itauAuditable.commit("a", eRef)
+      itauAuditable.commit("a", e)
 
       when:
-      def shadows = javers.findShadows(QueryBuilder.byInstance(e)
+      def shadows = itauAuditable.findShadows(QueryBuilder.byInstance(e)
               .withScopeDeepPlus()
               .build()).collect{it.get()}
 
@@ -246,16 +246,16 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
         given:
         def vo =  new DummyAddress(city: "London", networkAddress: new DummyNetworkAddress(address: "a"))
         def entity = new SnapshotEntity(id: 1, valueObjectRef: vo)
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
 
         vo.city = "Paris"
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
 
         vo.city = "Rome"
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
 
         when:
-        def shadows = javers.findShadows(QueryBuilder.byValueObjectId(1, SnapshotEntity, "valueObjectRef")
+        def shadows = itauAuditable.findShadows(QueryBuilder.byValueObjectId(1, SnapshotEntity, "valueObjectRef")
                 .withScopeCommitDeep()
                 .build()).collect{it.get()}
 
@@ -279,12 +279,12 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
     def "should query for Entity Shadows byInstanceId() in SHALLOW scope"() {
         given:
         def entity = new SnapshotEntity(id: 1, intProperty: 1)
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
         entity.intProperty = 2
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
 
         when:
-        def shadows = javers.findShadows(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
+        def shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
 
         then:
         shadows.size() == 2
@@ -302,12 +302,12 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
 
     def "should query for Entity Shadows byClass() in SHALLOW scope"() {
         given:
-        javers.commit("a", new SnapshotEntity(id: 1))
-        javers.commit("a", new SnapshotEntity(id: 2))
-        javers.commit("a", new SnapshotEntity(id: 3))
+        itauAuditable.commit("a", new SnapshotEntity(id: 1))
+        itauAuditable.commit("a", new SnapshotEntity(id: 2))
+        itauAuditable.commit("a", new SnapshotEntity(id: 3))
 
         when:
-        def shadows = javers.findShadows(QueryBuilder.byClass(SnapshotEntity)
+        def shadows = itauAuditable.findShadows(QueryBuilder.byClass(SnapshotEntity)
                 .build()).collect{it.get()}
 
         then:
@@ -322,12 +322,12 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
 
     def "should query for Shadows by multiple classes"(){
         given:
-        javers.commit("a", new SnapshotEntity(id:1))
-        javers.commit("a", new OldEntity(id:1))
-        javers.commit("a", new NewEntityWithTypeAlias(id:1))
+        itauAuditable.commit("a", new SnapshotEntity(id:1))
+        itauAuditable.commit("a", new OldEntity(id:1))
+        itauAuditable.commit("a", new NewEntityWithTypeAlias(id:1))
 
         when:
-        def shadows = javers.findShadows(QueryBuilder.byClass(NewEntity, NewEntityWithTypeAlias)
+        def shadows = itauAuditable.findShadows(QueryBuilder.byClass(NewEntity, NewEntityWithTypeAlias)
                 .build()).collect{it.get()}
 
         then:
@@ -338,12 +338,12 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
 
     def "should query for Shadows by ValueObject path"(){
         given:
-        javers.commit("a", new SnapshotEntity(id: 1, valueObjectRef: new DummyAddress(city: "London")))
-        javers.commit("a", new SnapshotEntity(id: 1, valueObjectRef: new DummyAddress(city: "Paris")))
-        javers.commit("a", new SnapshotEntity(id: 1, arrayOfValueObjects: [new DummyAddress(city: "Paris")]))
+        itauAuditable.commit("a", new SnapshotEntity(id: 1, valueObjectRef: new DummyAddress(city: "London")))
+        itauAuditable.commit("a", new SnapshotEntity(id: 1, valueObjectRef: new DummyAddress(city: "Paris")))
+        itauAuditable.commit("a", new SnapshotEntity(id: 1, arrayOfValueObjects: [new DummyAddress(city: "Paris")]))
 
         when:
-        def shadows = javers.findShadows(QueryBuilder.byValueObject(SnapshotEntity, "valueObjectRef")
+        def shadows = itauAuditable.findShadows(QueryBuilder.byValueObject(SnapshotEntity, "valueObjectRef")
                 .build()).collect{it.get()}
 
         then:
@@ -355,15 +355,15 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
     def "should query for Shadows of Entity with Entity refs in COMMIT_DEEP scope"(){
         given:
         def ref1 = new SnapshotEntity(id: 5, intProperty: 5)
-        javers.commit("a", new SnapshotEntity(id: 1, intProperty: 1, entityRef: ref1))
+        itauAuditable.commit("a", new SnapshotEntity(id: 1, intProperty: 1, entityRef: ref1))
 
         def ref2 = new SnapshotEntity(id: 5, intProperty: 55)
-        javers.commit("a", new SnapshotEntity(id: 1, intProperty: 2, entityRef: ref2))
+        itauAuditable.commit("a", new SnapshotEntity(id: 1, intProperty: 2, entityRef: ref2))
 
-        javers.commit("a", new SnapshotEntity(id: 1, intProperty: 3, entityRef: ref2))
+        itauAuditable.commit("a", new SnapshotEntity(id: 1, intProperty: 3, entityRef: ref2))
 
         when:
-        def shadows = javers.findShadows(byInstanceId(1, SnapshotEntity).withScopeCommitDeep()
+        def shadows = itauAuditable.findShadows(byInstanceId(1, SnapshotEntity).withScopeCommitDeep()
                 .build()).collect{it.get()}
 
         then:
@@ -387,23 +387,23 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
         given:
         def address = new DummyAddress(city: "London")
         def entity = new SnapshotEntity(id: 1, valueObjectRef: address, intProperty: 1)
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
 
         address.city = "Paris"
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
 
         address.networkAddress = new DummyNetworkAddress(address: "some")
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
 
         address.networkAddress.address = "another"
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
 
         entity.intProperty = 5
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
 
         when:
         def query = QueryBuilder.byInstanceId(1, SnapshotEntity).build()
-        def shadows = javers.findShadows(query).collect{it.get()}
+        def shadows = itauAuditable.findShadows(query).collect{it.get()}
 
         then:
         shadows.size() == 5
@@ -439,22 +439,22 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
     def "should query for Shadows with property filter using implicit CHILD_VALUE_OBJECT scope"() {
         given:
         def e = new SnapshotEntity(id: 1, valueObjectRef: new DummyAddress(city: "London"))
-        javers.commit("author", e)
+        itauAuditable.commit("author", e)
 
         e.intProperty = 5
-        javers.commit("author", e)
+        itauAuditable.commit("author", e)
 
         e.valueObjectRef = new DummyAddress(city: "Paris")
-        javers.commit("author", e)
+        itauAuditable.commit("author", e)
 
         e.intProperty = 6
-        javers.commit("author", e)
+        itauAuditable.commit("author", e)
 
         e.dob = LocalDate.now()
-        javers.commit("author", e)
+        itauAuditable.commit("author", e)
 
         when:
-        def shadows = javers.findShadows(QueryBuilder.byClass(SnapshotEntity)
+        def shadows = itauAuditable.findShadows(QueryBuilder.byClass(SnapshotEntity)
                 .withChangedProperty("intProperty").build())
 
         then:
@@ -472,15 +472,15 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
     def "should run aggregate query when loading entity refs (using implicit CHILD_VALUE_OBJECT scope)"(){
       given:
       def ref = new SnapshotEntity(id: 2, valueObjectRef: new DummyAddress(city: "London"))
-      javers.commit("a", ref)
+      itauAuditable.commit("a", ref)
 
       def entity = new SnapshotEntity(id: 1, entityRef: ref)
-      javers.commit("a", entity)
+      itauAuditable.commit("a", entity)
 
       when:
       def query = QueryBuilder.byInstanceId(1, SnapshotEntity)
                 .withScopeDeepPlus().build()
-      def shadows = javers.findShadows(query).collect{it.get()}
+      def shadows = itauAuditable.findShadows(query).collect{it.get()}
 
       then:
       shadows.size() == 1
@@ -498,14 +498,14 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
         4.times{
             ref.intProperty = it
             entity.intProperty = it
-            javers.commit("a", ref)
-            javers.commit("a", entity)
+            itauAuditable.commit("a", ref)
+            itauAuditable.commit("a", entity)
         }
 
         when:
         def query = QueryBuilder.byInstanceId(1, SnapshotEntity)
                 .withScopeDeepPlus().build()
-        def shadows = javers.findShadows(query).collect{it.get()}
+        def shadows = itauAuditable.findShadows(query).collect{it.get()}
 
         then:
         query.stats().dbQueriesCount == 2
@@ -525,23 +525,23 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
     def "should load latest Entity Shadow in DEEP_PLUS query"(){
         given:
         def ref = new SnapshotEntity(id: 2, intProperty: 1, valueObjectRef: new DummyAddress(city: "London"))
-        javers.commit("a", ref)
+        itauAuditable.commit("a", ref)
 
         ref.intProperty = 5
-        javers.commit("a", ref)
+        itauAuditable.commit("a", ref)
 
         def entity = new SnapshotEntity(id: 1, entityRef: ref, intProperty: 1)
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
 
         entity.intProperty++
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
 
         //noise
         ref.intProperty = 3
-        javers.commit("a", ref)
+        itauAuditable.commit("a", ref)
 
         when:
-        def shadows = javers.findShadows(QueryBuilder.byInstanceId(1, SnapshotEntity)
+        def shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, SnapshotEntity)
                 .withScopeDeepPlus().build()).collect{it.get()}
 
         then:
@@ -558,14 +558,14 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
         given:
         def ref1 = new SnapshotEntity(id: 2)
         def ref2 = new SnapshotEntity(id: 3)
-        javers.commit("a", ref1)
-        javers.commit("a", ref2)
+        itauAuditable.commit("a", ref1)
+        itauAuditable.commit("a", ref2)
 
         def entity = new SnapshotEntity(id: 1, listOfEntities: [ref1,ref2])
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
 
         when:
-        def shadows = javers.findShadows(QueryBuilder.byInstanceId(1, SnapshotEntity)
+        def shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, SnapshotEntity)
                 .withScopeDeepPlus(1).build()).collect{it.get()}
 
         then:
@@ -578,20 +578,20 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
         given:
         def a = new DummyAddress(city: "a")
         def e = new SnapshotEntity(id: 1, valueObjectRef:a)
-        javers.commit("a", e)
+        itauAuditable.commit("a", e)
 
         50.times {
             a.city = it
-            javers.commit("a", e)
+            itauAuditable.commit("a", e)
         }
 
         when:
         println "findSnapshots ..."
-        def snapshots = javers.findSnapshots(byInstanceId(1, SnapshotEntity)
+        def snapshots = itauAuditable.findSnapshots(byInstanceId(1, SnapshotEntity)
                 .withChildValueObjects().limit(50).build())
 
         println "findShadows ..."
-        def shadows = javers.findShadows(byInstanceId(1, SnapshotEntity)
+        def shadows = itauAuditable.findShadows(byInstanceId(1, SnapshotEntity)
                 .limit(50).build()).collect{it.get()}
 
         then:
@@ -608,10 +608,10 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
     def "should load a thin Shadow when a property has @ShallowReference"(){
         given:
         def a = new PhoneWithShallowCategory(id:1, shallowCategory:new CategoryC(2, "some"))
-        javers.commit("a", a)
+        itauAuditable.commit("a", a)
 
         when:
-        def shadows = javers.findShadows(QueryBuilder.byInstanceId(1, PhoneWithShallowCategory)
+        def shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, PhoneWithShallowCategory)
                 .withScopeDeepPlus().build()).collect{it.get()}
 
         then:
@@ -626,10 +626,10 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
                 shallowCategoriesList:[new CategoryC(2, "shallow")],
                 shallowCategoryMap:["foo":new CategoryC(2, "some")]
         )
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
 
         when:
-        def shadows = javers.findShadows(QueryBuilder.byInstanceId(1, PhoneWithShallowCategory)
+        def shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, PhoneWithShallowCategory)
                 .withScopeDeepPlus().build()).collect{it.get()}
 
         then:
@@ -655,10 +655,10 @@ class ItauAuditableRepositoryShadowE2ETest extends ItauAuditableRepositoryE2ETes
                 shallowPhonesMap: ["key": reference]
         )
 
-        javers.commit("a", entity)
+        itauAuditable.commit("a", entity)
 
         when:
-        def shadows = javers.findShadows(QueryBuilder.byInstanceId(1, SnapshotEntity)
+        def shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, SnapshotEntity)
                 .withScopeDeepPlus().build()).collect{it.get()}
 
         then:

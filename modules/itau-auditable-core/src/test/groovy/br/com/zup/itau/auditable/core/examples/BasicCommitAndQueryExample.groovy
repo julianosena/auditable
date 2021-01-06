@@ -17,21 +17,21 @@ class BasicCommitAndQueryExample extends Specification {
         given:
         // prepare JaVers instance. By default, JaVers uses InMemoryRepository,
         // it's useful for testing
-        ItauAuditable javers = ItauAuditableBuilder.javers().build()
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         Person robert = new Person("bob", "Robert Martin")
-        javers.commit("user", robert)           // persist initial commit
+        itauAuditable.commit("user", robert)           // persist initial commit
 
         robert.setName("Robert C.")             // do some changes
         robert.setPosition(Position.Developer)
-        javers.commit("user", robert)           // and persist another commit
+        itauAuditable.commit("user", robert)           // and persist another commit
 
         JqlQuery query = QueryBuilder.byInstanceId("bob", Person.class).build()
 
         when:
         println "Shadows query:"
 
-        List<Shadow<Person>> shadows = javers.findShadows(query)
+        List<Shadow<Person>> shadows = itauAuditable.findShadows(query)
 
         shadows.forEach { println it.get() }
 
@@ -41,7 +41,7 @@ class BasicCommitAndQueryExample extends Specification {
         when:
         println "Snapshots query:"
 
-        List<CdoSnapshot> snapshots = javers.findSnapshots(query)
+        List<CdoSnapshot> snapshots = itauAuditable.findSnapshots(query)
 
         snapshots.forEach { println it }
 
@@ -51,9 +51,9 @@ class BasicCommitAndQueryExample extends Specification {
         when:
         println "Changes query:"
 
-        Changes changes = javers.findChanges(query)
+        Changes changes = itauAuditable.findChanges(query)
         // or the old approach:
-        // List<Change> changes = javers.findChanges(query)
+        // List<Change> changes = itauAuditable.findChanges(query)
 
         println changes.prettyPrint()
 

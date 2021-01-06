@@ -6,7 +6,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 
 /**
  * @author bartosz.walacik
@@ -14,7 +14,7 @@ import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTest
 class GlobalIdFactoryTest extends Specification {
 
     @Shared
-    GlobalIdFactory globalIdFactory = javersTestAssembly().globalIdFactory
+    GlobalIdFactory globalIdFactory = itauAuditableTestAssembly().globalIdFactory
 
     def "should build value() from typeName and reflectiveToString() for Embedded Id "() {
         when:

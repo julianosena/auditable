@@ -5,7 +5,7 @@ import br.com.zup.itau.auditable.core.metamodel.annotation.Id
 import spock.lang.Specification
 
 /**
- * https://github.com/javers/javers/issues/362
+ * https://github.com/itauAuditable/itauAuditable/issues/362
  *
  * @author bartosz.walacik
  */
@@ -20,12 +20,12 @@ class NotParametrizedGenericsWarningMessage extends Specification{
 
     def "should not fail on overcomplicated generic properties"(){
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
         def person1 = new Person(friends: [:], skills: [], colors:[])
         def person2 = new Person(friends: ["a":"b"], skills:["a"], colors:["a"])
 
         when:
-        def diff = javers.compare(person1, person2)
+        def diff = itauAuditable.compare(person1, person2)
 
         then:
         diff.changes.size() == 3

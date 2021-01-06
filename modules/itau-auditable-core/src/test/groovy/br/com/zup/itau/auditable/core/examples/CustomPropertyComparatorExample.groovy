@@ -47,18 +47,18 @@ class CustomPropertyComparatorExample extends Specification {
 
     def "should use FunnyStringComparator to compare String properties"(){
         given:
-        def javers = ItauAuditableBuilder.javers()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
                 .registerCustomType(String, new FunnyStringComparator()).build()
 
         when:
-        def diff = javers.compare(new ValueObject(value: "aaa"), new ValueObject(value: "a"))
+        def diff = itauAuditable.compare(new ValueObject(value: "aaa"), new ValueObject(value: "a"))
         println "first diff: "+ diff
 
         then:
         diff.changes.size() == 0
 
         when:
-        diff = javers.compare(new ValueObject(value: "aaa"), new ValueObject(value: "b"))
+        diff = itauAuditable.compare(new ValueObject(value: "aaa"), new ValueObject(value: "b"))
         println "second diff: "+ diff
 
         then:

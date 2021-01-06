@@ -17,7 +17,7 @@ class JpaHibernateConnectionProviderTest extends Specification {
     AnnotationConfigApplicationContext context
 
     @Shared
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Shared
     def repository
@@ -25,7 +25,7 @@ class JpaHibernateConnectionProviderTest extends Specification {
 
     def setupSpec() {
         context = new AnnotationConfigApplicationContext(ItauAuditableSpringJpaApplicationConfig)
-        javers = context.getBean(ItauAuditable)
+        itauAuditable = context.getBean(ItauAuditable)
     }
 
     @Unroll
@@ -36,7 +36,7 @@ class JpaHibernateConnectionProviderTest extends Specification {
 
         when:
         repository.save(o)
-        def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build())
 
         then:
         true

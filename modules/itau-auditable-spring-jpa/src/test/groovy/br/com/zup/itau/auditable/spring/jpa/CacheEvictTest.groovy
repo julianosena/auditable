@@ -16,10 +16,10 @@ import static br.com.zup.itau.auditable.hibernate.integration.config.HibernateCo
 class CacheEvictTest extends Specification{
 
     @Autowired
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Autowired
-    ItauAuditableSqlRepository javersSqlRepository
+    ItauAuditableSqlRepository itauAuditableSqlRepository
 
     @Autowired
     PersonCrudRepository repository
@@ -44,7 +44,7 @@ class CacheEvictTest extends Specification{
       then:
       def ex = thrown(RuntimeException)
       ex.message == "rollback"
-      javers.findSnapshots(QueryBuilder.anyDomainObject().build()).size() == 1
-      javersSqlRepository.globalIdPkCacheSize == 0
+      itauAuditable.findSnapshots(QueryBuilder.anyDomainObject().build()).size() == 1
+      itauAuditableSqlRepository.globalIdPkCacheSize == 0
     }
 }

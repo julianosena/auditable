@@ -13,7 +13,7 @@ class ItauAuditableRepositoryRandomCommitIdE2ETest extends ItauAuditableReposito
                 .anyDomainObject()
                 .toCommitId(CommitId.valueOf("4900110407498891977.00"))
                 .build()
-        javers.findSnapshots(query)
+        itauAuditable.findSnapshots(query)
 
         then:
         def e = thrown(ItauAuditableException)

@@ -12,13 +12,13 @@ class PreviousSnapshotsCalculatorTest extends Specification {
 
     def "should calculate previous snapshots identifiers and should fetch missing snapshots"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         def snapshotsA = [""]
         def snapshotsB = [""]
         (0..11).each {
-            snapshotsA << javers.commit("author", new SnapshotEntity(id: 1, intProperty: it)).snapshots[0]
-            snapshotsB << javers.commit("author", new SnapshotEntity(id: 2, intProperty: it)).snapshots[0]
+            snapshotsA << itauAuditable.commit("author", new SnapshotEntity(id: 1, intProperty: it)).snapshots[0]
+            snapshotsB << itauAuditable.commit("author", new SnapshotEntity(id: 2, intProperty: it)).snapshots[0]
         }
 
         def snapshotProviderStub = { identifiers ->

@@ -18,7 +18,7 @@ import spock.lang.Unroll
 
 import javax.persistence.Id
 
-import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
+import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.itauAuditable
 
 /**
  * @author bartosz walacik
@@ -27,8 +27,8 @@ class ItauAuditableBuilderTest extends Specification {
 
     def "should scan Entities with @TypeName when packegaToScan is given"() {
         when:
-        def javers = ItauAuditableTestBuilder.javersTestAssembly("org.zonk, br.com.zup.itau.auditable.core.examples.typeNames")
-        def typeMapper = javers.typeMapper
+        def itauAuditable = ItauAuditableTestBuilder.itauAuditableTestAssembly("org.zonk, br.com.zup.itau.auditable.core.examples.typeNames")
+        def typeMapper = itauAuditable.typeMapper
 
         then:
         typeMapper.getItauAuditableManagedType("myValueObject").baseJavaClass == NewValueObjectWithTypeAlias
@@ -36,8 +36,8 @@ class ItauAuditableBuilderTest extends Specification {
 
     def "should scan given Entity when requested explicitly"() {
         when:
-        def javers = ItauAuditableTestBuilder.javersTestAssembly(NewEntityWithTypeAlias)
-        def typeMapper = javers.typeMapper
+        def itauAuditable = ItauAuditableTestBuilder.itauAuditableTestAssembly(NewEntityWithTypeAlias)
+        def typeMapper = itauAuditable.typeMapper
 
         then:
         typeMapper.getItauAuditableManagedType("myName").baseJavaClass == NewEntityWithTypeAlias
@@ -45,77 +45,77 @@ class ItauAuditableBuilderTest extends Specification {
 
     def "should manage Entity"() {
         when:
-        def javers = javers().registerEntity(DummyEntity).build()
+        def itauAuditable = itauAuditable().registerEntity(DummyEntity).build()
 
         then:
-        javers.getTypeMapping(DummyEntity) instanceof EntityType
+        itauAuditable.getTypeMapping(DummyEntity) instanceof EntityType
     }
 
     def "should manage ValueObject"() {
         when:
-        def javers = javers().registerValueObject(DummyNetworkAddress).build()
+        def itauAuditable = itauAuditable().registerValueObject(DummyNetworkAddress).build()
 
         then:
-        javers.getTypeMapping(DummyNetworkAddress) instanceof ValueObjectType
+        itauAuditable.getTypeMapping(DummyNetworkAddress) instanceof ValueObjectType
     }
 
     def "should create ItauAuditable"() {
         when:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
 
         then:
-        javers != null
+        itauAuditable != null
     }
 
     def "should create multiple ItauAuditable instances"() {
         when:
-        def javers1 = javers().build()
-        def javers2 = javers().build()
+        def itauAuditable1 = itauAuditable().build()
+        def itauAuditable2 = itauAuditable().build()
 
         then:
-        javers1 != javers2
+        itauAuditable1 != itauAuditable2
     }
 
     def "should contain ObjectAccessHook when given"() {
         given:
         def graphFactoryHook = Stub(ObjectAccessHook)
-        ItauAuditableBuilder javersBuilder = javers().withObjectAccessHook(graphFactoryHook)
+        ItauAuditableBuilder itauAuditableBuilder = itauAuditable().withObjectAccessHook(graphFactoryHook)
 
         when:
-        javersBuilder.build()
+        itauAuditableBuilder.build()
 
         then:
-        javersBuilder.getContainerComponent(ObjectAccessHook) == graphFactoryHook
+        itauAuditableBuilder.getContainerComponent(ObjectAccessHook) == graphFactoryHook
     }
 
     def "should not contain FieldBasedPropertyScanner when Bean style"() {
         given:
-        ItauAuditableBuilder javersBuilder = javers().withMappingStyle(MappingStyle.BEAN)
+        ItauAuditableBuilder itauAuditableBuilder = itauAuditable().withMappingStyle(MappingStyle.BEAN)
 
         when:
-        javersBuilder.build()
+        itauAuditableBuilder.build()
 
         then:
-        javersBuilder.getContainerComponent(FieldBasedPropertyScanner) == null
+        itauAuditableBuilder.getContainerComponent(FieldBasedPropertyScanner) == null
     }
 
 
     def "should not contain BeanBasedPropertyScanner when Field style"() {
         given:
-        ItauAuditableBuilder javersBuilder = javers().withMappingStyle(MappingStyle.FIELD)
+        ItauAuditableBuilder itauAuditableBuilder = itauAuditable().withMappingStyle(MappingStyle.FIELD)
 
         when:
-        javersBuilder.build()
+        itauAuditableBuilder.build()
 
         then:
-        javersBuilder.getContainerComponent(BeanBasedPropertyScanner) == null
+        itauAuditableBuilder.getContainerComponent(BeanBasedPropertyScanner) == null
     }
 
 
-    def "should create multiple javers containers"() {
+    def "should create multiple itauAuditable containers"() {
         given:
-        ItauAuditableBuilder builder1 = ItauAuditableBuilder.javers()
-        ItauAuditableBuilder builder2 = ItauAuditableBuilder.javers()
+        ItauAuditableBuilder builder1 = ItauAuditableBuilder.itauAuditable()
+        ItauAuditableBuilder builder2 = ItauAuditableBuilder.itauAuditable()
 
         when:
         builder1.build()
@@ -128,7 +128,7 @@ class ItauAuditableBuilderTest extends Specification {
     @Unroll
     def "should contain #clazz.getSimpleName() bean"() {
         given:
-        ItauAuditableBuilder builder = javers()
+        ItauAuditableBuilder builder = itauAuditable()
 
         when:
         builder.build()
@@ -142,7 +142,7 @@ class ItauAuditableBuilderTest extends Specification {
 
     def "should contain singletons"() {
         given:
-        ItauAuditableBuilder builder = javers()
+        ItauAuditableBuilder builder = itauAuditable()
 
         when:
         builder.build()
@@ -153,7 +153,7 @@ class ItauAuditableBuilderTest extends Specification {
 
     def "should use LevenshteinListChangeAppender when selected"() {
         given:
-        def builder = javers().withListCompareAlgorithm(ListCompareAlgorithm.LEVENSHTEIN_DISTANCE)
+        def builder = itauAuditable().withListCompareAlgorithm(ListCompareAlgorithm.LEVENSHTEIN_DISTANCE)
 
         when:
         builder.build()
@@ -164,7 +164,7 @@ class ItauAuditableBuilderTest extends Specification {
 
     def "should use SimpleListChangeAppender by default"() {
         given:
-        def builder = javers()
+        def builder = itauAuditable()
 
         when:
         builder.build()

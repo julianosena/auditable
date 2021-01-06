@@ -34,7 +34,7 @@ import static GlobalIdTestBuilder.unboundedValueObjectId
 import static GlobalIdTestBuilder.valueObjectId
 import static java.lang.Math.abs
 import static java.time.temporal.ChronoUnit.MILLIS
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 import static br.com.zup.itau.auditable.core.metamodel.object.SnapshotType.INITIAL
 import static br.com.zup.itau.auditable.core.metamodel.object.SnapshotType.UPDATE
 import static br.com.zup.itau.auditable.core.model.DummyUser.dummyUser
@@ -43,7 +43,7 @@ import static br.com.zup.itau.auditable.repository.jql.QueryBuilder.*
 
 class ItauAuditableRepositoryE2ETest extends Specification {
     protected ItauAuditableRepository repository
-    protected ItauAuditable javers
+    protected ItauAuditable itauAuditable
     private DateProvider dateProvider
     private RandomCommitGenerator randomCommitGenerator = null
 
@@ -57,21 +57,21 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     void buildItauAuditableInstance() {
         dateProvider = prepareDateProvider()
         repository = prepareItauAuditableRepository()
-        javers = buildNextItauAuditableInstance(repository)
+        itauAuditable = buildNextItauAuditableInstance(repository)
     }
 
     ItauAuditable buildNextItauAuditableInstance (ItauAuditableRepository repository) {
-        def javersBuilder = ItauAuditableBuilder
-                .javers()
+        def itauAuditableBuilder = ItauAuditableBuilder
+                .itauAuditable()
                 .withDateTimeProvider(dateProvider)
                 .registerItauAuditableRepository(repository)
 
         if (useRandomCommitIdGenerator()) {
             randomCommitGenerator = new RandomCommitGenerator()
-            javersBuilder.withCustomCommitIdGenerator(randomCommitGenerator)
+            itauAuditableBuilder.withCustomCommitIdGenerator(randomCommitGenerator)
         }
 
-        javersBuilder.build()
+        itauAuditableBuilder.build()
     }
 
     protected int commitSeq(CommitMetadata commit) {
@@ -106,8 +106,8 @@ class ItauAuditableRepositoryE2ETest extends Specification {
         setNow(now)
 
         when:
-        javers.commit('author', new SnapshotEntity(id: 1))
-        def snapshot = javers.getLatestSnapshot(1, SnapshotEntity).get()
+        itauAuditable.commit('author', new SnapshotEntity(id: 1))
+        def snapshot = itauAuditable.getLatestSnapshot(1, SnapshotEntity).get()
 
         then:
         abs(MILLIS.between(snapshot.commitMetadata.commitDate, now.toLocalDateTime())) <= 1
@@ -120,7 +120,7 @@ class ItauAuditableRepositoryE2ETest extends Specification {
       def s = new PrimitiveEntity(id:1)
 
       when:
-      javers.commit("author",s)
+      itauAuditable.commit("author",s)
       s.intField = 10
       s.longField = 10
       s.doubleField = 1.1
@@ -136,10 +136,10 @@ class ItauAuditableRepositoryE2ETest extends Specification {
       s.ByteField = 10
       s.ShortField = 10
       s.BooleanField = true
-      javers.commit("author",s)
+      itauAuditable.commit("author",s)
 
       then:
-      javers.findChanges(QueryBuilder.anyDomainObject().build()).size() == 15
+      itauAuditable.findChanges(QueryBuilder.anyDomainObject().build()).size() == 15
     }
 
     def "should query for ValueObject changes by owning Entity class"() {
@@ -155,11 +155,11 @@ class ItauAuditableRepositoryE2ETest extends Specification {
         ]
 
         data.each{
-            javers.commit("author",it)
+            itauAuditable.commit("author",it)
         }
 
         when:
-        def changes = javers.findChanges(QueryBuilder.byValueObject(SnapshotEntity, "valueObjectRef").build())
+        def changes = itauAuditable.findChanges(QueryBuilder.byValueObject(SnapshotEntity, "valueObjectRef").build())
 
         then:
         changes.size() == 2
@@ -174,14 +174,14 @@ class ItauAuditableRepositoryE2ETest extends Specification {
         given:
         def vo = new DummyAddress(city: "London")
         def entity = new SnapshotEntity(id:1, valueObjectRef: vo)
-        javers.commit("author", entity)
-        javers.commit("author", new DummyUserDetails(id:1, dummyAddress: new DummyAddress(city: "Paris"))) //noise
+        itauAuditable.commit("author", entity)
+        itauAuditable.commit("author", new DummyUserDetails(id:1, dummyAddress: new DummyAddress(city: "Paris"))) //noise
 
         vo.city = "Paris"
-        javers.commit("author", entity)
+        itauAuditable.commit("author", entity)
 
         when:
-        def changes = javers.findChanges(QueryBuilder.byValueObjectId(1,SnapshotEntity,"valueObjectRef").build())
+        def changes = itauAuditable.findChanges(QueryBuilder.byValueObjectId(1,SnapshotEntity,"valueObjectRef").build())
 
         then:
         changes.size() == 1
@@ -196,12 +196,12 @@ class ItauAuditableRepositoryE2ETest extends Specification {
       def user = new DummyUserDetails(id:1, dummyAddress:
               new DummyAddress(networkAddress: new DummyNetworkAddress(address: "a")))
 
-      javers.commit("author", user)
+      itauAuditable.commit("author", user)
       user.dummyAddress.networkAddress.address = "b"
-      javers.commit("author", user)
+      itauAuditable.commit("author", user)
 
       when:
-      def changes = javers.findChanges(QueryBuilder.byValueObjectId(1, DummyUserDetails,
+      def changes = itauAuditable.findChanges(QueryBuilder.byValueObjectId(1, DummyUserDetails,
               "dummyAddress/networkAddress").build())
 
       then:
@@ -216,12 +216,12 @@ class ItauAuditableRepositoryE2ETest extends Specification {
             id:1,
             addressList: [new DummyAddress(networkAddress: new DummyNetworkAddress(address: "a"))])
 
-        javers.commit("author", user)
+        itauAuditable.commit("author", user)
         user.addressList[0].networkAddress.address = "b"
-        javers.commit("author", user)
+        itauAuditable.commit("author", user)
 
         when:
-        def changes = javers.findChanges(QueryBuilder.byValueObjectId(1, DummyUserDetails,
+        def changes = itauAuditable.findChanges(QueryBuilder.byValueObjectId(1, DummyUserDetails,
                 "addressList/0/networkAddress").build())
 
         then:
@@ -234,11 +234,11 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     def "should query for #what snapshot by GlobalId with limit"() {
         given:
         objects.each {
-            javers.commit("author",it)
+            itauAuditable.commit("author",it)
         }
 
         when:
-        def snapshots = javers.findSnapshots(query)
+        def snapshots = itauAuditable.findSnapshots(query)
 
         then:
         snapshots.size() == 3
@@ -275,11 +275,11 @@ class ItauAuditableRepositoryE2ETest extends Specification {
           new SnapshotEntity(id:2, valueObjectRef: new DummyAddress(city: "Paris", street: "str")) ,
           new SnapshotEntity(id:2, valueObjectRef: new DummyAddress(city: "Paris", street: "str 2"))] //noise
         objects.each {
-            javers.commit("author", it)
+            itauAuditable.commit("author", it)
         }
 
         when:
-        def snapshots = javers.findSnapshots(QueryBuilder.byClass(DummyAddress)
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(DummyAddress)
                 .withChangedProperty("city")
                 .withSnapshotTypeUpdate().build())
 
@@ -288,7 +288,7 @@ class ItauAuditableRepositoryE2ETest extends Specification {
         snapshots[0].globalId.typeName == DummyAddress.name
 
         when: "withNewObjectChanges"
-        snapshots = javers.findSnapshots(QueryBuilder.byClass(DummyAddress)
+        snapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(DummyAddress)
                 .withChangedProperty("city").build())
 
         then:
@@ -303,11 +303,11 @@ class ItauAuditableRepositoryE2ETest extends Specification {
           new SnapshotEntity(id:2, valueObjectRef: new DummyAddress(city: "Paris", street: "str")) ,
           new SnapshotEntity(id:2, valueObjectRef: new DummyAddress(city: "Paris", street: "str 2"))] //noise
         objects.each {
-            javers.commit("author", it)
+            itauAuditable.commit("author", it)
         }
 
         when:
-        def snapshots = javers.findSnapshots(QueryBuilder.byClass(DummyAddress)
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(DummyAddress)
                 .withChangedPropertyIn("city", "street")
                 .withSnapshotTypeUpdate().build())
 
@@ -318,14 +318,14 @@ class ItauAuditableRepositoryE2ETest extends Specification {
         }
 
         when:
-        snapshots = javers.findSnapshots(QueryBuilder.byClass(DummyAddress)
+        snapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(DummyAddress)
                 .withChangedPropertyIn("city", "street").build())
 
         then:
         snapshots.size() == 4
 
         when:
-        snapshots = javers.findSnapshots(QueryBuilder.byClass(DummyAddress)
+        snapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(DummyAddress)
                 .withChangedPropertyIn("street").build())
 
         then:
@@ -334,11 +334,11 @@ class ItauAuditableRepositoryE2ETest extends Specification {
 
     def "should query for Entity snapshots with snapshotType filter"(){
       given:
-      javers.commit( "author", new SnapshotEntity(id:1, intProperty: 1) )
-      javers.commit( "author", new SnapshotEntity(id:1, intProperty: 2) )
+      itauAuditable.commit( "author", new SnapshotEntity(id:1, intProperty: 1) )
+      itauAuditable.commit( "author", new SnapshotEntity(id:1, intProperty: 2) )
 
       when:
-      def snapshots = javers.findSnapshots(QueryBuilder.byClass(SnapshotEntity)
+      def snapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(SnapshotEntity)
               .withSnapshotType(INITIAL).build())
 
       then:
@@ -346,7 +346,7 @@ class ItauAuditableRepositoryE2ETest extends Specification {
       commitSeq(snapshots[0].commitMetadata) == 1
 
       when:
-      snapshots = javers.findSnapshots(QueryBuilder.byClass(SnapshotEntity)
+      snapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(SnapshotEntity)
             .withSnapshotType(UPDATE).build())
 
       then:
@@ -356,14 +356,14 @@ class ItauAuditableRepositoryE2ETest extends Specification {
 
     def "should query for Entity snapshots and changes by Entity class and changed property"() {
         given:
-        javers.commit( "author", new SnapshotEntity(id:1, intProperty: 1) )
-        javers.commit( "author", new SnapshotEntity(id:1, intProperty: 1, dob: LocalDate.now()) ) //noise
-        javers.commit( "author", new SnapshotEntity(id:1, intProperty: 2) )
-        javers.commit( "author", new DummyAddress() ) //noise
-        javers.commit( "author", new SnapshotEntity(id:2, intProperty: 1) )
+        itauAuditable.commit( "author", new SnapshotEntity(id:1, intProperty: 1) )
+        itauAuditable.commit( "author", new SnapshotEntity(id:1, intProperty: 1, dob: LocalDate.now()) ) //noise
+        itauAuditable.commit( "author", new SnapshotEntity(id:1, intProperty: 2) )
+        itauAuditable.commit( "author", new DummyAddress() ) //noise
+        itauAuditable.commit( "author", new SnapshotEntity(id:2, intProperty: 1) )
 
         when:
-        def snapshots = javers.findSnapshots(QueryBuilder.byClass(SnapshotEntity)
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(SnapshotEntity)
                 .withChangedProperty("intProperty")
                 .withSnapshotTypeUpdate().build())
 
@@ -374,14 +374,14 @@ class ItauAuditableRepositoryE2ETest extends Specification {
         snapshots[0].globalId.value() ==  SnapshotEntity.name+"/1"
 
         when: "withNewObjectChanges"
-        snapshots = javers.findSnapshots(QueryBuilder.byClass(SnapshotEntity)
+        snapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(SnapshotEntity)
                 .withChangedProperty("intProperty").build())
 
         then:
         snapshots.size() == 3
 
         when: "changes query"
-        def changes = javers.findChanges(QueryBuilder.byClass(SnapshotEntity)
+        def changes = itauAuditable.findChanges(QueryBuilder.byClass(SnapshotEntity)
                 .withChangedProperty("intProperty").build())
 
         then:
@@ -395,14 +395,14 @@ class ItauAuditableRepositoryE2ETest extends Specification {
 
     def "should query for Entity changes by Entity class"() {
         given:
-        javers.commit("author", new SnapshotEntity(id:1, intProperty: 1))
-        javers.commit("author", new SnapshotEntity(id:2, intProperty: 1))
-        javers.commit("author", new DummyAddress())
-        javers.commit("author", new SnapshotEntity(id:1, intProperty: 2))
-        javers.commit("author", new SnapshotEntity(id:2, intProperty: 2))
+        itauAuditable.commit("author", new SnapshotEntity(id:1, intProperty: 1))
+        itauAuditable.commit("author", new SnapshotEntity(id:2, intProperty: 1))
+        itauAuditable.commit("author", new DummyAddress())
+        itauAuditable.commit("author", new SnapshotEntity(id:1, intProperty: 2))
+        itauAuditable.commit("author", new SnapshotEntity(id:2, intProperty: 2))
 
         when:
-        def changes = javers.findChanges(QueryBuilder.byClass(SnapshotEntity).build())
+        def changes = itauAuditable.findChanges(QueryBuilder.byClass(SnapshotEntity).build())
 
         then:
         changes.size() == 2
@@ -412,12 +412,12 @@ class ItauAuditableRepositoryE2ETest extends Specification {
 
     def "should query for Entity snapshots by Entity class"() {
          given:
-         javers.commit("author", new SnapshotEntity(id:1))
-         javers.commit("author", new SnapshotEntity(id:2))
-         javers.commit("author", new DummyAddress())
+         itauAuditable.commit("author", new SnapshotEntity(id:1))
+         itauAuditable.commit("author", new SnapshotEntity(id:2))
+         itauAuditable.commit("author", new DummyAddress())
 
          when:
-         def snapshots = javers.findSnapshots(QueryBuilder.byClass(SnapshotEntity).build())
+         def snapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(SnapshotEntity).build())
 
          then:
          snapshots.size() == 2
@@ -431,11 +431,11 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     def "should query for #voType ValueObject snapshots by ValueObject class"() {
         given:
         objects.each {
-            javers.commit("author", it)
+            itauAuditable.commit("author", it)
         }
 
         when:
-        def snapshots = javers.findSnapshots(QueryBuilder.byClass(DummyAddress).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(DummyAddress).build())
 
         then:
         snapshots.size() == 2
@@ -454,13 +454,13 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     @Unroll
     def "should query for snapshots by multiple classes"() {
         given:
-        javers.commit("author", new DummyUser(name: "Alice", dummyUserDetails: new DummyUserDetails(id: 66)))
-        javers.commit("author", new DummyUser(name: "Bob"))
-        javers.commit("author", new SnapshotEntity(id: 1, valueObjectRef: new DummyAddress(city: "Berlin")))
-        javers.commit("author", new SnapshotEntity(id: 2))
+        itauAuditable.commit("author", new DummyUser(name: "Alice", dummyUserDetails: new DummyUserDetails(id: 66)))
+        itauAuditable.commit("author", new DummyUser(name: "Bob"))
+        itauAuditable.commit("author", new SnapshotEntity(id: 1, valueObjectRef: new DummyAddress(city: "Berlin")))
+        itauAuditable.commit("author", new SnapshotEntity(id: 2))
 
         when:
-        def snapshots = javers.findSnapshots(query)
+        def snapshots = itauAuditable.findSnapshots(query)
 
         then:
         snapshots.size() == expectedGlobalIds.size()
@@ -482,24 +482,24 @@ class ItauAuditableRepositoryE2ETest extends Specification {
 
     def "should query for Entity snapshots and changes by given instance"() {
         given:
-        javers.commit("author", new SnapshotEntity(id:1, intProperty: 4))
-        javers.commit("author", new SnapshotEntity(id:1, intProperty: 5))
-        javers.commit("author", new SnapshotEntity(id:2, intProperty: 4))
+        itauAuditable.commit("author", new SnapshotEntity(id:1, intProperty: 4))
+        itauAuditable.commit("author", new SnapshotEntity(id:1, intProperty: 5))
+        itauAuditable.commit("author", new SnapshotEntity(id:2, intProperty: 4))
 
         expect:
-        javers.findSnapshots(byInstance(new SnapshotEntity(id:1)).build()).size() == 2
-        javers.findChanges(byInstance(new SnapshotEntity(id:1)).build()).size() == 1
+        itauAuditable.findSnapshots(byInstance(new SnapshotEntity(id:1)).build()).size() == 2
+        itauAuditable.findChanges(byInstance(new SnapshotEntity(id:1)).build()).size() == 1
     }
 
     def "should query for Entity snapshots and changes by GlobalId and changed property"() {
         given:
-        javers.commit("author", new SnapshotEntity(id:1, intProperty: 4))
-        javers.commit("author", new SnapshotEntity(id:1, intProperty: 4, dob : LocalDate.now()))
-        javers.commit("author", new SnapshotEntity(id:1, intProperty: 5, dob : LocalDate.now()))
-        javers.commit("author", new SnapshotEntity(id:2, intProperty: 4)) //noise
+        itauAuditable.commit("author", new SnapshotEntity(id:1, intProperty: 4))
+        itauAuditable.commit("author", new SnapshotEntity(id:1, intProperty: 4, dob : LocalDate.now()))
+        itauAuditable.commit("author", new SnapshotEntity(id:1, intProperty: 5, dob : LocalDate.now()))
+        itauAuditable.commit("author", new SnapshotEntity(id:2, intProperty: 4)) //noise
 
         when: "should find snapshots"
-        def snapshots = javers.findSnapshots(
+        def snapshots = itauAuditable.findSnapshots(
                 byInstanceId(1, SnapshotEntity).withChangedProperty("intProperty").build())
 
         then:
@@ -508,7 +508,7 @@ class ItauAuditableRepositoryE2ETest extends Specification {
         commitSeq(snapshots[1].commitMetadata) == 1
 
         when: "should find changes"
-        def changes = javers.findChanges(
+        def changes = itauAuditable.findChanges(
                 byInstanceId(1, SnapshotEntity).withChangedProperty("intProperty").build())
 
         then:
@@ -521,11 +521,11 @@ class ItauAuditableRepositoryE2ETest extends Specification {
 
     def "should query for LatestSnapshot of Entity"() {
         given:
-        javers.commit("login", new SnapshotEntity(id: 1, intProperty: 1))
-        javers.commit("login", new SnapshotEntity(id: 1, intProperty: 2))
+        itauAuditable.commit("login", new SnapshotEntity(id: 1, intProperty: 1))
+        itauAuditable.commit("login", new SnapshotEntity(id: 1, intProperty: 2))
 
         when:
-        def snapshot = javers.getLatestSnapshot(1, SnapshotEntity).get()
+        def snapshot = itauAuditable.getLatestSnapshot(1, SnapshotEntity).get()
 
         then:
         commitSeq(snapshot.commitMetadata) == 2
@@ -535,11 +535,11 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     def "should fetch terminal snapshots from the repository"() {
         given:
         def anEntity = new SnapshotEntity(id:1, entityRef: new SnapshotEntity(id:2))
-        javers.commit("author", anEntity)
-        javers.commitShallowDelete("author", anEntity)
+        itauAuditable.commit("author", anEntity)
+        itauAuditable.commitShallowDelete("author", anEntity)
 
         when:
-        def snapshots = javers.findSnapshots(byInstanceId(1, SnapshotEntity).build())
+        def snapshots = itauAuditable.findSnapshots(byInstanceId(1, SnapshotEntity).build())
 
         then:
         snapshots.size() == 2
@@ -559,11 +559,11 @@ class ItauAuditableRepositoryE2ETest extends Specification {
 
         (1..n).each {
             user.intProperty = it
-            javers.commit("some.login", user)
+            itauAuditable.commit("some.login", user)
         }
 
         when:
-        def changes = javers.findChanges(
+        def changes = itauAuditable.findChanges(
             byInstanceId(1,SnapshotEntity).withChangedProperty("intProperty").build())
 
         then:
@@ -585,12 +585,12 @@ class ItauAuditableRepositoryE2ETest extends Specification {
                                      listOfDates: [new LocalDate(2001,1,1), new LocalDate(2001,1,2)],
                                      mapOfValues: [(new LocalDate(2001,1,1)):1.1],
                                      mapOfGenericValues: [("enumSet"):EnumSet.of(DummyEnum.val1, DummyEnum.val2)])
-        javers.commit("author", cdo) //v. 1
+        itauAuditable.commit("author", cdo) //v. 1
         cdo.intProperty = 5
-        javers.commit("author2", cdo) //v. 2
+        itauAuditable.commit("author2", cdo) //v. 2
 
         when:
-        def snapshots = javers.findSnapshots(byInstanceId(1, SnapshotEntity).build())
+        def snapshots = itauAuditable.findSnapshots(byInstanceId(1, SnapshotEntity).build())
 
         then:
         def refId = instanceId(2,SnapshotEntity)
@@ -627,12 +627,12 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     def "should compare Entity properties with latest from repository"() {
         given:
         def user = new DummyUser(name:"John",age:18)
-        javers.commit("login", user)
+        itauAuditable.commit("login", user)
 
         when:
         user.age = 19
-        javers.commit("login", user)
-        def history = javers.findChanges(byInstanceId("John", DummyUser).build())
+        itauAuditable.commit("login", user)
+        def history = itauAuditable.findChanges(byInstanceId("John", DummyUser).build())
 
         then:
         with(history[0]) {
@@ -647,12 +647,12 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     def "should compare ValueObject properties with latest from repository"() {
         given:
         def cdo = new SnapshotEntity(id: 1, listOfValueObjects: [new DummyAddress("London","street")])
-        javers.commit("login", cdo)
+        itauAuditable.commit("login", cdo)
 
         when:
         cdo.listOfValueObjects[0].city = "Paris"
-        javers.commit("login", cdo)
-        def history = javers.findChanges(
+        itauAuditable.commit("login", cdo)
+        def history = itauAuditable.findChanges(
                 QueryBuilder.byValueObjectId(1, SnapshotEntity, "listOfValueObjects/0").build())
 
 
@@ -674,19 +674,19 @@ class ItauAuditableRepositoryE2ETest extends Specification {
         expect:
         (1..25).each {
             cdo.intProperty = it
-            javers.commit("login", cdo)
-            def snap = javers.findSnapshots(byInstanceId(1, SnapshotEntity).build())[0]
+            itauAuditable.commit("login", cdo)
+            def snap = itauAuditable.findSnapshots(byInstanceId(1, SnapshotEntity).build())[0]
             assert snap.getPropertyValue("intProperty") == it
         }
     }
 
     def "should do diff and persist commit when class has complex Generic fields inherited from Generic superclass"() {
         given:
-        javers.commit("author", new ConcreteWithActualType("a", ["1"]) )
-        javers.commit("author", new ConcreteWithActualType("a", ["1","2"]) )
+        itauAuditable.commit("author", new ConcreteWithActualType("a", ["1"]) )
+        itauAuditable.commit("author", new ConcreteWithActualType("a", ["1","2"]) )
 
         when:
-        def changes = javers.findChanges(byClass(ConcreteWithActualType).build())
+        def changes = itauAuditable.findChanges(byClass(ConcreteWithActualType).build())
 
         then:
         def change = changes[0]
@@ -697,10 +697,10 @@ class ItauAuditableRepositoryE2ETest extends Specification {
 
     def "should manage ValueObject query when both ValueObject and owner Entity uses @TypeName"(){
         when:
-        javers.commit("author", new NewEntityWithTypeAlias(id: 1, valueObject: new NewValueObjectWithTypeAlias(some:5)) )
-        javers.commit("author", new NewEntityWithTypeAlias(id: 1, valueObject: new NewValueObjectWithTypeAlias(some:6)) )
+        itauAuditable.commit("author", new NewEntityWithTypeAlias(id: 1, valueObject: new NewValueObjectWithTypeAlias(some:5)) )
+        itauAuditable.commit("author", new NewEntityWithTypeAlias(id: 1, valueObject: new NewValueObjectWithTypeAlias(some:6)) )
 
-        def changes = javers.findChanges(QueryBuilder.byValueObject(NewEntityWithTypeAlias,"valueObject").build())
+        def changes = itauAuditable.findChanges(QueryBuilder.byValueObject(NewEntityWithTypeAlias,"valueObject").build())
 
         then:
         changes.size() == 1
@@ -712,10 +712,10 @@ class ItauAuditableRepositoryE2ETest extends Specification {
 
     def "should load Snapshot with @TypeName of concrete (used) ValueObject"(){
         given:
-        javers.commit("author", new EntityWithRefactoredValueObject(id:1, value: new NewNamedValueObject(6,  10)))
+        itauAuditable.commit("author", new EntityWithRefactoredValueObject(id:1, value: new NewNamedValueObject(6,  10)))
 
         when:
-        def snapshot = javers.findSnapshots(QueryBuilder.byClass(NewNamedValueObject).build())[0]
+        def snapshot = itauAuditable.findSnapshots(QueryBuilder.byClass(NewNamedValueObject).build())[0]
 
         then:
         snapshot.globalId.typeName.endsWith("OldValueObject")
@@ -728,11 +728,11 @@ class ItauAuditableRepositoryE2ETest extends Specification {
             def entity =  new SnapshotEntity(id: 1, intProperty: it)
             def now = ZonedDateTime.of(LocalDateTime.of(2015,01,1,it,0), ZoneId.of("UTC"))
             setNow( now )
-            javers.commit('author', entity)
+            itauAuditable.commit('author', entity)
         }
 
         when:
-        def snapshots = javers.findSnapshots(query)
+        def snapshots = itauAuditable.findSnapshots(query)
         def commitDates = snapshots.commitMetadata.commitDate
 
         then:
@@ -760,11 +760,11 @@ class ItauAuditableRepositoryE2ETest extends Specification {
             def entity = new SnapshotEntity(id: 1, intProperty: it)
             def now = ZonedDateTime.of(2020, 9, 26, it, 0, 0, 0, ZoneOffset.UTC)
             setNow(now)
-            javers.commit('author', entity)
+            itauAuditable.commit('author', entity)
         }
 
         when:
-        def snapshots = javers.findSnapshots(query)
+        def snapshots = itauAuditable.findSnapshots(query)
         def commitDates = snapshots.commitMetadata.commitDateInstant
 
         then:
@@ -790,11 +790,11 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     def "should query for Entity snapshots with skipped results, #what"() {
         given:
         (19..1).each{
-            javers.commit("author", new SnapshotEntity(id: 1, intProperty: it))
+            itauAuditable.commit("author", new SnapshotEntity(id: 1, intProperty: it))
         }
 
         when:
-        def snapshots = javers.findSnapshots(query)
+        def snapshots = itauAuditable.findSnapshots(query)
         def intPropertyValues = snapshots.collect { it.getPropertyValue("intProperty") }
 
         then:
@@ -828,11 +828,11 @@ class ItauAuditableRepositoryE2ETest extends Specification {
 
     def "should increment Entity snapshot version number"(){
       when:
-      javers.commit("author", new SnapshotEntity(id: 1, intProperty: 1))
-      javers.commit("author", new SnapshotEntity(id: 1, intProperty: 2))
+      itauAuditable.commit("author", new SnapshotEntity(id: 1, intProperty: 1))
+      itauAuditable.commit("author", new SnapshotEntity(id: 1, intProperty: 2))
 
       then:
-      def snapshots = javers.findSnapshots(byInstanceId(1, SnapshotEntity).build())
+      def snapshots = itauAuditable.findSnapshots(byInstanceId(1, SnapshotEntity).build())
       snapshots[0].version == 2
       snapshots[1].version == 1
 
@@ -841,12 +841,12 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     @Unroll
     def "should query for Entity snapshot with given commit id"() {
         given:
-        def commits = (0..10).collect { javers.commit("author", new SnapshotEntity(id: 1, intProperty: it)) }
+        def commits = (0..10).collect { itauAuditable.commit("author", new SnapshotEntity(id: 1, intProperty: it)) }
         def searchedCommitId = commits[7].id
 
         when:
         def query = createQuery(searchedCommitId)
-        def snapshots = javers.findSnapshots(query)
+        def snapshots = itauAuditable.findSnapshots(query)
 
         then:
         snapshots.commitId == [searchedCommitId]
@@ -863,10 +863,10 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     @Unroll
     def "should query for Entity snapshot with given version"() {
         given:
-        (1..10).each { javers.commit("author", new SnapshotEntity(id: 1, intProperty: it)) }
+        (1..10).each { itauAuditable.commit("author", new SnapshotEntity(id: 1, intProperty: it)) }
 
         when:
-        def snapshots = javers.findSnapshots(query)
+        def snapshots = itauAuditable.findSnapshots(query)
 
         then:
         snapshots.size() == 1
@@ -882,17 +882,17 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     def "should retrieve snapshots with specified identifiers"() {
         given:
         (1..10).each {
-            javers.commit("author", new SnapshotEntity(id: 1, intProperty: it))
-            javers.commit("author", new SnapshotEntity(id: 2, intProperty: it))
-            javers.commit("author", new SnapshotEntity(id: 3, intProperty: it))
+            itauAuditable.commit("author", new SnapshotEntity(id: 1, intProperty: it))
+            itauAuditable.commit("author", new SnapshotEntity(id: 2, intProperty: it))
+            itauAuditable.commit("author", new SnapshotEntity(id: 3, intProperty: it))
         }
 
-        def javersTestBuilder = javersTestAssembly()
+        def itauAuditableTestBuilder = itauAuditableTestAssembly()
         def snapshotIdentifiers = [
-            new SnapshotIdentifier(javersTestBuilder.instanceId(new SnapshotEntity(id: 1)), 3),
-            new SnapshotIdentifier(javersTestBuilder.instanceId(new SnapshotEntity(id: 3)), 7),
-            new SnapshotIdentifier(javersTestBuilder.instanceId(new SnapshotEntity(id: 2)), 1),
-            new SnapshotIdentifier(javersTestBuilder.instanceId(new SnapshotEntity(id: 1)), 10)
+            new SnapshotIdentifier(itauAuditableTestBuilder.instanceId(new SnapshotEntity(id: 1)), 3),
+            new SnapshotIdentifier(itauAuditableTestBuilder.instanceId(new SnapshotEntity(id: 3)), 7),
+            new SnapshotIdentifier(itauAuditableTestBuilder.instanceId(new SnapshotEntity(id: 2)), 1),
+            new SnapshotIdentifier(itauAuditableTestBuilder.instanceId(new SnapshotEntity(id: 1)), 10)
         ]
 
         when:
@@ -908,10 +908,10 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     def "should cope with query for 200 different snapshots"() {
         given:
         (1..200).each {
-            javers.commit("author", new SnapshotEntity(id: 1, intProperty: it))
+            itauAuditable.commit("author", new SnapshotEntity(id: 1, intProperty: it))
         }
 
-        def instanceId = javersTestAssembly().instanceId(new SnapshotEntity(id: 1))
+        def instanceId = itauAuditableTestAssembly().instanceId(new SnapshotEntity(id: 1))
         def snapshotIdentifiers = (1..200).collect {
             new SnapshotIdentifier(instanceId, it)
         }
@@ -925,7 +925,7 @@ class ItauAuditableRepositoryE2ETest extends Specification {
 
     def "should cope with query for snapshots with empty collection of snapshot ids"() {
         given:
-        javers.commit("author", new SnapshotEntity(id: 1, intProperty: 1))
+        itauAuditable.commit("author", new SnapshotEntity(id: 1, intProperty: 1))
 
         when:
         def snapshots = repository.getSnapshots([])
@@ -937,19 +937,19 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     @Unroll
     def "should find all changes introduced by all snapshots specified in query (limit: #limit)"() {
         given:
-        javers.commit("author", new SnapshotEntity(id: 1))
+        itauAuditable.commit("author", new SnapshotEntity(id: 1))
         (1..100).each {
             def entity = new SnapshotEntity(id: 1, intProperty: it)
-            javers.commit("author", entity)
+            itauAuditable.commit("author", entity)
 
             entity.dob = LocalDate.now()
-            javers.commit("author", entity)
+            itauAuditable.commit("author", entity)
         }
 
         when:
         def query = byInstanceId(1, SnapshotEntity).withChangedProperty('intProperty').limit(limit).build()
-        def snapshots = javers.findSnapshots(query)
-        def changes = javers.findChanges(query)
+        def snapshots = itauAuditable.findSnapshots(query)
+        def changes = itauAuditable.findChanges(query)
 
         then:
         assert snapshots.size() == changes.size()
@@ -967,12 +967,12 @@ class ItauAuditableRepositoryE2ETest extends Specification {
         given:
         (1..4).each {
             def author = it % 2 == 0 ? "Jim" : "Pam";
-            javers.commit(author, new SnapshotEntity(id: it))
-            javers.commit(author, new DummyUserDetails(id: it))
+            itauAuditable.commit(author, new SnapshotEntity(id: it))
+            itauAuditable.commit(author, new DummyUserDetails(id: it))
         }
 
         when:
-        def snapshots = javers.findSnapshots(query)
+        def snapshots = itauAuditable.findSnapshots(query)
 
         then:
         snapshots*.globalId == expectedResult
@@ -992,10 +992,10 @@ class ItauAuditableRepositoryE2ETest extends Specification {
 
     def "should return empty map of commit properties if snapshot was commited without properties"() {
         given:
-        javers.commit("author", new SnapshotEntity(id :1))
+        itauAuditable.commit("author", new SnapshotEntity(id :1))
 
         when:
-        def snapshot = javers.findSnapshots(byInstanceId(1, SnapshotEntity).build()).first()
+        def snapshot = itauAuditable.findSnapshots(byInstanceId(1, SnapshotEntity).build()).first()
 
         then:
         assert snapshot.commitMetadata.properties.isEmpty()
@@ -1009,10 +1009,10 @@ class ItauAuditableRepositoryE2ETest extends Specification {
             "device": "smartwatch",
             "yet another property name": "yet another property value",
         ]
-        javers.commit("author", new SnapshotEntity(id :1), commitProperties)
+        itauAuditable.commit("author", new SnapshotEntity(id :1), commitProperties)
 
         when:
-        def snapshot = javers.findSnapshots(byInstanceId(1, SnapshotEntity).build()).first()
+        def snapshot = itauAuditable.findSnapshots(byInstanceId(1, SnapshotEntity).build()).first()
 
         then:
         assert snapshot.commitMetadata.properties["tenant"] == "ACME"
@@ -1024,14 +1024,14 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     @Unroll
     def "should retrieve snapshots with specified commit properties"() {
         given:
-        javers.commit("author", new SnapshotEntity(id: 1), [ "tenant" : "ACME", "browser": "IE" ])
-        javers.commit("author", new SnapshotEntity(id: 2), [ "tenant" : "Dunder Mifflin", "browser": "IE" ])
-        javers.commit("author", new SnapshotEntity(id: 3), [ "tenant" : "ACME", "browser": "Safari" ])
-        javers.commit("author", new SnapshotEntity(id: 4), [ "tenant" : "Dunder Mifflin", "browser": "Safari" ])
-        javers.commit("author", new SnapshotEntity(id: 5), [ "tenant" : "Dunder Mifflin", "browser": "Chrome" ])
+        itauAuditable.commit("author", new SnapshotEntity(id: 1), [ "tenant" : "ACME", "browser": "IE" ])
+        itauAuditable.commit("author", new SnapshotEntity(id: 2), [ "tenant" : "Dunder Mifflin", "browser": "IE" ])
+        itauAuditable.commit("author", new SnapshotEntity(id: 3), [ "tenant" : "ACME", "browser": "Safari" ])
+        itauAuditable.commit("author", new SnapshotEntity(id: 4), [ "tenant" : "Dunder Mifflin", "browser": "Safari" ])
+        itauAuditable.commit("author", new SnapshotEntity(id: 5), [ "tenant" : "Dunder Mifflin", "browser": "Chrome" ])
 
         when:
-        def snapshots = javers.findSnapshots(query)
+        def snapshots = itauAuditable.findSnapshots(query)
 
         then:
         assert snapshots*.getPropertyValue("id") as Set == expectedSnapshotIds as Set
@@ -1053,11 +1053,11 @@ class ItauAuditableRepositoryE2ETest extends Specification {
 
     def "should handle special characters in commit properties filter"() {
         given:
-        javers.commit("author", new SnapshotEntity(id: 1), ["specialCharacters": ""])
-        javers.commit("author", new SnapshotEntity(id: 2), ["specialCharacters": "!@#\$%^&*()-_=+[{]};:'\"\\|`~,<.>/?§£"])
+        itauAuditable.commit("author", new SnapshotEntity(id: 1), ["specialCharacters": ""])
+        itauAuditable.commit("author", new SnapshotEntity(id: 2), ["specialCharacters": "!@#\$%^&*()-_=+[{]};:'\"\\|`~,<.>/?§£"])
 
         when:
-        def snapshots = javers.findSnapshots(byClass(SnapshotEntity).withCommitProperty("specialCharacters", "!@#\$%^&*()-_=+[{]};:'\"\\|`~,<.>/?§£").build())
+        def snapshots = itauAuditable.findSnapshots(byClass(SnapshotEntity).withCommitProperty("specialCharacters", "!@#\$%^&*()-_=+[{]};:'\"\\|`~,<.>/?§£").build())
 
         then:
         assert snapshots.size() == 1
@@ -1076,13 +1076,13 @@ class ItauAuditableRepositoryE2ETest extends Specification {
           new SnapshotEntity(id:2, valueObjectRef: new DummyAddress(city: "Paris")) //noise
         ]
         objects.each {
-            javers.commit("author", it)
+            itauAuditable.commit("author", it)
         }
 
         def query = QueryBuilder.byInstanceId(1, SnapshotEntity).withChildValueObjects().build()
 
         when: "snapshots query"
-        def snapshots = javers.findSnapshots(query)
+        def snapshots = itauAuditable.findSnapshots(query)
 
         then:
         def sName = SnapshotEntity.name
@@ -1097,7 +1097,7 @@ class ItauAuditableRepositoryE2ETest extends Specification {
                 ] as Set
 
         when: "changes query"
-        def changes = javers.findChanges(query)
+        def changes = itauAuditable.findChanges(query)
 
         then:
         changes.size() == 2
@@ -1118,13 +1118,13 @@ class ItauAuditableRepositoryE2ETest extends Specification {
                 new DummyUserDetails(id: 1, dummyAddress: paris) //noise
         ]
         objects.each {
-            javers.commit("author", it)
+            itauAuditable.commit("author", it)
         }
 
         def query = QueryBuilder.byClass(SnapshotEntity).withChildValueObjects().build()
 
         when: "snapshots query"
-        def snapshots = javers.findSnapshots(query)
+        def snapshots = itauAuditable.findSnapshots(query)
 
         then:
         def sName = SnapshotEntity.class.name
@@ -1143,7 +1143,7 @@ class ItauAuditableRepositoryE2ETest extends Specification {
         ] as Set
 
         when: "changes query"
-        def changes = javers.findChanges(query)
+        def changes = itauAuditable.findChanges(query)
 
         then:
         changes.find{it instanceof ListChange}.affectedGlobalId.value() == "$sName/1"
@@ -1164,8 +1164,8 @@ class ItauAuditableRepositoryE2ETest extends Specification {
         }
 
         then:
-        def javers = buildNextItauAuditableInstance(repository)
-        def snapshots = javers.findSnapshots(QueryBuilder.anyDomainObject().build())
+        def itauAuditable = buildNextItauAuditableInstance(repository)
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.anyDomainObject().build())
         snapshots.size() == threads
         snapshots.collect{it -> it.getPropertyValue("id")} as Set == (1..threads).collect{it} as Set
 
@@ -1178,15 +1178,15 @@ class ItauAuditableRepositoryE2ETest extends Specification {
         def anEntity = new SnapshotEntity(id: 1, intProperty: 100)
 
         when:
-        def commit = javers.commit("author", anEntity)
-        def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
+        def commit = itauAuditable.commit("author", anEntity)
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
 
         then:
         snapshots.size() == 1
         repository.getHeadId() == commit.getId()
 
         when: "should not be persisted"
-        javers.commit("author", anEntity)
+        itauAuditable.commit("author", anEntity)
 
         then:
         repository.getHeadId() == commit.getId()
@@ -1194,12 +1194,12 @@ class ItauAuditableRepositoryE2ETest extends Specification {
 
     def "should use name from @PropertyName in commits and queries"(){
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         when:
-        javers.commit("author", new DummyUserDetails(id:1))
-        javers.commit("author", new DummyUserDetails(id:1, customizedProperty: 'a'))
-        def snapshots = javers.findSnapshots(QueryBuilder.anyDomainObject().withChangedProperty('Customized Property').build())
+        itauAuditable.commit("author", new DummyUserDetails(id:1))
+        itauAuditable.commit("author", new DummyUserDetails(id:1, customizedProperty: 'a'))
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.anyDomainObject().withChangedProperty('Customized Property').build())
 
         then:
         snapshots.size() == 1
@@ -1209,19 +1209,19 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     def "should query by multiple CommitId"(){
       given:
       def entity = new SnapshotEntity(id: 1, valueObjectRef: new DummyAddress(city: "London"))
-      def firstCommit = javers.commit("a", entity)
+      def firstCommit = itauAuditable.commit("a", entity)
 
       def lastCommit
       3.times {
           entity.intProperty = it + 1
-          lastCommit = javers.commit("a", entity)
+          lastCommit = itauAuditable.commit("a", entity)
       }
 
       println firstCommit
       println lastCommit
 
       when:
-      def snapshots = javers
+      def snapshots = itauAuditable
               .findSnapshots(QueryBuilder.anyDomainObject()
               .withCommitIds( [firstCommit.id.valueAsNumber(), lastCommit.id.valueAsNumber()] )
               .build())
@@ -1236,7 +1236,7 @@ class ItauAuditableRepositoryE2ETest extends Specification {
     //CASE FOR ISSUE 958
     def "should query by commitIds with minor numbers (parallel)"() {
         given: "there are commits with ids 1.0 and 1.01"
-        def commitFactory = javers.commitFactory
+        def commitFactory = itauAuditable.commitFactory
 
         def kazikV1 = dummyUser("Kazik").withAge(1)
         def kazikV2 = dummyUser("Kazik").withAge(2)
@@ -1255,7 +1255,7 @@ class ItauAuditableRepositoryE2ETest extends Specification {
                 .withCommitIds([commit1.id.valueAsNumber(),
                                 commit2.id.valueAsNumber()])
                 .build()
-        List snapshots = javers.findSnapshots(query)
+        List snapshots = itauAuditable.findSnapshots(query)
 
         then: "two snapshots are returned"
         snapshots.size() == 2
@@ -1297,15 +1297,15 @@ class ItauAuditableRepositoryE2ETest extends Specification {
 
     def "should allow for property type change"(){
       given:
-      javers.commit("author", new C1 (id:1, value: "a"))
-      javers.commit("author", new C2 (id:1, value: 1))
-      javers.commit("author", new C21(id:1, value: [2,1]))
-      javers.commit("author", new C22(id:1, value: ["2","1"]))
-      javers.commit("author", new C3 (id:1, value: new C3(id:2)))
-      javers.commit("author", new C4 (id:1, value: "a"))
+      itauAuditable.commit("author", new C1 (id:1, value: "a"))
+      itauAuditable.commit("author", new C2 (id:1, value: 1))
+      itauAuditable.commit("author", new C21(id:1, value: [2,1]))
+      itauAuditable.commit("author", new C22(id:1, value: ["2","1"]))
+      itauAuditable.commit("author", new C3 (id:1, value: new C3(id:2)))
+      itauAuditable.commit("author", new C4 (id:1, value: "a"))
 
       when:
-      def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1, "C").build())
+      def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, "C").build())
 
       then:
       snapshots.size() == 6
@@ -1318,7 +1318,7 @@ class ItauAuditableRepositoryE2ETest extends Specification {
       snapshots[5].getPropertyValue("value") == "a"
 
       when:
-      def changes = javers.findChanges(QueryBuilder.byInstanceId(1, "C").build())
+      def changes = itauAuditable.findChanges(QueryBuilder.byInstanceId(1, "C").build())
 
       then:
       println changes.prettyPrint()

@@ -22,36 +22,36 @@ for persisting ItauAuditable data.
 To use a dedicated instance of MongoDB, configure ItauAuditable as shown below:
 
 ```yaml
-javers:
+itauAuditable:
   mongodb:
     host: localhost
     port: 27017
     database: itau-auditable-audit
     authentication-database: admin
-    username: javers
+    username: itauAuditable
     password: password
 ```
 
 or:
 
 ```yaml
-javers:
+itauAuditable:
   mongodb:
-    uri: mongodb://javers:password@localhost:27017/itau-auditable-audit&authSource=admin
+    uri: mongodb://itauAuditable:password@localhost:27017/itau-auditable-audit&authSource=admin
 ```
 
 Either `host` or `uri` has to set.
 
 #### MongoClientSettings
 If better control is required over how ItauAuditable configures the `MongoClient` instance,
-you can configure a `MongoClientSettings` bean named `javersMongoClientSettings`.
+you can configure a `MongoClientSettings` bean named `itauAuditableMongoClientSettings`.
 If there is no such bean, default client options are used. 
 
 For example, if you want to enable SSL and set socket timeout,
 define this bean:
 
 ```java
-@Bean("javersMongoClientSettings")
+@Bean("itauAuditableMongoClientSettings")
 public MongoClientSettings clientSettings() {
     return MongoClientSettings.builder()
             .applyToSslSettings(builder -> builder.enabled(true))

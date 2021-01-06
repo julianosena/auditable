@@ -26,9 +26,9 @@ public class CollectionsCdoFactory {
 
     public LiveCdo createCdo(final CollectionWrapper wrapper, final Class<?> clazz) {
         Property primaryProperty = classScanner.scan(wrapper.getClass()).getProperties().get(0);
-        ItauAuditableMember javersMember = memberGenericTypeInjector.create(primaryProperty, clazz);
+        ItauAuditableMember itauAuditableMember = memberGenericTypeInjector.create(primaryProperty, clazz);
 
-        Property fixedProperty = new Property(javersMember);
+        Property fixedProperty = new Property(itauAuditableMember);
         ItauAuditableProperty fixedJProperty = new ItauAuditableProperty(() -> typeMapper.getPropertyType(fixedProperty), fixedProperty);
 
         ValueObjectType valueObject = new ValueObjectType(wrapper.getClass(), Lists.asList(fixedJProperty));

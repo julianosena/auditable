@@ -176,7 +176,7 @@ public class ItauAuditableSchemaManager extends SchemaNameAware {
     }
 
     private void handleUnsupportedDialect() {
-        logger.error("\nno DB schema migration script for {} :(\nplease contact with JaVers team, javers@javers.org",
+        logger.error("\nno DB schema migration script for {} :(\nplease contact with JaVers team, itauAuditable@itauAuditable.org",
                 dialect.getCode());
     }
 
@@ -254,7 +254,7 @@ public class ItauAuditableSchemaManager extends SchemaNameAware {
             logger.debug("table {}.{} exists", schemaName, tableName);
             return;
         }
-        logger.debug("creating javers table {}.{} ...", schemaName, tableName);
+        logger.debug("creating itauAuditable table {}.{} ...", schemaName, tableName);
         schemaManager.create(schema);
 
     }

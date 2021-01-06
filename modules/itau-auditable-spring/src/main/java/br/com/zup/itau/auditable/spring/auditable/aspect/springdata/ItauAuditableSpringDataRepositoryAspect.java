@@ -12,16 +12,16 @@ import java.util.Map;
 
 /**
  * Calls {@link ItauAuditable#commit(String, Object, Map)} on objects returned from save() methods in Spring Data CrudRepository
- * when a repository is annotated with (class-level) @ItauAuditableSpringDataAuditable.
+ * when a repository is annotated with (class-level) @ItauAuditableSpringData.
  * <br/><br/>
  *
  * Calls {@link ItauAuditable#commitShallowDelete(String, Object, Map)} on arguments passed to delete() methods.
  */
 @Aspect
 @Order(0)
-public class ItauAuditableSpringDataAuditableRepositoryAspect extends AbstractSpringAuditableRepositoryAspect {
-    public ItauAuditableSpringDataAuditableRepositoryAspect(ItauAuditable javers, AuthorProvider authorProvider, CommitPropertiesProvider commitPropertiesProvider) {
-        super(javers, authorProvider, commitPropertiesProvider);
+public class ItauAuditableSpringDataRepositoryAspect extends AbstractSpringAuditableRepositoryAspect {
+    public ItauAuditableSpringDataRepositoryAspect(ItauAuditable itauAuditable, AuthorProvider authorProvider, CommitPropertiesProvider commitPropertiesProvider) {
+        super(itauAuditable, authorProvider, commitPropertiesProvider);
     }
 
     @AfterReturning("execution(public * delete(..)) && this(org.springframework.data.repository.CrudRepository)")

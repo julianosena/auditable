@@ -105,11 +105,11 @@ class ShadowGraphBuilder {
     }
 
     private void mapCustomPropertyNamesToJavaOrigin(ManagedType managedType, JsonObject jsonElement) {
-        managedType.forEachProperty(javersProperty -> {
-                if (javersProperty.hasCustomName()) {
-                    JsonElement value = jsonElement.get(javersProperty.getName());
-                    jsonElement.remove(javersProperty.getName());
-                    jsonElement.add(javersProperty.getOriginalName(), value);
+        managedType.forEachProperty(itauAuditableProperty -> {
+                if (itauAuditableProperty.hasCustomName()) {
+                    JsonElement value = jsonElement.get(itauAuditableProperty.getName());
+                    jsonElement.remove(itauAuditableProperty.getName());
+                    jsonElement.add(itauAuditableProperty.getOriginalName(), value);
                 }
         });
     }

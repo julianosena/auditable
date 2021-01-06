@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  * Usage example:
  *
  * <pre>
- * ItauAuditableBuilder.javers()
+ * ItauAuditableBuilder.itauAuditable()
  *     .registerValue(BigDecimal.class, new BigDecimalComparatorWithFixedEquals())
  *     .build();
  * </pre>

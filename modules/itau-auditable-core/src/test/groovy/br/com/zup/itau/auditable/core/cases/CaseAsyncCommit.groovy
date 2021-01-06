@@ -18,7 +18,7 @@ class CaseAsyncCommit extends Specification {
     def "should commit asynchronously "(){
       given:
       def p = new SnapshotEntity(id:1, intProperty:2)
-      def javers = ItauAuditableBuilder.javers().build()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
       def waitFlag = new AtomicBoolean(true)
       def executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(100))
@@ -30,8 +30,8 @@ class CaseAsyncCommit extends Specification {
       })
 
       when:
-      def cf = javers.commitAsync("author", p, [:], executor)
-      def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1,SnapshotEntity).build())
+      def cf = itauAuditable.commitAsync("author", p, [:], executor)
+      def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1,SnapshotEntity).build())
 
       then:
       snapshots.size() == 0
@@ -41,7 +41,7 @@ class CaseAsyncCommit extends Specification {
       logger.info "waiting for future competition ...."
       while(executor.completedTaskCount < 3) {}
 
-      def snapshot = javers.findSnapshots(QueryBuilder.byInstanceId(1,SnapshotEntity).build()).get(0)
+      def snapshot = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1,SnapshotEntity).build()).get(0)
       def commit = cf.get()
 
       then:

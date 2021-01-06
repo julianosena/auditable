@@ -24,13 +24,13 @@ public class Application {
         System.out.println(".. building JaVers instance ...");
 
         try {
-            ItauAuditable javers = ItauAuditableBuilder.javers().build();
+            ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
             SampleValueObject left = new SampleValueObject("red");
             SampleValueObject right = new SampleValueObject("green");
 
             System.out.println(".. calculating diff for two simple ValueObjects...");
-            Diff diff = javers.compare(left, right);
+            Diff diff = itauAuditable.compare(left, right);
 
             conditionFulfilled(diff.getChanges().size() == 1, "assertion failed");
             conditionFulfilled(diff.getPropertyChanges("color").size() == 1, "assertion failed");

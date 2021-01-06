@@ -14,7 +14,7 @@ public class JsonTypeAdapterExample {
     @Test
     public void shouldSerializeValueToJsonWithTypeAdapter() {
         //given
-        ItauAuditable javers = ItauAuditableBuilder.javers()
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable()
                 .registerValueTypeAdapter(new ObjectIdTypeAdapter())
                 .build();
 
@@ -22,10 +22,10 @@ public class JsonTypeAdapterExample {
         ObjectId id = ObjectId.get();
         MongoStoredEntity entity1 = new MongoStoredEntity(id, "alg1", "1.0", "name");
         MongoStoredEntity entity2 = new MongoStoredEntity(id, "alg1", "1.0", "another");
-        Diff diff = javers.compare(entity1, entity2);
+        Diff diff = itauAuditable.compare(entity1, entity2);
 
         //then
-        String json = javers.getJsonConverter().toJson(diff);
+        String json = itauAuditable.getJsonConverter().toJson(diff);
         Assertions.assertThat(json).contains(id.toString());
 
         System.out.println(json);

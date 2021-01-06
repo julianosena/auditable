@@ -16,7 +16,7 @@ public final class TransactionalItauAuditableBuilder extends ItauAuditableBuilde
     private TransactionalItauAuditableBuilder() {
     }
 
-    public static TransactionalItauAuditableBuilder javers() {
+    public static TransactionalItauAuditableBuilder itauAuditable() {
         return new TransactionalItauAuditableBuilder();
     }
 
@@ -31,10 +31,10 @@ public final class TransactionalItauAuditableBuilder extends ItauAuditableBuilde
             throw new ItauAuditableException(ItauAuditableExceptionCode.TRANSACTION_MANAGER_NOT_SET);
         }
 
-        ItauAuditable javersCore = super.assembleItauAuditableInstance();
+        ItauAuditable itauAuditableCore = super.assembleItauAuditableInstance();
 
-        ItauAuditable javersTransactional = new ItauAuditableTransactionalDecorator(javersCore, getContainerComponent(ItauAuditableSqlRepository.class), txManager);
+        ItauAuditable itauAuditableTransactional = new ItauAuditableTransactionalDecorator(itauAuditableCore, getContainerComponent(ItauAuditableSqlRepository.class), txManager);
 
-        return javersTransactional;
+        return itauAuditableTransactional;
     }
 }

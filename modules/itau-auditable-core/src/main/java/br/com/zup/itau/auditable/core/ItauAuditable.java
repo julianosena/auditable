@@ -38,11 +38,11 @@ import java.util.stream.Stream;
  * For example, to deeply compare two objects
  * or two arbitrary complex graphs of objects, call:
  * <pre>
- * ItauAuditable javers = ItauAuditableBuilder.javers().build();
- * Diff diff = javers.compare(oldVersion, currentVersion);
+ * ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
+ * Diff diff = itauAuditable.compare(oldVersion, currentVersion);
  * </pre>
  *
- * @see <a href="http://javers.org/documentation"/>http://javers.org/documentation</a>
+ * @see <a href="http://itauAuditable.org/documentation"/>http://itauAuditable.org/documentation</a>
  * @author bartosz walacik
  */
 public interface ItauAuditable {
@@ -55,7 +55,7 @@ public interface ItauAuditable {
      * JaVers applies commit() to given object and all objects navigable from it.
      * You can capture a state of an arbitrary complex object graph with a single commit() call.
      *
-     * @see <a href="http://javers.org/documentation/repository-examples/">http://javers.org/documentation/repository-examples</a>
+     * @see <a href="http://itauAuditable.org/documentation/repository-examples/">http://itauAuditable.org/documentation/repository-examples</a>
      * @param author current user
      * @param currentVersion standalone object or handle to an object graph
      */
@@ -145,7 +145,7 @@ public interface ItauAuditable {
      *
      * Both <code>oldVersion</code> and <code>currentVersion</code>
      * should be mapped to {@link EntityType} or {@link ValueObjectType},
-     * see <a href="https://javers.org/documentation/domain-configuration/#domain-model-mapping">
+     * see <a href="https://itauAuditable.org/documentation/domain-configuration/#domain-model-mapping">
      * Domain model mapping</a>.
      *
      * <h2>Flat collection compare</h2>
@@ -168,8 +168,8 @@ public interface ItauAuditable {
      *                   , nullable
      * @param currentVersion Current version of a domain object, nullable
      *
-     * @see <a href="http://javers.org/documentation/diff-examples/">
-     *     http://javers.org/documentation/diff-examples</a>
+     * @see <a href="http://itauAuditable.org/documentation/diff-examples/">
+     *     http://itauAuditable.org/documentation/diff-examples</a>
      */
     Diff compare(Object oldVersion, Object currentVersion);
 
@@ -186,10 +186,10 @@ public interface ItauAuditable {
      * <pre>
      * List&lt;Person&gt; oldList = ...
      * List&lt;Person&gt; newList = ...
-     * Diff diff = javers.compareCollections(oldList, newList, Person.class);
+     * Diff diff = itauAuditable.compareCollections(oldList, newList, Person.class);
      * </pre>
      *
-     * @see <a href="http://javers.org/documentation/diff-examples/#compare-collections">
+     * @see <a href="http://itauAuditable.org/documentation/diff-examples/#compare-collections">
      *     Compare top-level collections example</a>
      */
     <T> Diff compareCollections(Collection<T> oldVersion, Collection<T> currentVersion, Class<T> itemClass);
@@ -209,7 +209,7 @@ public interface ItauAuditable {
      *
      * For example, to get latest Shadows of "bob" Person, call:
      * <pre>
-     * List<Shadow> shadows = javers.findShadows(
+     * List<Shadow> shadows = itauAuditable.findShadows(
      *       QueryBuilder.byInstanceId("bob", Person.class)
      *      .limit(5).build() );
      * </pre>
@@ -275,12 +275,12 @@ public interface ItauAuditable {
      *
      *<pre>
      *given:
-     *  javers.commit("author", e4) // commit 1.0 with e4 snapshot
-     *  javers.commit("author", e3) // commit 2.0 with e3 snapshot
-     *  javers.commit("author", e1) // commit 3.0 with snapshots of e1 and e2
+     *  itauAuditable.commit("author", e4) // commit 1.0 with e4 snapshot
+     *  itauAuditable.commit("author", e3) // commit 2.0 with e3 snapshot
+     *  itauAuditable.commit("author", e1) // commit 3.0 with snapshots of e1 and e2
      *
      *when: 'shallow scope query'
-     *  def shadows = javers.findShadows(QueryBuilder.byInstanceId(1, Entity)
+     *  def shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, Entity)
      *                      .build())
      *  def shadowE1 = shadows.get(0).get()
      *
@@ -290,7 +290,7 @@ public interface ItauAuditable {
      *  shadowE1.ref == null
      *
      *when: 'commit-deep scope query'
-     *  shadows = javers.findShadows(QueryBuilder.byInstanceId(1, Entity)
+     *  shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, Entity)
      *                  .withScopeCommitDeep().build())
      *  shadowE1 = shadows.get(0).get()
      *
@@ -300,7 +300,7 @@ public interface ItauAuditable {
      *  shadowE1.ref.ref == null
      *
      *when: 'deep+1 scope query'
-     *  shadows = javers.findShadows(QueryBuilder.byInstanceId(1, Entity)
+     *  shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, Entity)
      *                  .withScopeDeepPlus(1).build())
      *  shadowE1 = shadows.get(0).get()
      *
@@ -310,7 +310,7 @@ public interface ItauAuditable {
      *  shadowE1.ref.ref == null
      *
      *when: 'deep+3 scope query'
-     *  shadows = javers.findShadows(QueryBuilder.byInstanceId(1, Entity)
+     *  shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, Entity)
      *                  .withScopeDeepPlus(3).build())
      *  shadowE1 = shadows.get(0).get()
      *
@@ -328,10 +328,10 @@ public interface ItauAuditable {
      *
      *<pre>
      *given:
-     *  javers.commit("author", e1) //commit 1.0 with snapshots of e1, e2, e3 and e4
+     *  itauAuditable.commit("author", e1) //commit 1.0 with snapshots of e1, e2, e3 and e4
      *
      *when: 'commit-deep scope query'
-     *  shadows = javers.findShadows(QueryBuilder.byInstanceId(1, Entity)
+     *  shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, Entity)
      *                  .withScopeCommitDeep().build())
      *  shadowE1 = shadows.get(0).get()
      *
@@ -382,7 +382,7 @@ public interface ItauAuditable {
      * @param <T> type of a domain object
      * @see #findShadowsAndStream(JqlQuery)
      * @see ShadowScope
-     * @see <a href="http://javers.org/documentation/jql-examples/">http://javers.org/documentation/jql-examples</a>
+     * @see <a href="http://itauAuditable.org/documentation/jql-examples/">http://itauAuditable.org/documentation/jql-examples</a>
      * @since 3.2
      */
     <T> List<Shadow<T>> findShadows(JqlQuery query);
@@ -418,47 +418,47 @@ public interface ItauAuditable {
      *
      * For example, to get change history of last 5 versions of "bob" Person, call:
      * <pre>
-     * javers.findChanges( QueryBuilder.byInstanceId("bob", Person.class).limit(5).build() );
+     * itauAuditable.findChanges( QueryBuilder.byInstanceId("bob", Person.class).limit(5).build() );
      * </pre>
      *
      * Last "salary" changes of "bob" Person:
      * <pre>
-     * javers.findChanges( QueryBuilder.byInstanceId("bob", Person.class).withChangedProperty("salary").build() );
+     * itauAuditable.findChanges( QueryBuilder.byInstanceId("bob", Person.class).withChangedProperty("salary").build() );
      * </pre>
      *
      * <b>Querying for ValueObject changes</b><br/><br/>
      *
      * Last changes on Address ValueObject owned by "bob" Person:
      * <pre>
-     * javers.findChanges( QueryBuilder.byValueObjectId("bob", Person.class, "address").build() );
+     * itauAuditable.findChanges( QueryBuilder.byValueObjectId("bob", Person.class, "address").build() );
      * </pre>
      *
      * Last changes on Address ValueObject owned by any Person:
      * <pre>
-     * javers.findChanges( QueryBuilder.byValueObject(Person.class, "address").build() );
+     * itauAuditable.findChanges( QueryBuilder.byValueObject(Person.class, "address").build() );
      * </pre>
      *
      * Last changes on nested ValueObject
      * (when Address is a ValueObject nested in PersonDetails ValueObject):
      * <pre>
-     * javers.findChanges( QueryBuilder.byValueObject(Person.class, "personDetails/address").build() );
+     * itauAuditable.findChanges( QueryBuilder.byValueObject(Person.class, "personDetails/address").build() );
      * </pre>
      *
      * <b>Querying for any object changes by its class</b><br/><br/>
      *
      * Last changes on any object of MyClass.class:
      * <pre>
-     * javers.findChanges( QueryBuilder.byClass(MyClass.class).build() );
+     * itauAuditable.findChanges( QueryBuilder.byClass(MyClass.class).build() );
      * </pre>
      *
      * Last "myProperty" changes on any object of MyClass.class:
      * <pre>
-     * javers.findChanges( QueryBuilder.byClass(Person.class).withChangedProperty("myProperty").build() );
+     * itauAuditable.findChanges( QueryBuilder.byClass(Person.class).withChangedProperty("myProperty").build() );
      * </pre>
      *
      * @return A list of Changes ordered in reverse chronological order.
      *         Empty if nothing found.
-     * @see <a href="http://javers.org/documentation/jql-examples/">http://javers.org/documentation/jql-examples</a>
+     * @see <a href="http://itauAuditable.org/documentation/jql-examples/">http://itauAuditable.org/documentation/jql-examples</a>
      */
     Changes findChanges(JqlQuery query);
 
@@ -469,7 +469,7 @@ public interface ItauAuditable {
      *
      * For example, to get latest Snapshots of "bob" Person, call:
      * <pre>
-     * javers.findSnapshots( QueryBuilder.byInstanceId("bob", Person.class).limit(5).build() );
+     * itauAuditable.findSnapshots( QueryBuilder.byInstanceId("bob", Person.class).limit(5).build() );
      * </pre>
      *
      * For more query examples, see {@link #findChanges(JqlQuery)} method.
@@ -477,7 +477,7 @@ public interface ItauAuditable {
      * Use the same JqlQuery to get changes, snapshots and shadows views.
      *
      * @return A list ordered in reverse chronological order. Empty if nothing found.
-     * @see <a href="http://javers.org/documentation/jql-examples/">http://javers.org/documentation/jql-examples</a>
+     * @see <a href="http://itauAuditable.org/documentation/jql-examples/">http://itauAuditable.org/documentation/jql-examples</a>
      */
     List<CdoSnapshot> findSnapshots(JqlQuery query);
 
@@ -487,7 +487,7 @@ public interface ItauAuditable {
      *
      * For example, to get the current state of <code>Bob</code>, call:
      * <pre>
-     * javers.getLatestSnapshot("bob", Person.class);
+     * itauAuditable.getLatestSnapshot("bob", Person.class);
      * </pre>
      *
      * Returns Optional#EMPTY if an instance is not versioned.
@@ -500,7 +500,7 @@ public interface ItauAuditable {
      *
      * For example, to get the historical state of <code>Bob</code> at 2017-01-01, call:
      * <pre>
-     * javers.getHistoricalSnapshot("bob", Person.class, LocalDateTime.of(2017,01,01));
+     * itauAuditable.getHistoricalSnapshot("bob", Person.class, LocalDateTime.of(2017,01,01));
      * </pre>
      *
      * Returns Optional#EMPTY if an instance is not versioned.
@@ -516,7 +516,7 @@ public interface ItauAuditable {
      *
      * For example:
      * <pre>
-     * javers.getJsonConverter().toJson(changes);
+     * itauAuditable.getJsonConverter().toJson(changes);
      * </pre>
      */
     JsonConverter getJsonConverter();
@@ -539,8 +539,8 @@ public interface ItauAuditable {
      * <br/><br/>
      * For example, to get pretty change log, call:
      * <pre>
-     * List&lt;Change&gt; changes = javers.calculateDiffs(...);
-     * String changeLog = javers.processChangeList(changes, new SimpleTextChangeLog());
+     * List&lt;Change&gt; changes = itauAuditable.calculateDiffs(...);
+     * String changeLog = itauAuditable.processChangeList(changes, new SimpleTextChangeLog());
      * System.out.println( changeLog );
      * </pre>
      *
@@ -569,7 +569,7 @@ public interface ItauAuditable {
      *
      * Calling
      * <pre>
-     * System.out.println( javers.getTypeMapping(Person.class).prettyPrint() );
+     * System.out.println( itauAuditable.getTypeMapping(Person.class).prettyPrint() );
      * </pre>
      *
      * prints:
@@ -586,8 +586,8 @@ public interface ItauAuditable {
      * <b>Property access example</b>.
      * You can list object property values using {@link Property} abstraction.
      * <pre>
-     * ItauAuditable javers = ItauAuditableBuilder.javers().build();
-     * ManagedType jType = javers.getTypeMapping(Person.class);
+     * ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
+     * ManagedType jType = itauAuditable.getTypeMapping(Person.class);
      * Person person = new Person("bob", "Uncle Bob");
      *
      * System.out.println("Bob's properties:");

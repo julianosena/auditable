@@ -5,7 +5,7 @@ import br.com.zup.itau.auditable.core.metamodel.annotation.Id
 import spock.lang.Specification
 
 /**
- * @see https://github.com/javers/javers/issues/127
+ * @see https://github.com/itauAuditable/itauAuditable/issues/127
  * @author bartosz.walacik
  */
 class ComparingValueObjectWithItsSubclassTest extends Specification {
@@ -26,10 +26,10 @@ class ComparingValueObjectWithItsSubclassTest extends Specification {
 
     def "should compare ValueObject with its subclass even if subclass has more fields"(){
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         when:
-        def diff = javers.compare(new Store(bicycles: [new Bicycle()]),
+        def diff = itauAuditable.compare(new Store(bicycles: [new Bicycle()]),
                                   new Store(bicycles: [new Mountenbike(seatHeight: 1)]))
 
         println diff

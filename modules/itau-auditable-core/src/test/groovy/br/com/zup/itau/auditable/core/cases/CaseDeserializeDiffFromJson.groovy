@@ -8,16 +8,16 @@ class CaseDeserializeDiffFromJson extends Specification {
 
     def "should deserialize from json"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
-        def diff = javers.compare(new Item(1234), new Item(5678))
-        def json = javers.getJsonConverter().toJson(diff)
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
+        def diff = itauAuditable.compare(new Item(1234), new Item(5678))
+        def json = itauAuditable.getJsonConverter().toJson(diff)
 
         when:
-        def javersDiff = javers.getJsonConverter().fromJson(json, Diff)
+        def itauAuditableDiff = itauAuditable.getJsonConverter().fromJson(json, Diff)
 
         then:
-        println javersDiff.toString()
-        javersDiff.toString() == diff.toString()
+        println itauAuditableDiff.toString()
+        itauAuditableDiff.toString() == diff.toString()
     }
 
     class Item {

@@ -27,10 +27,10 @@ class CaseWithInheritance extends Specification{
       given:
       def a = new A(id:1, field:"aa")
       def b = new B(id:1, field:"bb", someOtherField:"b")
-      def javers = ItauAuditableBuilder.javers().build()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
       when:
-      def diff = javers.compare(a,b)
+      def diff = itauAuditable.compare(a,b)
 
       then:
       println diff.prettyPrint()

@@ -9,28 +9,28 @@ import br.com.zup.itau.auditable.core.metamodel.type.ItauAuditableType
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 
 /**
  * @author bartosz walacik
  */
 abstract class AbstractDiffTest extends Specification {
-    @Shared ItauAuditableTestBuilder javers = javersTestAssembly()
+    @Shared ItauAuditableTestBuilder itauAuditable = itauAuditableTestAssembly()
 
     ObjectNode buildGraph(def any) {
-        javers.createLiveGraph(any).root()
+        itauAuditable.createLiveGraph(any).root()
     }
 
     LiveGraph buildLiveGraph(def any) {
-        javers.createLiveGraph(any)
+        itauAuditable.createLiveGraph(any)
     }
 
     EntityType getEntity(Class forClass) {
-        (EntityType)javers.typeMapper.getItauAuditableType(forClass)
+        (EntityType)itauAuditable.typeMapper.getItauAuditableType(forClass)
     }
 
     Property getManagedProperty(Class forClass, String propertyName) {
-        javers.typeMapper.getItauAuditableType(forClass).getProperty(propertyName)
+        itauAuditable.typeMapper.getItauAuditableType(forClass).getProperty(propertyName)
     }
 
     Property getProperty(Class forClass, String propName) {
@@ -42,6 +42,6 @@ abstract class AbstractDiffTest extends Specification {
     }
 
     ItauAuditableType getItauAuditableType(def javaType){
-        javers.typeMapper.getItauAuditableType(javaType)
+        itauAuditable.typeMapper.getItauAuditableType(javaType)
     }
 }

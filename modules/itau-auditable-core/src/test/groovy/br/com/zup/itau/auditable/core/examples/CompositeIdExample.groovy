@@ -14,7 +14,7 @@ class CompositeIdExample extends Specification {
 
     def "should support Entity with Composite-Id"(){
       given:
-      def javers = ItauAuditableBuilder.javers().build()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
       def first = new PersonWithCompositeId(name:    'Elizabeth',
                                             surname: 'Batory',
@@ -22,8 +22,8 @@ class CompositeIdExample extends Specification {
       def second= new PersonWithCompositeId(name:    'Elizabeth',
                                             surname: 'Batory',
                                             data:    'more data')
-      javers.commit('author', first)
-      javers.commit('author', second)
+      itauAuditable.commit('author', first)
+      itauAuditable.commit('author', second)
 
       when:
       Map localId = [
@@ -31,7 +31,7 @@ class CompositeIdExample extends Specification {
               surname: 'Batory'
       ]
 
-      def snapshot = javers.getLatestSnapshot(localId, PersonWithCompositeId).get()
+      def snapshot = itauAuditable.getLatestSnapshot(localId, PersonWithCompositeId).get()
 
       then:
       snapshot.globalId.value().endsWith('PersonWithCompositeId/Elizabeth,Batory')
@@ -56,7 +56,7 @@ class CompositeIdExample extends Specification {
 
     def "should support Entity with ValueObject-Id"(){
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         def first = new PersonWithValueObjectId(
                 name: new NameAndSurname(name: 'Elizabeth', surname: 'Batory'),
@@ -65,13 +65,13 @@ class CompositeIdExample extends Specification {
                 name: new NameAndSurname(name: 'Elizabeth', surname: 'Batory'),
                 data: 'more data')
 
-        javers.commit('author', first)
-        javers.commit('author', second)
+        itauAuditable.commit('author', first)
+        itauAuditable.commit('author', second)
 
         when:
         def localId = new NameAndSurname(name: 'Elizabeth', surname: 'Batory')
 
-        def snapshot = javers.getLatestSnapshot(localId, PersonWithValueObjectId).get()
+        def snapshot = itauAuditable.getLatestSnapshot(localId, PersonWithValueObjectId).get()
 
         then:
 

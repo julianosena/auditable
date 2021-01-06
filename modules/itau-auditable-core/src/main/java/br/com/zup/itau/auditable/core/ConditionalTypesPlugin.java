@@ -19,5 +19,5 @@ public abstract class ConditionalTypesPlugin {
         return Collections.emptyList();
     }
 
-    public void beforeAssemble(ItauAuditableBuilder javersBuilder) {}
+    public void beforeAssemble(ItauAuditableBuilder itauAuditableBuilder) {}
 }

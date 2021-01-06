@@ -9,15 +9,15 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 @ContextConfiguration(classes = [TestApplicationConfig])
-class ItauAuditableAuditableAspectIntegrationTest extends Specification {
+class ItauAuditableAspectIntegrationTest extends Specification {
 
     @Autowired
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Autowired
     DummyAuditedRepository repository
 
-    def "should commit a method's argument when annotated with @ItauAuditableAuditable"() {
+    def "should commit a method's argument when annotated with @ItauAuditable"() {
         given:
         def o = new DummyObject()
 
@@ -25,7 +25,7 @@ class ItauAuditableAuditableAspectIntegrationTest extends Specification {
         repository.save(o)
 
         then:
-        javers.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build()).size() == 1
+        itauAuditable.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build()).size() == 1
     }
 
     def "should not commit method args when it didn't exit normally"() {
@@ -38,10 +38,10 @@ class ItauAuditableAuditableAspectIntegrationTest extends Specification {
         } catch (Exception e) {}
 
         then:
-        javers.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build()).size() == 0
+        itauAuditable.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build()).size() == 0
     }
 
-    def "should commit method's arguments when annotated with @ItauAuditableAuditable"() {
+    def "should commit method's arguments when annotated with @ItauAuditable"() {
         given:
         def o1 = new DummyObject()
         def o2 = new DummyObject()
@@ -50,8 +50,8 @@ class ItauAuditableAuditableAspectIntegrationTest extends Specification {
         repository.saveTwo(o1, o2)
 
         then:
-        javers.findSnapshots(QueryBuilder.byInstanceId(o1.id, DummyObject).build()).size() == 1
-        javers.findSnapshots(QueryBuilder.byInstanceId(o2.id, DummyObject).build()).size() == 1
+        itauAuditable.findSnapshots(QueryBuilder.byInstanceId(o1.id, DummyObject).build()).size() == 1
+        itauAuditable.findSnapshots(QueryBuilder.byInstanceId(o2.id, DummyObject).build()).size() == 1
     }
 
     def "should commit with properties provided by CommitPropertiesProvider"(){
@@ -62,11 +62,11 @@ class ItauAuditableAuditableAspectIntegrationTest extends Specification {
         repository.save(o)
 
         then:
-        def snapshot = javers.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build())[0]
+        def snapshot = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build())[0]
         snapshot.commitMetadata.properties["key"] == "ok"
     }
 
-    def "should commit iterable argument when method is annotated with @ItauAuditableAuditable"() {
+    def "should commit iterable argument when method is annotated with @ItauAuditable"() {
         given:
         def objects = [new DummyObject(), new DummyObject()]
 
@@ -75,7 +75,7 @@ class ItauAuditableAuditableAspectIntegrationTest extends Specification {
 
         then:
         objects.each {
-            javers.findSnapshots(QueryBuilder.byInstanceId(it.id, DummyObject).build()).size() == 1
+            itauAuditable.findSnapshots(QueryBuilder.byInstanceId(it.id, DummyObject).build()).size() == 1
         }
     }
 
@@ -87,6 +87,6 @@ class ItauAuditableAuditableAspectIntegrationTest extends Specification {
         repository.find(o)
 
         then:
-        javers.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build()).size() == 0
+        itauAuditable.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build()).size() == 0
     }
 }

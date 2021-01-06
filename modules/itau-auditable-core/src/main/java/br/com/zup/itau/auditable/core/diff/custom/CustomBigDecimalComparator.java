@@ -13,7 +13,7 @@ import static java.math.BigDecimal.ROUND_HALF_UP;
  *
  * Usage example:
  * <pre>
- * ItauAuditableBuilder.javers()
+ * ItauAuditableBuilder.itauAuditable()
  *     .registerValue(BigDecimal.class, new CustomBigDecimalComparator(2))
  *     .build();
  * </pre>

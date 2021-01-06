@@ -7,11 +7,12 @@ import br.com.zup.itau.auditable.repository.sql.ConnectionProvider;
 import br.com.zup.itau.auditable.repository.sql.DialectName;
 import br.com.zup.itau.auditable.repository.sql.ItauAuditableSqlRepository;
 import br.com.zup.itau.auditable.repository.sql.SqlRepositoryBuilder;
+import br.com.zup.itau.auditable.spring.annotation.ItauAuditableSpringData;
 import br.com.zup.itau.auditable.spring.auditable.AuthorProvider;
 import br.com.zup.itau.auditable.spring.auditable.CommitPropertiesProvider;
 import br.com.zup.itau.auditable.spring.auditable.SpringSecurityAuthorProvider;
-import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAuditableAspect;
-import br.com.zup.itau.auditable.spring.auditable.aspect.springdatajpa.ItauAuditableSpringDataJpaAuditableRepositoryAspect;
+import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAspect;
+import br.com.zup.itau.auditable.spring.auditable.aspect.springdatajpa.ItauAuditableSpringDataJpaRepositoryAspect;
 import br.com.zup.itau.auditable.spring.jpa.JpaHibernateConnectionProvider;
 import br.com.zup.itau.auditable.spring.jpa.TransactionalItauAuditableBuilder;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +32,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -48,7 +48,7 @@ public class ItauAuditableSpringJpaApplicationConfig {
      * Creates JaVers instance with {@link ItauAuditableSqlRepository}
      */
     @Bean
-    public ItauAuditable javers(PlatformTransactionManager txManager) {
+    public ItauAuditable itauAuditable(PlatformTransactionManager txManager) {
         ItauAuditableSqlRepository sqlRepository = SqlRepositoryBuilder
                 .sqlRepository()
                 .withConnectionProvider(jpaConnectionProvider())
@@ -56,7 +56,7 @@ public class ItauAuditableSpringJpaApplicationConfig {
                 .build();
 
         return TransactionalItauAuditableBuilder
-                .javers()
+                .itauAuditable()
                 .withTxManager(txManager)
                 .withObjectAccessHook(new HibernateUnproxyObjectAccessHook())
                 .registerItauAuditableRepository(sqlRepository)
@@ -66,24 +66,24 @@ public class ItauAuditableSpringJpaApplicationConfig {
     /**
      * Enables auto-audit aspect for ordinary repositories.<br/>
      *
-     * Use {@link br.com.zup.itau.auditable.spring.annotation.ItauAuditableAuditable}
+     * Use {@link br.com.zup.itau.auditable.spring.annotation.ItauAuditable}
      * to mark data writing methods that you want to audit.
      */
     @Bean
-    public ItauAuditableAuditableAspect javersAuditableAspect(ItauAuditable javers) {
-        return new ItauAuditableAuditableAspect(javers, authorProvider(), commitPropertiesProvider());
+    public ItauAuditableAspect itauAuditableAuditableAspect(ItauAuditable itauAuditable) {
+        return new ItauAuditableAspect(itauAuditable, authorProvider(), commitPropertiesProvider());
     }
 
     /**
      * Enables auto-audit aspect for Spring Data repositories. <br/>
      *
-     * Use {@link br.com.zup.itau.auditable.spring.annotation.ItauAuditableSpringDataAuditable}
+     * Use {@link ItauAuditableSpringData}
      * to annotate CrudRepository, PagingAndSortingRepository or JpaRepository
      * you want to audit.
      */
     @Bean
-    public ItauAuditableSpringDataJpaAuditableRepositoryAspect javersSpringDataAuditableAspect(ItauAuditable javers) {
-        return new ItauAuditableSpringDataJpaAuditableRepositoryAspect(javers, authorProvider(), commitPropertiesProvider());
+    public ItauAuditableSpringDataJpaRepositoryAspect itauAuditableSpringDataAspect(ItauAuditable itauAuditable) {
+        return new ItauAuditableSpringDataJpaRepositoryAspect(itauAuditable, authorProvider(), commitPropertiesProvider());
     }
 
     /**

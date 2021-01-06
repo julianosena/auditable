@@ -14,7 +14,7 @@ import spock.lang.Unroll
 class ObjectAccessHookFieldSpec extends Specification {
 
     @Autowired
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Autowired
     PersonCrudRepository repository
@@ -41,7 +41,7 @@ class ObjectAccessHookFieldSpec extends Specification {
         repository.save(savePoint)
 
         then:
-        def snapshot = javers.getLatestSnapshot(proxy.id, Person).get()
+        def snapshot = itauAuditable.getLatestSnapshot(proxy.id, Person).get()
         snapshot.getPropertyValue("name") == "New Name"
 
         where:

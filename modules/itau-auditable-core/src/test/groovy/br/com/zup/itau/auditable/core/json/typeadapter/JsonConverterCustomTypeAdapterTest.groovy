@@ -5,7 +5,7 @@ import br.com.zup.itau.auditable.core.json.DummyPointNativeTypeAdapter
 import br.com.zup.itau.auditable.core.model.DummyPoint
 import spock.lang.Specification
 
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 
 /**
  * @author bartosz walacik
@@ -14,7 +14,7 @@ class JsonConverterCustomTypeAdapterTest extends Specification {
 
     def "should use custom typeAdapter when converting to json"() {
         given:
-        def jsonConverter= javersTestAssembly().jsonConverterBuilder
+        def jsonConverter= itauAuditableTestAssembly().jsonConverterBuilder
                           .registerJsonTypeAdapter(new DummyPointJsonTypeAdapter()).build()
 
         when:
@@ -26,7 +26,7 @@ class JsonConverterCustomTypeAdapterTest extends Specification {
 
     def  "should use custom typeAdapter when converting from json"() {
         given:
-        def jsonConverter= javersTestAssembly().jsonConverterBuilder
+        def jsonConverter= itauAuditableTestAssembly().jsonConverterBuilder
                           .registerJsonTypeAdapter(new DummyPointJsonTypeAdapter()).build()
         when:
         def person = jsonConverter.fromJson('"1,2"',DummyPoint.class)
@@ -37,7 +37,7 @@ class JsonConverterCustomTypeAdapterTest extends Specification {
 
     def "should use custom native Gson typeAdapter when converting to json"() {
         given:
-        def jsonConverter= javersTestAssembly().jsonConverterBuilder
+        def jsonConverter= itauAuditableTestAssembly().jsonConverterBuilder
                           .registerNativeTypeAdapter(DummyPoint, new DummyPointNativeTypeAdapter()).build()
 
         when:
@@ -49,7 +49,7 @@ class JsonConverterCustomTypeAdapterTest extends Specification {
 
     def  "should use custom native Gson typeAdapter when converting from json"() {
         given:
-        def jsonConverter= javersTestAssembly().jsonConverterBuilder
+        def jsonConverter= itauAuditableTestAssembly().jsonConverterBuilder
                           .registerNativeTypeAdapter(DummyPoint, new DummyPointNativeTypeAdapter()).build()
         when:
         def person = jsonConverter.fromJson('"1,2"',DummyPoint.class)

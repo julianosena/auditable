@@ -23,16 +23,16 @@ class Case948CommitGenericTupleLikeObject extends Specification {
 
     def "should track changes when committing generic-tuple-like object"() {
         given:
-        ItauAuditable javers = ItauAuditableBuilder.javers().build()
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         def obj = new Pair(1L, "foo")
 
         when:
-        Commit commit = javers.commit("jay", obj)
+        Commit commit = itauAuditable.commit("jay", obj)
 
         obj.right = "bar"
 
-        commit = javers.commit("jay", obj)
+        commit = itauAuditable.commit("jay", obj)
 
         println "commit.changes" + commit.changes.prettyPrint()
 

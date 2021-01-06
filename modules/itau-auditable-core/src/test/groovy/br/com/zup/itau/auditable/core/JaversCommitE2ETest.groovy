@@ -11,7 +11,7 @@ import spock.lang.Unroll
 import java.time.LocalDate
 
 import static br.com.zup.itau.auditable.common.exception.ItauAuditableExceptionCode.VALUE_OBJECT_IS_NOT_SUPPORTED_AS_MAP_KEY
-import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
+import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.itauAuditable
 import static br.com.zup.itau.auditable.core.model.DummyUser.dummyUser
 import static GlobalIdTestBuilder.instanceId
 import static GlobalIdTestBuilder.valueObjectId
@@ -23,7 +23,7 @@ class ItauAuditableCommitE2ETest extends Specification {
 
     def "should not commit snapshot of ShallowReferenceType entities" () {
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def reference = new ShallowPhone(1, "123", new CategoryC(1, "some"))
         def entity =  new SnapshotEntity(id:1,
                 shallowPhone: reference,
@@ -33,7 +33,7 @@ class ItauAuditableCommitE2ETest extends Specification {
         )
 
         when:
-        def commit = javers.commit("", entity)
+        def commit = itauAuditable.commit("", entity)
 
         then:
         commit.snapshots.each { println it }
@@ -42,11 +42,11 @@ class ItauAuditableCommitE2ETest extends Specification {
 
     def "should not commit snapshot of a reference when a property has @ShallowReference"() {
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def entity =  new PhoneWithShallowCategory(id:1, shallowCategory:new CategoryC(1, "old shallow"))
 
         when:
-        def commit = javers.commit("", entity)
+        def commit = itauAuditable.commit("", entity)
 
         then:
         println commit.snapshots[0]
@@ -57,10 +57,10 @@ class ItauAuditableCommitE2ETest extends Specification {
     @Unroll
     def "should not commit snapshots in #collection when a property has @ShallowReference" () {
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
 
         when:
-        def commit = javers.commit("", entity)
+        def commit = itauAuditable.commit("", entity)
 
         then:
         println commit.snapshots[0]
@@ -78,14 +78,14 @@ class ItauAuditableCommitE2ETest extends Specification {
 
     def "should mark changed properties"() {
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def entity = new SnapshotEntity(id:1, intProperty:4)
 
         when:
-        javers.commit("author",entity)
+        itauAuditable.commit("author",entity)
         entity.dob = LocalDate.now()
         entity.intProperty = 5
-        def commit = javers.commit("author",entity)
+        def commit = itauAuditable.commit("author",entity)
 
         then:
         commit.snapshots[0].changed as Set == ["dob","intProperty"] as Set
@@ -94,12 +94,12 @@ class ItauAuditableCommitE2ETest extends Specification {
     @Unroll
     def "should create terminal commit for removed object when #opType"() {
         given:
-        def final javers = javers().build()
+        def final itauAuditable = itauAuditable().build()
         def anEntity = new SnapshotEntity(id:1, entityRef: new SnapshotEntity(id:2))
-        javers.commit("some.login", anEntity)
+        itauAuditable.commit("some.login", anEntity)
 
         when:
-        def commit = deleteMethod.call(javers)
+        def commit = deleteMethod.call(itauAuditable)
 
         then:
         CommitAssert.assertThat(commit)
@@ -117,11 +117,11 @@ class ItauAuditableCommitE2ETest extends Specification {
 
     def "should fail when deleting non existing object"() {
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def anEntity = new SnapshotEntity(id:1)
 
         when:
-        javers.commitShallowDelete("some.login", anEntity)
+        itauAuditable.commitShallowDelete("some.login", anEntity)
 
         then:
         ItauAuditableException exception = thrown()
@@ -130,11 +130,11 @@ class ItauAuditableCommitE2ETest extends Specification {
 
     def "should create initial commit for new objects"() {
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def anEntity = new SnapshotEntity(id:1, valueObjectRef: new DummyAddress("London"))
 
         when:
-        def commit = javers.commit("some.login", anEntity)
+        def commit = itauAuditable.commit("some.login", anEntity)
 
         then:
         def cdoId = instanceId(1, SnapshotEntity)
@@ -154,13 +154,13 @@ class ItauAuditableCommitE2ETest extends Specification {
         given:
         def oldRef = new SnapshotEntity(id: 2)
         def cdo = new SnapshotEntity(id: 1, entityRef: oldRef)
-        def javers = javers().build()
-        javers.commit("user",cdo)
+        def itauAuditable = itauAuditable().build()
+        itauAuditable.commit("user",cdo)
 
         when:
         def newRef = new SnapshotEntity(id: 5)
         cdo.entityRef = newRef
-        def commit = javers.commit("user",cdo)
+        def commit = itauAuditable.commit("user",cdo)
 
         then:
         CommitAssert.assertThat(commit)
@@ -175,14 +175,14 @@ class ItauAuditableCommitE2ETest extends Specification {
     def "should detect changes on referenced node even if root is new"() {
         given:
         def oldRef = new SnapshotEntity(id: 2, intProperty:2)
-        def javers = javers().build()
-        javers.commit("user",oldRef)
+        def itauAuditable = itauAuditable().build()
+        itauAuditable.commit("user",oldRef)
 
         def cdo = new SnapshotEntity(id: 1, entityRef: oldRef)
         oldRef.intProperty = 5
 
         when:
-        def commit = javers.commit("user",cdo)
+        def commit = itauAuditable.commit("user",cdo)
 
         then:
         def cdoId    = instanceId(1, SnapshotEntity)
@@ -197,13 +197,13 @@ class ItauAuditableCommitE2ETest extends Specification {
 
     def "should support new object reference, deep in the graph"() {
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def user = dummyUser().withDetails()
-        javers.commit("some.login", user)
+        itauAuditable.commit("some.login", user)
 
         when:
         user.withAddress("Tokyo")
-        def commit = javers.commit("some.login", user)
+        def commit = itauAuditable.commit("some.login", user)
 
         then:
         def voId = valueObjectId(1, DummyUserDetails, "dummyAddress")
@@ -221,13 +221,13 @@ class ItauAuditableCommitE2ETest extends Specification {
     // but we don't know if it was removed 'globally'
     def "should generate only ReferenceChange for removed objects"() {
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def user = dummyUser().withDetails(5).withAddress("Tokyo")
-        javers.commit("some.login", user)
+        itauAuditable.commit("some.login", user)
 
         when:
         user.dummyUserDetails.dummyAddress = null
-        def commit = javers.commit("some.login", user)
+        def commit = itauAuditable.commit("some.login", user)
 
         then:
         def voId = valueObjectId(5, DummyUserDetails, "dummyAddress")
@@ -240,13 +240,13 @@ class ItauAuditableCommitE2ETest extends Specification {
 
     def "should support new object added to List, deep in the graph"() {
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def user = dummyUser().withDetails(5).withAddresses(new DummyAddress("London"),new DummyAddress("Paris"))
-        javers.commit("some.login", user)
+        itauAuditable.commit("some.login", user)
 
         when:
         user.dummyUserDetails.addressList.add(new DummyAddress("Tokyo"))
-        def commit = javers.commit("some.login", user)
+        def commit = itauAuditable.commit("some.login", user)
 
         then:
         def addedVoId = valueObjectId(5, DummyUserDetails, "addressList/2")
@@ -260,13 +260,13 @@ class ItauAuditableCommitE2ETest extends Specification {
 
     def "should support object removed from List, deep in the graph"() {
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def user = dummyUser().withDetails(5).withAddresses(new DummyAddress("London"),new DummyAddress("Paris"))
-        javers.commit("some.login", user)
+        itauAuditable.commit("some.login", user)
 
         when:
         user.dummyUserDetails.addressList = [new DummyAddress("London")]
-        def commit = javers.commit("some.login", user)
+        def commit = itauAuditable.commit("some.login", user)
 
         then:
         def removedVoId = valueObjectId(5, DummyUserDetails, "addressList/1")
@@ -278,12 +278,12 @@ class ItauAuditableCommitE2ETest extends Specification {
 
     def "should create empty commit when nothing changed"() {
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def cdo = new SnapshotEntity(listOfEntities:    [new SnapshotEntity(id:2), new SnapshotEntity(id:3)])
-        def firstCommit = javers.commit("author",cdo)
+        def firstCommit = itauAuditable.commit("author",cdo)
 
         when:
-        def secondCommit = javers.commit("author",cdo)
+        def secondCommit = itauAuditable.commit("author",cdo)
 
         then:
         firstCommit.snapshots.size() == 3
@@ -293,12 +293,12 @@ class ItauAuditableCommitE2ETest extends Specification {
 
     def "should not support Map of <ValueObject,?>, no good idea how to handle this"() {
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def cdo = new SnapshotEntity(mapVoToPrimitive:  [(new DummyAddress("London")):"this"])
 
         when:
-        javers.commit("author", cdo)
-        javers.commit("author", cdo)
+        itauAuditable.commit("author", cdo)
+        itauAuditable.commit("author", cdo)
 
         then:
         def e = thrown(ItauAuditableException)

@@ -9,7 +9,7 @@ import br.com.zup.itau.auditable.repository.jql.QueryBuilder
 import spock.lang.Specification
 
 /**
- * see https://github.com/javers/javers/issues/723
+ * see https://github.com/itauAuditable/itauAuditable/issues/723
  */
 class Case723TypeNameNotFound extends Specification {
 
@@ -29,15 +29,15 @@ class Case723TypeNameNotFound extends Specification {
     def "should load Snapshots of removed Classes"(){
       given:
       def repo = new InMemoryRepository()
-      def javers = ItauAuditableBuilder.javers().registerItauAuditableRepository(repo) .build()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().registerItauAuditableRepository(repo) .build()
 
       when:
-      javers.commit("author", new Entity(id:1, value: "some", ref: new VO(value: "aaa")))
+      itauAuditable.commit("author", new Entity(id:1, value: "some", ref: new VO(value: "aaa")))
 
-      // new javers instance - fresh TypeMapper state
-      javers = ItauAuditableBuilder.javers().registerItauAuditableRepository(repo) .build()
+      // new itauAuditable instance - fresh TypeMapper state
+      itauAuditable = ItauAuditableBuilder.itauAuditable().registerItauAuditableRepository(repo) .build()
 
-      def snapshot = javers.findSnapshots(QueryBuilder.byInstanceId(1, "not.existing.Entity").build()).get(0)
+      def snapshot = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, "not.existing.Entity").build()).get(0)
 
       then:
       snapshot.getPropertyValue("value") == "some"
@@ -47,7 +47,7 @@ class Case723TypeNameNotFound extends Specification {
       snapshot.globalId.value() == "not.existing.Entity/1"
 
       when:
-      snapshot = javers.findSnapshots(QueryBuilder.byInstanceId(1, "not.existing.Entity")
+      snapshot = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, "not.existing.Entity")
                         .withChildValueObjects().build())
                         .find{it.globalId.value() == "not.existing.Entity/1#ref"}
 

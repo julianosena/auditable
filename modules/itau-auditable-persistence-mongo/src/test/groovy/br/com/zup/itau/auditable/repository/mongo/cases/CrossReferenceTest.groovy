@@ -61,7 +61,7 @@ class CrossReferenceTest extends Specification {
         given:
         MongoDatabase mongo = mongoClient.getDatabase("test")
 
-        def javers = ItauAuditableBuilder.javers()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
                 .registerItauAuditableRepository(new MongoRepository(mongo))
                 .build()
 
@@ -73,7 +73,7 @@ class CrossReferenceTest extends Specification {
                                new CrossReferenceObjectB(2, host.a),
                                new CrossReferenceObjectB(3, host.a)]
 
-        def commit = javers.commit("author", host)
+        def commit = itauAuditable.commit("author", host)
         println commit
 
         then:

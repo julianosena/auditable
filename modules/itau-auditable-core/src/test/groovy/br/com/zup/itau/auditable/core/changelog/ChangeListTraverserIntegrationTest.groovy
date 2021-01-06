@@ -12,21 +12,21 @@ class ChangeListTraverserIntegrationTest extends Specification {
 
     def "should call user's callback methods while iterating over change list "() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         def user = new DummyUser('bob', 'Dijk')
-        javers.commit("some author", user)
+        itauAuditable.commit("some author", user)
 
         user.setAge(18)
         user.setSex(DummyUser.Sex.MALE)
-        javers.commit('some author', user)
+        itauAuditable.commit('some author', user)
 
-        javers.commitShallowDelete('some author', user)
+        itauAuditable.commitShallowDelete('some author', user)
         def callbackMock = Mock(ChangeProcessor)
 
         when:
-        def changes = javers.findChanges(QueryBuilder.byInstanceId('bob',DummyUser).build())
-        javers.processChangeList(changes, callbackMock)
+        def changes = itauAuditable.findChanges(QueryBuilder.byInstanceId('bob',DummyUser).build())
+        itauAuditable.processChangeList(changes, callbackMock)
 
         then:
         with(callbackMock) {

@@ -37,7 +37,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <b>Important</b><br/>
  * All classes with {@literal @}TypeName should be registered using {@link ItauAuditableBuilder#withPackagesToScan(String)}<br/>
- * or <code>javers.packagesToScan</code> Spring Boot starter property.
+ * or <code>itauAuditable.packagesToScan</code> Spring Boot starter property.
  *
  * @see PropertyName
  * @see Entity

@@ -20,33 +20,33 @@ class ItauAuditableSqlAutoConfigurationDefaultPropsTest extends Specification {
     DialectName dialectName
 
     @Autowired
-    ItauAuditableSqlProperties javersProperties
+    ItauAuditableSqlProperties itauAuditableProperties
 
     @Autowired
     AuthorProvider provider
 
     def "should provide default props"() {
         expect:
-        javersProperties.getAlgorithm() == "simple"
-        javersProperties.getMappingStyle() == "field"
-        !javersProperties.isNewObjectSnapshot()
-        javersProperties.isPrettyPrint()
-        !javersProperties.isTypeSafeValues()
-        javersProperties.packagesToScan == ""
+        itauAuditableProperties.getAlgorithm() == "simple"
+        itauAuditableProperties.getMappingStyle() == "field"
+        !itauAuditableProperties.isNewObjectSnapshot()
+        itauAuditableProperties.isPrettyPrint()
+        !itauAuditableProperties.isTypeSafeValues()
+        itauAuditableProperties.packagesToScan == ""
         dialectName == DialectName.H2
-        javersProperties.sqlSchema == null
-        javersProperties.sqlSchemaManagementEnabled
-        javersProperties.commitIdGenerator == "synchronized_sequence"
-        javersProperties.prettyPrintDateFormats.localDateTime == "dd MMM yyyy, HH:mm:ss"
-        javersProperties.prettyPrintDateFormats.zonedDateTime == "dd MMM yyyy, HH:mm:ssZ"
-        javersProperties.prettyPrintDateFormats.localDate == "dd MMM yyyy"
-        javersProperties.prettyPrintDateFormats.localTime == "HH:mm:ss"
-        !javersProperties.sqlGlobalIdCacheDisabled
-        javersProperties.objectAccessHook == "br.com.zup.itau.auditable.hibernate.integration.HibernateUnproxyObjectAccessHook"
-        javersProperties.sqlGlobalIdTableName == null
-        javersProperties.sqlCommitTableName == null
-        javersProperties.sqlSnapshotTableName == null
-        javersProperties.sqlCommitPropertyTableName == null
+        itauAuditableProperties.sqlSchema == null
+        itauAuditableProperties.sqlSchemaManagementEnabled
+        itauAuditableProperties.commitIdGenerator == "synchronized_sequence"
+        itauAuditableProperties.prettyPrintDateFormats.localDateTime == "dd MMM yyyy, HH:mm:ss"
+        itauAuditableProperties.prettyPrintDateFormats.zonedDateTime == "dd MMM yyyy, HH:mm:ssZ"
+        itauAuditableProperties.prettyPrintDateFormats.localDate == "dd MMM yyyy"
+        itauAuditableProperties.prettyPrintDateFormats.localTime == "HH:mm:ss"
+        !itauAuditableProperties.sqlGlobalIdCacheDisabled
+        itauAuditableProperties.objectAccessHook == "br.com.zup.itau.auditable.hibernate.integration.HibernateUnproxyObjectAccessHook"
+        itauAuditableProperties.sqlGlobalIdTableName == null
+        itauAuditableProperties.sqlCommitTableName == null
+        itauAuditableProperties.sqlSnapshotTableName == null
+        itauAuditableProperties.sqlCommitPropertyTableName == null
     }
 
     def "shouldHaveSpringSecurityAuthorProviderWhenSpringSecurityOnClasspath"() {

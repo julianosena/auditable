@@ -7,14 +7,14 @@ import br.com.zup.itau.auditable.repository.jql.QueryBuilder
 import spock.lang.Specification
 
 class NewFindChangesE2ETest extends Specification {
-    def javers = ItauAuditableBuilder.javers().build()
+    def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
     def "should return changes as flat List"(){
       given:
       commitChanges()
 
       when:
-      List<Change> changes = javers.findChanges(QueryBuilder.byClass(Employee).build())
+      List<Change> changes = itauAuditable.findChanges(QueryBuilder.byClass(Employee).build())
 
       println "changes: "
       changes.each{ println it }
@@ -28,7 +28,7 @@ class NewFindChangesE2ETest extends Specification {
         commitChanges()
 
         when:
-        Changes changes = javers.findChanges(QueryBuilder.byClass(Employee).withChildValueObjects().build())
+        Changes changes = itauAuditable.findChanges(QueryBuilder.byClass(Employee).withChildValueObjects().build())
 
         println changes.prettyPrint()
 
@@ -52,7 +52,7 @@ class NewFindChangesE2ETest extends Specification {
         commitChanges()
 
         when:
-        Changes changes = javers.findChanges(QueryBuilder.byClass(Employee)
+        Changes changes = itauAuditable.findChanges(QueryBuilder.byClass(Employee)
                 .withChildValueObjects().build())
 
         println changes.prettyPrint()
@@ -90,23 +90,23 @@ class NewFindChangesE2ETest extends Specification {
         def stef = new Employee(name: 'stef')
         kaz.addSubordinate(stef)
 
-        javers.commit('author', kaz)
+        itauAuditable.commit('author', kaz)
 
         kaz.salary = 1000
         kaz.age = 30
         stef.salary = 1500
         stef.age = 35
-        javers.commit('author', kaz)
+        itauAuditable.commit('author', kaz)
 
         kaz.salary = 1001
         kaz.age = 31
-        javers.commit('author', kaz)
+        itauAuditable.commit('author', kaz)
 
         kaz.salary = 1002
         kaz.primaryAddress = new Address("two")
         kaz.postalAddress = new Address("two")
         kaz.skills = ["skill A", "skill B"]
 
-        javers.commit('author', kaz)
+        itauAuditable.commit('author', kaz)
     }
 }

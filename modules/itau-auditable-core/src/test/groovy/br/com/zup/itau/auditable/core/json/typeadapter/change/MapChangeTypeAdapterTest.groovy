@@ -16,8 +16,8 @@ import java.time.LocalDateTime
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssemblyTypeSafe
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssemblyTypeSafe
 import static br.com.zup.itau.auditable.core.json.builder.ChangeTestBuilder.mapChange
 import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.instanceId
 
@@ -27,11 +27,11 @@ import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.instanceId
 class MapChangeTypeAdapterTest extends Specification {
 
     @Shared
-    def jsonConverter = ItauAuditableTestBuilder.javersTestAssembly().jsonConverter
+    def jsonConverter = ItauAuditableTestBuilder.itauAuditableTestAssembly().jsonConverter
 
     def "should serialize polymorfic MapChange type-safely when switched on" () {
         when:
-        def jsonConverterTypeSafe = javersTestAssemblyTypeSafe().jsonConverter
+        def jsonConverterTypeSafe = itauAuditableTestAssemblyTypeSafe().jsonConverter
         def entryChanges = [new EntryAdded("some",new LocalDate(2001,1,1)),
                             new EntryRemoved("some",new LocalDate(2002,1,1)),
                             new EntryValueChange(new LocalDate(2003,1,1), new LocalDate(2004,1,1), new LocalDate(2005,1,1))]
@@ -121,13 +121,13 @@ class MapChangeTypeAdapterTest extends Specification {
     }
     def "should serialize MapChange.EntryValueChange with references" () {
         given:
-        def javersTestBuilder = javersTestAssembly()
-        def javers = javersTestBuilder.javers()
-        def jsonConverter = javers.getJsonConverter()
+        def itauAuditableTestBuilder = itauAuditableTestAssembly()
+        def itauAuditable = itauAuditableTestBuilder.itauAuditable()
+        def jsonConverter = itauAuditable.getJsonConverter()
 
-        def keyId = javersTestBuilder.instanceId(1,SnapshotEntity)
-        def leftReference  = javersTestBuilder.instanceId(2,SnapshotEntity)
-        def rightReference = javersTestBuilder.instanceId(3,SnapshotEntity)
+        def keyId = itauAuditableTestBuilder.instanceId(1,SnapshotEntity)
+        def leftReference  = itauAuditableTestBuilder.instanceId(2,SnapshotEntity)
+        def rightReference = itauAuditableTestBuilder.instanceId(3,SnapshotEntity)
         def entryChanges = [new EntryValueChange(keyId, leftReference, rightReference)]
 
         def change = mapChange(new SnapshotEntity(id:1),"mapOfEntities",entryChanges)

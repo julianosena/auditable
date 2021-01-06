@@ -22,12 +22,12 @@ class Case640InterfaceGettersInheritance extends Specification {
 
     def "should ... "(){
       given:
-      ItauAuditable javers = ItauAuditableBuilder.javers()
+      ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable()
               .withMappingStyle(MappingStyle.BEAN)
               .registerEntity(new EntityDefinition(MyObject.class, "id"))
               .build()
 
       expect:
-      javers.getTypeMapping(MyObject).idProperty.name == "id"
+      itauAuditable.getTypeMapping(MyObject).idProperty.name == "id"
     }
 }

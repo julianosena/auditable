@@ -60,26 +60,26 @@ class Case798RegisteringEntitiesWithValuesAsId extends Specification {
         Person sebastian = new Person(sebastiansPassport)
 
         when:
-        ItauAuditableBuilder javersBuilder = ItauAuditableBuilder.javers()
+        ItauAuditableBuilder itauAuditableBuilder = ItauAuditableBuilder.itauAuditable()
 
-        javersBuilder.withListCompareAlgorithm(ListCompareAlgorithm.LEVENSHTEIN_DISTANCE)
+        itauAuditableBuilder.withListCompareAlgorithm(ListCompareAlgorithm.LEVENSHTEIN_DISTANCE)
 
         // Order changed
-        javersBuilder.registerEntity(new EntityDefinition(Person2.class, "passport", Arrays.asList("id")))
-        javersBuilder.registerValueWithCustomToString(Passport.class, {passport -> passport.passportId})
-        javersBuilder.registerEntity(new EntityDefinition(Person.class, "passport", Arrays.asList("id")))
-        ItauAuditable javers = javersBuilder.build()
+        itauAuditableBuilder.registerEntity(new EntityDefinition(Person2.class, "passport", Arrays.asList("id")))
+        itauAuditableBuilder.registerValueWithCustomToString(Passport.class, {passport -> passport.passportId})
+        itauAuditableBuilder.registerEntity(new EntityDefinition(Person.class, "passport", Arrays.asList("id")))
+        ItauAuditable itauAuditable = itauAuditableBuilder.build()
 
-        println javers.getTypeMapping(Person.class).prettyPrint()
-        println javers.getTypeMapping(Person2.class).prettyPrint()
-        println javers.getTypeMapping(Passport.class).prettyPrint()
+        println itauAuditable.getTypeMapping(Person.class).prettyPrint()
+        println itauAuditable.getTypeMapping(Person2.class).prettyPrint()
+        println itauAuditable.getTypeMapping(Passport.class).prettyPrint()
 
-        EntityType entityType = (EntityType) javers.getTypeMapping(Person.class)
+        EntityType entityType = (EntityType) itauAuditable.getTypeMapping(Person.class)
         InstanceId sebastiansId = entityType.createIdFromInstance(sebastian)
         
         then:
-        javers.getTypeMapping(Person.class).idProperty.type instanceof ValueType
-        javers.getTypeMapping(Person2.class).idProperty.type instanceof ValueType
+        itauAuditable.getTypeMapping(Person.class).idProperty.type instanceof ValueType
+        itauAuditable.getTypeMapping(Person2.class).idProperty.type instanceof ValueType
         sebastiansId.value().endsWith("Person/ID-398")
     }
 
@@ -89,24 +89,24 @@ class Case798RegisteringEntitiesWithValuesAsId extends Specification {
         Person sebastian = new Person(sebastiansPassport)
 
         when:
-        ItauAuditableBuilder javersBuilder = ItauAuditableBuilder.javers()
+        ItauAuditableBuilder itauAuditableBuilder = ItauAuditableBuilder.itauAuditable()
 
-        javersBuilder.withListCompareAlgorithm(ListCompareAlgorithm.LEVENSHTEIN_DISTANCE)
-        javersBuilder.registerEntity(new EntityDefinition(Person2.class, "passport", Arrays.asList("id")))
-        javersBuilder.registerEntity(new EntityDefinition(Person.class, "passport", Arrays.asList("id")))
-        javersBuilder.registerValueWithCustomToString(Passport.class, {passport -> passport.passportId})
-        ItauAuditable javers = javersBuilder.build()
+        itauAuditableBuilder.withListCompareAlgorithm(ListCompareAlgorithm.LEVENSHTEIN_DISTANCE)
+        itauAuditableBuilder.registerEntity(new EntityDefinition(Person2.class, "passport", Arrays.asList("id")))
+        itauAuditableBuilder.registerEntity(new EntityDefinition(Person.class, "passport", Arrays.asList("id")))
+        itauAuditableBuilder.registerValueWithCustomToString(Passport.class, {passport -> passport.passportId})
+        ItauAuditable itauAuditable = itauAuditableBuilder.build()
 
-        println javers.getTypeMapping(Person.class).prettyPrint()
-        println javers.getTypeMapping(Person2.class).prettyPrint()
-        println javers.getTypeMapping(Passport.class).prettyPrint()
+        println itauAuditable.getTypeMapping(Person.class).prettyPrint()
+        println itauAuditable.getTypeMapping(Person2.class).prettyPrint()
+        println itauAuditable.getTypeMapping(Passport.class).prettyPrint()
 
-        EntityType entityType = (EntityType) javers.getTypeMapping(Person.class)
+        EntityType entityType = (EntityType) itauAuditable.getTypeMapping(Person.class)
         InstanceId sebastiansId = entityType.createIdFromInstance(sebastian)
 
         then:
-        javers.getTypeMapping(Person.class).idProperty.type instanceof ValueType
-        javers.getTypeMapping(Person2.class).idProperty.type instanceof ValueType
+        itauAuditable.getTypeMapping(Person.class).idProperty.type instanceof ValueType
+        itauAuditable.getTypeMapping(Person2.class).idProperty.type instanceof ValueType
         sebastiansId.value().endsWith("Person/ID-398")
     }
 }

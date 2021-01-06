@@ -94,7 +94,7 @@ class TypeFactory {
 
         if (prototype.isPresent()) {
             ItauAuditableType jType = spawnFromPrototype(javaRichType, prototype.get());
-            logger.debug("javersType of '{}' spawned as {} from prototype {}",
+            logger.debug("itauAuditableType of '{}' spawned as {} from prototype {}",
                     javaRichType.getSimpleName(), jType.getClass().getSimpleName(), prototype.get());
             return jType;
         }
@@ -103,7 +103,7 @@ class TypeFactory {
 
         return dynamicType
                 .orElseGet(() -> inferFromAnnotations(javaRichType).map(jType -> {
-                        logger.debug("javersType of '{}' inferred from annotations as {}",
+                        logger.debug("itauAuditableType of '{}' inferred from annotations as {}",
                         javaRichType.getSimpleName(), jType.getClass().getSimpleName());
                         return jType;
                 })
@@ -113,7 +113,7 @@ class TypeFactory {
 
     private Optional<ItauAuditableType> resolveIfTokenType(Type javaType) {
         if (javaType instanceof TypeVariable) {
-            logger.debug("javersType of '{}' inferred as TokenType", javaType);
+            logger.debug("itauAuditableType of '{}' inferred as TokenType", javaType);
             return Optional.of(new TokenType((TypeVariable) javaType));
         }
         return Optional.empty();
@@ -124,7 +124,7 @@ class TypeFactory {
 
         if (vote != null) {
             ItauAuditableType jType = vote.vote(richType);
-            logger.debug("javersType of '{}' inferred as {}, based on {} ", richType.getSimpleName(), jType.getClass().getSimpleName(), vote.getClass().getSimpleName());
+            logger.debug("itauAuditableType of '{}' inferred as {}, based on {} ", richType.getSimpleName(), jType.getClass().getSimpleName(), vote.getClass().getSimpleName());
             return Optional.of(jType);
         }
 
@@ -149,7 +149,7 @@ class TypeFactory {
     }
 
     private ItauAuditableType createDefaultType(JavaRichType t) {
-        logger.debug("javersType of '{}' defaulted to ValueObjectType", t.getSimpleName());
+        logger.debug("itauAuditableType of '{}' defaulted to ValueObjectType", t.getSimpleName());
         return create(valueObjectDefinition(t.javaClass)
                 .withTypeName(t.getScan().typeName())
                 .defaultType()

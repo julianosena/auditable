@@ -46,27 +46,27 @@ public class MultitenancyItauAuditableTransactionalDecorator implements Initiali
     private static final Logger logger = LoggerFactory.getLogger(MultitenancyItauAuditableTransactionalDecorator.class);
 
     private final ItauAuditable delegate;
-    private final MultitenancyItauAuditableSqlRepository javersSqlRepository;
+    private final MultitenancyItauAuditableSqlRepository itauAuditableSqlRepository;
 
     private final PlatformTransactionManager txManager;
 
-    MultitenancyItauAuditableTransactionalDecorator(ItauAuditable delegate, MultitenancyItauAuditableSqlRepository javersSqlRepository, PlatformTransactionManager txManager) {
-        Validate.argumentsAreNotNull(delegate, javersSqlRepository, txManager);
+    MultitenancyItauAuditableTransactionalDecorator(ItauAuditable delegate, MultitenancyItauAuditableSqlRepository itauAuditableSqlRepository, PlatformTransactionManager txManager) {
+        Validate.argumentsAreNotNull(delegate, itauAuditableSqlRepository, txManager);
         this.delegate = delegate;
-        this.javersSqlRepository = javersSqlRepository;
+        this.itauAuditableSqlRepository = itauAuditableSqlRepository;
         this.txManager = txManager;
     }
 
     @Override
     public CompletableFuture<Commit> commitAsync(String author, Object currentVersion, Map<String, String> commitProperties, Executor executor) {
         throw new ItauAuditableException(ItauAuditableExceptionCode.NOT_IMPLEMENTED,
-                "javers.commitAsync() is not available for SQL");
+                "itauAuditable.commitAsync() is not available for SQL");
     }
 
     @Override
     public CompletableFuture<Commit> commitAsync(String author, Object currentVersion, Executor executor) {
         throw new ItauAuditableException(ItauAuditableExceptionCode.NOT_IMPLEMENTED,
-                "javers.commitAsync() is not available for SQL");
+                "itauAuditable.commitAsync() is not available for SQL");
     }
 
     @Override
@@ -185,12 +185,12 @@ public class MultitenancyItauAuditableTransactionalDecorator implements Initiali
     }
 
     private void ensureSchema() {
-        if (javersSqlRepository.getConfiguration().isSchemaManagementEnabled()) {
+        if (itauAuditableSqlRepository.getConfiguration().isSchemaManagementEnabled()) {
             TransactionTemplate tmpl = new TransactionTemplate(txManager);
             tmpl.execute(new TransactionCallbackWithoutResult() {
                 @Override
                 protected void doInTransactionWithoutResult(TransactionStatus status) {
-                    javersSqlRepository.ensureSchema();
+                    itauAuditableSqlRepository.ensureSchema();
                 }
             });
         }
@@ -202,7 +202,7 @@ public class MultitenancyItauAuditableTransactionalDecorator implements Initiali
     }
 
     private void registerRollbackListener() {
-        if (javersSqlRepository.getConfiguration().isGlobalIdCacheDisabled()) {
+        if (itauAuditableSqlRepository.getConfiguration().isGlobalIdCacheDisabled()) {
             return;
         }
         if(TransactionSynchronizationManager.isSynchronizationActive() &&
@@ -211,8 +211,8 @@ public class MultitenancyItauAuditableTransactionalDecorator implements Initiali
                 @Override
                 public void afterCompletion(int status) {
                     if (TransactionSynchronization.STATUS_ROLLED_BACK == status) {
-                        logger.info("evicting javersSqlRepository local cache due to transaction rollback");
-                        javersSqlRepository.evictCache();
+                        logger.info("evicting itauAuditableSqlRepository local cache due to transaction rollback");
+                        itauAuditableSqlRepository.evictCache();
                     }
                 }
             });

@@ -8,7 +8,7 @@ import spock.lang.Specification
 import java.math.RoundingMode
 
 /**
- * https://github.com/javers/javers/issues/935
+ * https://github.com/itauAuditable/itauAuditable/issues/935
  */
 class CustomValueComparatorMissingPropertyCase extends Specification {
 
@@ -45,7 +45,7 @@ class CustomValueComparatorMissingPropertyCase extends Specification {
 
     def "should compare map values using their concrete type"() {
         given:
-        def javers = ItauAuditableBuilder.javers()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
                 .registerValue(Double.class, new CustomDoubleComparator())
                 .build()
 
@@ -57,7 +57,7 @@ class CustomValueComparatorMissingPropertyCase extends Specification {
 
         Container container2 = new Container(parent: c2)
 
-        def diff = javers.compare(container1, container2)
+        def diff = itauAuditable.compare(container1, container2)
 
         then:
         diff.changes.size() == 2

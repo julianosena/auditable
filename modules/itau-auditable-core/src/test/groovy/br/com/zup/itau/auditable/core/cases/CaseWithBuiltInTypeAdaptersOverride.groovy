@@ -61,8 +61,8 @@ class CaseWithBuiltInTypeAdaptersOverride extends Specification {
     @Unroll
     def "should support custom JsonTypeAdapter for #adapter.getValueType()"() {
         given:
-        def converter = ItauAuditableBuilder.javers().registerValueTypeAdapter(adapter).build().getJsonConverter()
-        def defaultConverter = ItauAuditableBuilder.javers().build().getJsonConverter()
+        def converter = ItauAuditableBuilder.itauAuditable().registerValueTypeAdapter(adapter).build().getJsonConverter()
+        def defaultConverter = ItauAuditableBuilder.itauAuditable().build().getJsonConverter()
 
         expect:
         converter.toJson(obj) == "\"" + adapter.serialize(obj) + "\""

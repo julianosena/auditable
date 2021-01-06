@@ -26,7 +26,7 @@ class NoAnnotationsDiffExample extends Specification {
               .withIgnoredProperties(['someTechnicalField'])
               .build()
 
-      def javers = new ItauAuditableBuilder()
+      def itauAuditable = new ItauAuditableBuilder()
               .registerEntity(personEntityDefinition)
               .build()
 
@@ -34,7 +34,7 @@ class NoAnnotationsDiffExample extends Specification {
       def oldVer = new LegacyPerson(1, 'Bob', "abc")
       def newVer = new LegacyPerson(1, 'Uncle Bob', "xyx")
 
-      def diff = javers.compare(oldVer, newVer)
+      def diff = itauAuditable.compare(oldVer, newVer)
 
       then:
       diff.changes.size() == 1

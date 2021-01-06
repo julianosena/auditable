@@ -15,19 +15,19 @@ public class ChangeLogExample {
     @Test
     public void changesPrintingExampleWithGrouping() {
         // given
-        ItauAuditable javers = ItauAuditableBuilder.javers().build();
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
         Employee sam = new Employee("Sam", 1_000);
         Employee frodo = new Employee("Frodo", 10_000);
-        javers.commit("author", frodo);
+        itauAuditable.commit("author", frodo);
 
         frodo.addSubordinate(sam);
         frodo.setSalary(11_000);
         sam.setSalary(2_000);
-        javers.commit("author", frodo);
+        itauAuditable.commit("author", frodo);
 
         // when
-        Changes changes = javers.findChanges(QueryBuilder.byClass(Employee.class)
+        Changes changes = itauAuditable.findChanges(QueryBuilder.byClass(Employee.class)
                 .withNewObjectChanges().build());
 
         //then
@@ -53,22 +53,22 @@ public class ChangeLogExample {
     @Test
     public void shouldPrintTextChangeLog() {
         // given:
-        ItauAuditable javers = ItauAuditableBuilder.javers().build();
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
         Employee bob = new Employee("Bob", 9_000, "ScrumMaster");
-        javers.commit("hr.manager", bob);
+        itauAuditable.commit("hr.manager", bob);
 
         // do some changes and commit
         bob.setPosition("Developer");
         bob.setSalary(11_000);
-        javers.commit("hr.director", bob);
+        itauAuditable.commit("hr.director", bob);
 
         bob.addSubordinates(new Employee("Trainee One"), new Employee("Trainee Two"));
-        javers.commit("hr.manager", bob);
+        itauAuditable.commit("hr.manager", bob);
 
         // when:
-        List<Change> changes = javers.findChanges(
+        List<Change> changes = itauAuditable.findChanges(
             QueryBuilder.byInstanceId("Bob", Employee.class).build());
-        String changeLog = javers.processChangeList(changes, new SimpleTextChangeLog());
+        String changeLog = itauAuditable.processChangeList(changes, new SimpleTextChangeLog());
 
         // then:
         System.out.println(changeLog);

@@ -14,13 +14,13 @@ import spock.lang.Unroll
 import javax.persistence.EmbeddedId
 import javax.persistence.Id
 
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 
 class TypeMapperIntegrationTest extends Specification {
 
     def "should map groovy.lang.MetaClass as IgnoredType"(){
         when:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
 
         then:
         mapper.getItauAuditableType(MetaClass) instanceof IgnoredType
@@ -28,7 +28,7 @@ class TypeMapperIntegrationTest extends Specification {
 
     def "should find ValueObject by DuckType when properties match"(){
       when:
-      def mapper = javersTestAssembly().typeMapper
+      def mapper = itauAuditableTestAssembly().typeMapper
       mapper.getItauAuditableType(NamedValueObjectOne) //touch
       mapper.getItauAuditableType(NamedValueObjectTwo) //touch
 
@@ -39,7 +39,7 @@ class TypeMapperIntegrationTest extends Specification {
 
     def "should fallback to last mapped bare typeName when properties does not match"(){
         when:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
         mapper.getItauAuditableType(NamedValueObjectOne) //touch
         mapper.getItauAuditableType(NamedValueObjectTwo) //touch
 
@@ -50,7 +50,7 @@ class TypeMapperIntegrationTest extends Specification {
     @Unroll
     def "should find #what type by typeName"(){
         given:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
         mapper.getItauAuditableType(clazz) //touch
 
         when:
@@ -69,7 +69,7 @@ class TypeMapperIntegrationTest extends Specification {
 
     def "should throw TYPE_NAME_NOT_FOUND Exception when TypeName is not found"() {
         given:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
 
         when:
         mapper.getItauAuditableManagedType("not.registered")
@@ -83,7 +83,7 @@ class TypeMapperIntegrationTest extends Specification {
     @Unroll
     def "should override Entity type inferred form annotations when ValueObject is explicitly registered for #queryClass.simpleName"() {
         given:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
         mapper.registerClientsClass(new ValueObjectDefinition(queryClass))
 
         when:
@@ -101,7 +101,7 @@ class TypeMapperIntegrationTest extends Specification {
 
     def "should override ValueObject type inferred form annotations when Entity is explicitly registered"() {
         given:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
         mapper.registerClientsClass(new EntityDefinition(JpaEmbeddable,"some"))
 
         when:
@@ -114,7 +114,7 @@ class TypeMapperIntegrationTest extends Specification {
 
     def "should map as ValueObject by default"() {
         given:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
 
         when:
         def jType = mapper.getItauAuditableType(DummyAddress)
@@ -134,7 +134,7 @@ class TypeMapperIntegrationTest extends Specification {
 
     def "should infer as Value when a class is used as Id and there are no other clues "(){
         given:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
         mapper.registerClientsClass(EntityDefinitionBuilder.entityDefinition(SomeEntity).withIdPropertyName("id").build())
 
         when:
@@ -149,7 +149,7 @@ class TypeMapperIntegrationTest extends Specification {
     @Unroll
     def "should infer as Value when a class is used as @#usedAnn.simpleName and there are no other clues"(){
         given:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
 
         when:
         mapper.getItauAuditableType(entity)
@@ -167,7 +167,7 @@ class TypeMapperIntegrationTest extends Specification {
 
     def "should map as Entity when a class has @Id property annotation"() {
         given:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
 
         when:
         def jType = mapper.getItauAuditableType(DummyUser)
@@ -180,7 +180,7 @@ class TypeMapperIntegrationTest extends Specification {
 
     def "should map as Entity when a class has @EmbeddedId property annotation"(){
         given:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
 
         when:
         def jType = mapper.getItauAuditableType(DummyEntityWithEmbeddedId)
@@ -194,7 +194,7 @@ class TypeMapperIntegrationTest extends Specification {
     @Unroll
     def "should map as #expectedItauAuditableType.simpleName for annotated class #queryClass.simpleName"() {
         given:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
 
         when:
         def jType = mapper.getItauAuditableType(queryClass)
@@ -216,7 +216,7 @@ class TypeMapperIntegrationTest extends Specification {
     @Unroll
     def "should map as #expectedItauAuditableType.simpleName for explicitly registered class"() {
         given:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
         mapper.registerClientsClass(givenDefinition)
 
         when:
@@ -241,7 +241,7 @@ class TypeMapperIntegrationTest extends Specification {
     @Unroll
     def "should spawn #expectedItauAuditableType.simpleName from explicitly mapped superclass"() {
         given:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
         mapper.registerClientsClass(givenDefinitionOfSuperclass)
 
         when:
@@ -261,7 +261,7 @@ class TypeMapperIntegrationTest extends Specification {
 
     def "should inherit custom idProperty mapping from explicitly mapped Entity"() {
         given:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
 
         when:
         mapper.registerClientsClass(new EntityDefinition(AbstractDummyUser,"inheritedInt"))
@@ -274,7 +274,7 @@ class TypeMapperIntegrationTest extends Specification {
 
     def "should spawn from mapped superclass when querying for generic class"() {
         given:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
         mapper.registerClientsClass(new ValueDefinition(AbstractDummyUser))
 
         when:
@@ -287,7 +287,7 @@ class TypeMapperIntegrationTest extends Specification {
 
     def "should map subtype of @DiffIgnored type as IgnoredType"(){
         given:
-        def mapper = javersTestAssembly().typeMapper
+        def mapper = itauAuditableTestAssembly().typeMapper
         mapper.getItauAuditableType(DummyIgnoredType)
 
         expect:

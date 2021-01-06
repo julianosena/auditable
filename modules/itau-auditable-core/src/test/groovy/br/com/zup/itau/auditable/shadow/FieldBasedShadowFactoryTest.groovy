@@ -7,20 +7,20 @@ import br.com.zup.itau.auditable.repository.jql.QueryBuilder
 class FieldBasedShadowFactoryTest extends ShadowFactoryTest {
     @Override
     def setupSpec() {
-        javersTestAssembly = ItauAuditableTestBuilder.javersTestAssembly(MappingStyle.FIELD)
-        shadowFactory = javersTestAssembly.shadowFactory
-        javers = javersTestAssembly.javers()
+        itauAuditableTestAssembly = ItauAuditableTestBuilder.itauAuditableTestAssembly(MappingStyle.FIELD)
+        shadowFactory = itauAuditableTestAssembly.shadowFactory
+        itauAuditable = itauAuditableTestAssembly.itauAuditable()
     }
 
     def "should manage immutable objects creation"(){
         given:
         def ref = new ImmutableEntity(2, null)
         def cdo = new ImmutableEntity(1, ref)
-        javers.commit("author", cdo)
-        def snapshot = javers.findSnapshots(QueryBuilder.byInstanceId(1, ImmutableEntity).build())[0]
+        itauAuditable.commit("author", cdo)
+        def snapshot = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, ImmutableEntity).build())[0]
 
         when:
-        def shadow = shadowFactory.createShadow(snapshot, {s, id -> javers.findSnapshots(QueryBuilder.byInstanceId(id.cdoId, ImmutableEntity).build())[0]})
+        def shadow = shadowFactory.createShadow(snapshot, {s, id -> itauAuditable.findSnapshots(QueryBuilder.byInstanceId(id.cdoId, ImmutableEntity).build())[0]})
 
         then:
         shadow instanceof ImmutableEntity

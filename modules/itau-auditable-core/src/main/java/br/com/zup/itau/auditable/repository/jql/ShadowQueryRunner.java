@@ -33,14 +33,14 @@ class ShadowQueryRunner {
     private final SnapshotQueryRunner snapshotQueryRunner;
     private final ItauAuditableExtendedRepository repository;
     private final ShadowFactory shadowFactory;
-    private final ItauAuditableCoreConfiguration javersCoreConfiguration;
+    private final ItauAuditableCoreConfiguration itauAuditableCoreConfiguration;
 
-    ShadowQueryRunner(QueryCompiler queryCompiler, SnapshotQueryRunner snapshotQueryRunner, ItauAuditableExtendedRepository repository, ShadowFactory shadowFactory, ItauAuditableCoreConfiguration javersCoreConfiguration) {
+    ShadowQueryRunner(QueryCompiler queryCompiler, SnapshotQueryRunner snapshotQueryRunner, ItauAuditableExtendedRepository repository, ShadowFactory shadowFactory, ItauAuditableCoreConfiguration itauAuditableCoreConfiguration) {
         this.queryCompiler = queryCompiler;
         this.snapshotQueryRunner = snapshotQueryRunner;
         this.repository = repository;
         this.shadowFactory = shadowFactory;
-        this.javersCoreConfiguration = javersCoreConfiguration;
+        this.itauAuditableCoreConfiguration = itauAuditableCoreConfiguration;
     }
 
     List<Shadow> queryForShadows(JqlQuery query) {
@@ -106,7 +106,7 @@ class ShadowQueryRunner {
         CommitTable(List<CdoSnapshot> coreSnapshots, int maxGapsToFill, JqlQuery query) {
             this.maxGapsToFill = maxGapsToFill;
             this.query = query;
-            this.commitsMap = new TreeMap<>(javersCoreConfiguration.getCommitIdGenerator().getComparator());
+            this.commitsMap = new TreeMap<>(itauAuditableCoreConfiguration.getCommitIdGenerator().getComparator());
             appendSnapshots(coreSnapshots);
         }
 
@@ -201,7 +201,7 @@ class ShadowQueryRunner {
         }
 
         private List<CdoSnapshot> getHistoricals(GlobalId globalId, SnapshotReference timePoint, boolean withChildValueObjects, int limit) {
-            if (javersCoreConfiguration.getCommitIdGenerator() == CommitIdGenerator.SYNCHRONIZED_SEQUENCE){
+            if (itauAuditableCoreConfiguration.getCommitIdGenerator() == CommitIdGenerator.SYNCHRONIZED_SEQUENCE){
                 return repository.getHistoricals(globalId, timePoint.timepointCommitId(), withChildValueObjects, limit);
             }
             return repository.getHistoricals(globalId, timePoint.timepoint().getCommitDate(), withChildValueObjects, limit);

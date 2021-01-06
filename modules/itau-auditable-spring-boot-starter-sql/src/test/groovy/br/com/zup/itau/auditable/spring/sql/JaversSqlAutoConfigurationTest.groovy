@@ -22,33 +22,33 @@ class ItauAuditableSqlAutoConfigurationTest extends Specification {
     DialectName dialectName
 
     @Autowired
-    ItauAuditableSqlProperties javersProperties
+    ItauAuditableSqlProperties itauAuditableProperties
 
     @Autowired
     AuthorProvider provider
 
     def "should read configuration from yml" () {
         expect:
-        javersProperties.getAlgorithm() == "levenshtein_distance"
-        javersProperties.getMappingStyle() == "bean"
-        !javersProperties.isNewObjectSnapshot()
-        !javersProperties.isPrettyPrint()
-        javersProperties.isTypeSafeValues()
+        itauAuditableProperties.getAlgorithm() == "levenshtein_distance"
+        itauAuditableProperties.getMappingStyle() == "bean"
+        !itauAuditableProperties.isNewObjectSnapshot()
+        !itauAuditableProperties.isPrettyPrint()
+        itauAuditableProperties.isTypeSafeValues()
         dialectName == DialectName.H2
-        javersProperties.sqlSchema == "test"
-        javersProperties.sqlSchemaManagementEnabled
-        javersProperties.getCommitIdGenerator() == "random"
-        javersProperties.packagesToScan == "my.company.domain.person, my.company.domain.finance"
-        javersProperties.prettyPrintDateFormats.localDateTime == "dd-mm-yyyy"
-        javersProperties.prettyPrintDateFormats.zonedDateTime == "dd-mm-yyyy HH mm ss Z"
-        javersProperties.prettyPrintDateFormats.localDate == "dd-mm-yyyy"
-        javersProperties.prettyPrintDateFormats.localTime == "HH mm ss"
-        javersProperties.sqlGlobalIdCacheDisabled
-        javersProperties.objectAccessHook == "br.com.zup.itau.auditable.spring.boot.DummySqlObjectAccessHook"
-        javersProperties.sqlGlobalIdTableName == "cust_jv_global_id"
-        javersProperties.sqlCommitTableName == "cust_jv_commit"
-        javersProperties.sqlSnapshotTableName == "cust_jv_snapshot"
-        javersProperties.sqlCommitPropertyTableName == "cust_jv_commit_property"
+        itauAuditableProperties.sqlSchema == "test"
+        itauAuditableProperties.sqlSchemaManagementEnabled
+        itauAuditableProperties.getCommitIdGenerator() == "random"
+        itauAuditableProperties.packagesToScan == "my.company.domain.person, my.company.domain.finance"
+        itauAuditableProperties.prettyPrintDateFormats.localDateTime == "dd-mm-yyyy"
+        itauAuditableProperties.prettyPrintDateFormats.zonedDateTime == "dd-mm-yyyy HH mm ss Z"
+        itauAuditableProperties.prettyPrintDateFormats.localDate == "dd-mm-yyyy"
+        itauAuditableProperties.prettyPrintDateFormats.localTime == "HH mm ss"
+        itauAuditableProperties.sqlGlobalIdCacheDisabled
+        itauAuditableProperties.objectAccessHook == "br.com.zup.itau.auditable.spring.boot.DummySqlObjectAccessHook"
+        itauAuditableProperties.sqlGlobalIdTableName == "cust_jv_global_id"
+        itauAuditableProperties.sqlCommitTableName == "cust_jv_commit"
+        itauAuditableProperties.sqlSnapshotTableName == "cust_jv_snapshot"
+        itauAuditableProperties.sqlCommitPropertyTableName == "cust_jv_commit_property"
     }
 
     def "shouldHaveSpringSecurityAuthorProviderWhenSpringSecurityOnClasspath" () {

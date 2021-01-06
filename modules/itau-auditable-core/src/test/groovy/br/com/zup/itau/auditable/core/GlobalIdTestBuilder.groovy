@@ -5,14 +5,14 @@ import br.com.zup.itau.auditable.core.metamodel.object.UnboundedValueObjectId
 import br.com.zup.itau.auditable.core.metamodel.object.ValueObjectId
 
 class GlobalIdTestBuilder {
-    static ItauAuditableTestBuilder javersTestBuilder = ItauAuditableTestBuilder.javersTestAssembly()
+    static ItauAuditableTestBuilder itauAuditableTestBuilder = ItauAuditableTestBuilder.itauAuditableTestAssembly()
 
     static InstanceId instanceId(Object instance){
-        javersTestBuilder.instanceId(instance)
+        itauAuditableTestBuilder.instanceId(instance)
     }
 
     static InstanceId instanceId(Object localId, Class entity){
-        javersTestBuilder.instanceId(localId, entity)
+        itauAuditableTestBuilder.instanceId(localId, entity)
     }
 
     static ValueObjectId valueObjectId(Object localId, Class owningEntity, fragment) {
@@ -20,6 +20,6 @@ class GlobalIdTestBuilder {
     }
 
     static UnboundedValueObjectId unboundedValueObjectId(Class valueObject) {
-        javersTestBuilder.unboundedValueObjectId(valueObject)
+        itauAuditableTestBuilder.unboundedValueObjectId(valueObject)
     }
 }

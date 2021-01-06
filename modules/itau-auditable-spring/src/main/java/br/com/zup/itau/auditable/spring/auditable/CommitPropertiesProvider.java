@@ -2,7 +2,7 @@ package br.com.zup.itau.auditable.spring.auditable;
 
 import br.com.zup.itau.auditable.core.ItauAuditable;
 import br.com.zup.itau.auditable.repository.api.ItauAuditableRepository;
-import br.com.zup.itau.auditable.spring.annotation.ItauAuditableSpringDataAuditable;
+import br.com.zup.itau.auditable.spring.annotation.ItauAuditableSpringData;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collections;
@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Provides commit properties
  * for {@link ItauAuditable#commit(String, Object, Map)}
- * called by ItauAuditable auto-audit aspect &mdash; {@link ItauAuditableSpringDataAuditable}.
+ * called by ItauAuditable auto-audit aspect &mdash; {@link ItauAuditableSpringData}.
  * <br/><br/>
  *
  * Implementation has to be thread-safe.
@@ -25,7 +25,7 @@ public interface CommitPropertiesProvider {
      * to {@link ItauAuditableRepository}.
      *
      * <br/><br/>
-     * This method is called by {@link ItauAuditableSpringDataAuditable} aspect
+     * This method is called by {@link ItauAuditableSpringData} aspect
      * to get properties for commit created when
      * {@link CrudRepository#save(Object)} and
      * {@link CrudRepository#saveAll(Iterable)} methods are called.
@@ -43,7 +43,7 @@ public interface CommitPropertiesProvider {
      * Provides object-specific commit properties when a given object is deleted from {@link ItauAuditableRepository}.
      *
      * <br/><br/>
-     * This method is called by {@link ItauAuditableSpringDataAuditable} aspect
+     * This method is called by {@link ItauAuditableSpringData} aspect
      * to get properties for commit created when
      * {@link CrudRepository#delete(Object)} and
      * {@link CrudRepository#deleteAll(Iterable)} methods are called.
@@ -62,7 +62,7 @@ public interface CommitPropertiesProvider {
      * by its Id.
      *
      * <br/><br/>
-     * This method is called by {@link ItauAuditableSpringDataAuditable} aspect
+     * This method is called by {@link ItauAuditableSpringData} aspect
      * to get properties for commit created when
      * {@link CrudRepository#deleteById(Object)} methods are called.
      *

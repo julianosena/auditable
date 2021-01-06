@@ -4,7 +4,7 @@ import br.com.zup.itau.auditable.core.ItauAuditableBuilder
 import spock.lang.Specification
 
 /**
- * see https://github.com/javers/javers/issues/546
+ * see https://github.com/itauAuditable/itauAuditable/issues/546
  * @author bartosz.walacik
  */
 class ArraysNestedInMaps extends Specification {
@@ -21,7 +21,7 @@ class ArraysNestedInMaps extends Specification {
       def map2 = new WithMap(mapUUID: [1: [uuid].toArray()] , mapInt: [1:[1].toArray()])
 
       when:
-      def diff = ItauAuditableBuilder.javers().build().compare(map1, map2)
+      def diff = ItauAuditableBuilder.itauAuditable().build().compare(map1, map2)
 
       then:
       diff.changes.size() == 0

@@ -4,7 +4,7 @@ import br.com.zup.itau.auditable.hibernate.integration.HibernateUnproxyObjectAcc
 import br.com.zup.itau.auditable.spring.ItauAuditableSpringProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "javers")
+@ConfigurationProperties(prefix = "itau-auditable")
 public class ItauAuditableSqlProperties extends ItauAuditableSpringProperties {
     private static final String DEFAULT_OBJECT_ACCESS_HOOK = HibernateUnproxyObjectAccessHook.class.getName();
 

@@ -32,7 +32,7 @@ class JqlExample extends Specification {
 
     def "should query for Shadows with different scopes, lightweight example, multiple commits"(){
       given: 'In this scenario, our 4 entities are committed in 3 commits'
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         // E1 -> E2 -> E3 -> E4
         def e4 = new Entity(id:4)
@@ -40,12 +40,12 @@ class JqlExample extends Specification {
         def e2 = new Entity(id:2, ref:e3)
         def e1 = new Entity(id:1, ref:e2)
 
-        javers.commit("author", e4) // commit 1.0 with e4 snapshot
-        javers.commit("author", e3) // commit 2.0 with e3 snapshot
-        javers.commit("author", e1) // commit 3.0 with snapshots of e1 and e2
+        itauAuditable.commit("author", e4) // commit 1.0 with e4 snapshot
+        itauAuditable.commit("author", e3) // commit 2.0 with e3 snapshot
+        itauAuditable.commit("author", e1) // commit 3.0 with snapshots of e1 and e2
 
       when: 'shallow scope query'
-        def shadows = javers.findShadows(QueryBuilder.byInstanceId(1, Entity).build())
+        def shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, Entity).build())
         def shadowE1 = shadows.get(0).get()
 
       then: 'only e1 is loaded'
@@ -54,7 +54,7 @@ class JqlExample extends Specification {
         shadowE1.ref == null
 
       when: 'commit-deep scope query'
-        shadows = javers.findShadows(QueryBuilder.byInstanceId(1, Entity)
+        shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, Entity)
                         .withScopeCommitDeep().build())
         shadowE1 = shadows.get(0).get()
 
@@ -64,7 +64,7 @@ class JqlExample extends Specification {
         shadowE1.ref.ref == null
 
       when: 'deep+1 scope query'
-        shadows = javers.findShadows(QueryBuilder.byInstanceId(1, Entity)
+        shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, Entity)
                         .withScopeDeepPlus(1).build())
         shadowE1 = shadows.get(0).get()
 
@@ -74,7 +74,7 @@ class JqlExample extends Specification {
         shadowE1.ref.ref == null
 
       when: 'deep+3 scope query'
-        shadows = javers.findShadows(QueryBuilder.byInstanceId(1, Entity)
+        shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, Entity)
                         .withScopeDeepPlus(3).build())
         shadowE1 = shadows.get(0).get()
 
@@ -87,7 +87,7 @@ class JqlExample extends Specification {
 
     def "should query for Shadows with different scopes, lightweight example, single commit"(){
         given: 'In this scenario, all entities are committed in the first commit'
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         // E1 -> E2 -> E3 -> E4
         def e4 = new Entity(id:4)
@@ -95,10 +95,10 @@ class JqlExample extends Specification {
         def e2 = new Entity(id:2, ref:e3)
         def e1 = new Entity(id:1, ref:e2)
 
-        javers.commit("author", e1) // commit 1.0 with snapshots of e1, e2, e3 and e4
+        itauAuditable.commit("author", e1) // commit 1.0 with snapshots of e1, e2, e3 and e4
 
         when: 'shallow scope query'
-        def shadows = javers.findShadows(QueryBuilder.byInstanceId(1, Entity)
+        def shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, Entity)
                 .build())
         def shadowE1 = shadows.get(0).get()
 
@@ -108,7 +108,7 @@ class JqlExample extends Specification {
         shadowE1.ref == null
 
         when: 'commit-deep scope query'
-        shadows = javers.findShadows(QueryBuilder.byInstanceId(1, Entity)
+        shadows = itauAuditable.findShadows(QueryBuilder.byInstanceId(1, Entity)
                 .withScopeCommitDeep().build())
         shadowE1 = shadows.get(0).get()
 
@@ -121,18 +121,18 @@ class JqlExample extends Specification {
 
     def "should query for Changes made on any object"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
         def bob = new Employee(name: "bob",
                                salary: 1000,
                                primaryAddress: new Address("London"))
-        javers.commit("author", bob)       // initial commit
+        itauAuditable.commit("author", bob)       // initial commit
 
         bob.salary = 1200                  // changes
         bob.primaryAddress.city = "Paris"  //
-        javers.commit("author", bob)       // second commit
+        itauAuditable.commit("author", bob)       // second commit
 
         when:
-        Changes changes = javers.findChanges( QueryBuilder.anyDomainObject().build() )
+        Changes changes = itauAuditable.findChanges( QueryBuilder.anyDomainObject().build() )
 
         then:
         assert changes.size() == 2
@@ -148,18 +148,18 @@ class JqlExample extends Specification {
 
     def "should query for Shadows of an object"() {
       given:
-          def javers = ItauAuditableBuilder.javers().build()
+          def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
           def bob = new Employee(name: "bob",
                                  salary: 1000,
                                  primaryAddress: new Address("London"))
-          javers.commit("author", bob)       // initial commit
+          itauAuditable.commit("author", bob)       // initial commit
 
           bob.salary = 1200                  // changes
           bob.primaryAddress.city = "Paris"  //
-          javers.commit("author", bob)       // second commit
+          itauAuditable.commit("author", bob)       // second commit
 
       when:
-          def shadows = javers.findShadows(QueryBuilder.byInstance(bob).build())
+          def shadows = itauAuditable.findShadows(QueryBuilder.byInstance(bob).build())
 
       then:
           assert shadows.size() == 2
@@ -178,7 +178,7 @@ class JqlExample extends Specification {
 
     def "should query for Shadows with different scopes"(){
       given:
-          def javers = ItauAuditableBuilder.javers().build()
+          def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
           //    /-> John -> Steve
           // Bob
@@ -187,13 +187,13 @@ class JqlExample extends Specification {
           def john = new Employee(name: 'john', boss: steve)
           def bob  = new Employee(name: 'bob', boss: john, primaryAddress: new Address('London'))
 
-          javers.commit('author', steve)  // commit 1.0 with snapshot of Steve
-          javers.commit('author', bob)    // commit 2.0 with snapshots of Bob, Bob#address and John
+          itauAuditable.commit('author', steve)  // commit 1.0 with snapshot of Steve
+          itauAuditable.commit('author', bob)    // commit 2.0 with snapshots of Bob, Bob#address and John
           bob.salary = 1200               // the change
-          javers.commit('author', bob)    // commit 3.0 with snapshot of Bob
+          itauAuditable.commit('author', bob)    // commit 3.0 with snapshot of Bob
 
       when: 'shallow scope query'
-          def shadows = javers.findShadows(QueryBuilder.byInstance(bob).build())
+          def shadows = itauAuditable.findShadows(QueryBuilder.byInstance(bob).build())
           Employee bobShadow = shadows[0].get()  //get the latest version of Bob
 
       then:
@@ -205,7 +205,7 @@ class JqlExample extends Specification {
           assert bobShadow.primaryAddress.city == 'London'
 
       when: 'commit-deep scope query'
-          shadows = javers.findShadows(QueryBuilder.byInstance(bob)
+          shadows = itauAuditable.findShadows(QueryBuilder.byInstance(bob)
                           .withScopeCommitDeep().build())
           bobShadow = shadows[0].get()
       then:
@@ -215,7 +215,7 @@ class JqlExample extends Specification {
           assert bobShadow.primaryAddress.city == 'London'
 
       when: 'deep+2 scope query'
-          shadows = javers.findShadows(QueryBuilder.byInstance(bob)
+          shadows = itauAuditable.findShadows(QueryBuilder.byInstance(bob)
                           .withScopeDeepPlus(2).build())
           bobShadow = shadows[0].get()
 
@@ -227,19 +227,19 @@ class JqlExample extends Specification {
 
     def "should query for Snapshots of an object"(){
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
         def bob = new Employee(name: "bob",
                                salary: 1000,
                                age: 29,
                                boss: new Employee("john"))
-        javers.commit("author", bob)       // initial commit
+        itauAuditable.commit("author", bob)       // initial commit
 
         bob.salary = 1200                  // changes
         bob.age = 30                       //
-        javers.commit("author", bob)       // second commit
+        itauAuditable.commit("author", bob)       // second commit
 
         when:
-        def snapshots = javers.findSnapshots( QueryBuilder.byInstance(bob).build() )
+        def snapshots = itauAuditable.findSnapshots( QueryBuilder.byInstance(bob).build() )
 
         then:
         assert snapshots.size() == 2
@@ -260,14 +260,14 @@ class JqlExample extends Specification {
 
     def "should query for Entity changes by instance Id"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
-        javers.commit("author", new Employee(name:"bob", age:30, salary:1000) )
-        javers.commit("author", new Employee(name:"bob", age:31, salary:1200) )
-        javers.commit("author", new Employee(name:"john",age:25) )
+        itauAuditable.commit("author", new Employee(name:"bob", age:30, salary:1000) )
+        itauAuditable.commit("author", new Employee(name:"bob", age:31, salary:1200) )
+        itauAuditable.commit("author", new Employee(name:"john",age:25) )
 
         when:
-        Changes changes = javers.findChanges( QueryBuilder.byInstanceId("bob", Employee.class).build() )
+        Changes changes = itauAuditable.findChanges( QueryBuilder.byInstanceId("bob", Employee.class).build() )
 
         then:
         println changes.prettyPrint()
@@ -276,17 +276,17 @@ class JqlExample extends Specification {
 
     def "should query for ValueObject changes by owning Entity instance and class"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
-        javers.commit("author", new Employee(name:"bob",  postalAddress:  new Address(city:"Paris")))
-        javers.commit("author", new Employee(name:"bob",  primaryAddress: new Address(city:"London")))
-        javers.commit("author", new Employee(name:"bob",  primaryAddress: new Address(city:"Paris")))
-        javers.commit("author", new Employee(name:"lucy", primaryAddress: new Address(city:"New York")))
-        javers.commit("author", new Employee(name:"lucy", primaryAddress: new Address(city:"Washington")))
+        itauAuditable.commit("author", new Employee(name:"bob",  postalAddress:  new Address(city:"Paris")))
+        itauAuditable.commit("author", new Employee(name:"bob",  primaryAddress: new Address(city:"London")))
+        itauAuditable.commit("author", new Employee(name:"bob",  primaryAddress: new Address(city:"Paris")))
+        itauAuditable.commit("author", new Employee(name:"lucy", primaryAddress: new Address(city:"New York")))
+        itauAuditable.commit("author", new Employee(name:"lucy", primaryAddress: new Address(city:"Washington")))
 
         when:
         println "query for ValueObject changes by owning Entity instance Id"
-        Changes changes = javers
+        Changes changes = itauAuditable
             .findChanges( QueryBuilder.byValueObjectId("bob",Employee.class,"primaryAddress").build())
 
         then:
@@ -295,7 +295,7 @@ class JqlExample extends Specification {
 
         when:
         println "query for ValueObject changes by owning Entity class"
-        changes = javers
+        changes = itauAuditable
             .findChanges( QueryBuilder.byValueObject(Employee.class,"primaryAddress").build())
 
         then:
@@ -305,15 +305,15 @@ class JqlExample extends Specification {
 
     def "should query for ValueObject changes when stored in a List"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
-        javers.commit("author",
+        itauAuditable.commit("author",
                 new Person(login: "bob", addresses: [new Address(city: "London"), new Address(city: "Luton")]))
-        javers.commit("author",
+        itauAuditable.commit("author",
                 new Person(login: "bob", addresses: [new Address(city: "Paris"), new Address(city: "Luton")]))
 
         when:
-        Changes changes = javers
+        Changes changes = itauAuditable
                 .findChanges(QueryBuilder.byValueObjectId("bob",Person.class, "addresses/0").build())
 
         then:
@@ -323,13 +323,13 @@ class JqlExample extends Specification {
 
     def "should query for ValueObject changes when stored as Map values"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
-        javers.commit("author", new Person(login: "bob", addressMap: ["HOME":new Address(city: "Paris")]))
-        javers.commit("author", new Person(login: "bob", addressMap: ["HOME":new Address(city: "London")]))
+        itauAuditable.commit("author", new Person(login: "bob", addressMap: ["HOME":new Address(city: "Paris")]))
+        itauAuditable.commit("author", new Person(login: "bob", addressMap: ["HOME":new Address(city: "London")]))
 
         when:
-        Changes changes = javers
+        Changes changes = itauAuditable
             .findChanges(QueryBuilder.byValueObjectId("bob", Person.class, "addressMap/HOME").build())
 
         then:
@@ -339,16 +339,16 @@ class JqlExample extends Specification {
 
     def "should query for Object changes by its class"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
-        javers.commit("me", new DummyUserDetails(id:1, dummyAddress: new DummyAddress(city: "London")))
-        javers.commit("me", new DummyUserDetails(id:1, dummyAddress: new DummyAddress(city: "Paris")))
-        javers.commit("me", new SnapshotEntity(id:2, valueObjectRef: new DummyAddress(city: "Rome")))
-        javers.commit("me", new SnapshotEntity(id:2, valueObjectRef: new DummyAddress(city: "Palma")))
-        javers.commit("me", new SnapshotEntity(id:2, intProperty:2))
+        itauAuditable.commit("me", new DummyUserDetails(id:1, dummyAddress: new DummyAddress(city: "London")))
+        itauAuditable.commit("me", new DummyUserDetails(id:1, dummyAddress: new DummyAddress(city: "Paris")))
+        itauAuditable.commit("me", new SnapshotEntity(id:2, valueObjectRef: new DummyAddress(city: "Rome")))
+        itauAuditable.commit("me", new SnapshotEntity(id:2, valueObjectRef: new DummyAddress(city: "Palma")))
+        itauAuditable.commit("me", new SnapshotEntity(id:2, intProperty:2))
 
         when:
-        Changes changes = javers.findChanges( QueryBuilder.byClass(DummyAddress.class).build() )
+        Changes changes = itauAuditable.findChanges( QueryBuilder.byClass(DummyAddress.class).build() )
 
         then:
         println changes.prettyPrint()
@@ -357,15 +357,15 @@ class JqlExample extends Specification {
 
     def "should query for any domain object changes"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
-        javers.commit("author", new Employee(name:"bob", age:30) )
-        javers.commit("author", new Employee(name:"bob", age:31) )
-        javers.commit("author", new DummyUserDetails(id:1, someValue:"old") )
-        javers.commit("author", new DummyUserDetails(id:1, someValue:"new") )
+        itauAuditable.commit("author", new Employee(name:"bob", age:30) )
+        itauAuditable.commit("author", new Employee(name:"bob", age:31) )
+        itauAuditable.commit("author", new DummyUserDetails(id:1, someValue:"old") )
+        itauAuditable.commit("author", new DummyUserDetails(id:1, someValue:"new") )
 
         when:
-        Changes changes = javers.findChanges( QueryBuilder.anyDomainObject().build() )
+        Changes changes = itauAuditable.findChanges( QueryBuilder.anyDomainObject().build() )
 
         then:
         println changes.prettyPrint()
@@ -374,137 +374,137 @@ class JqlExample extends Specification {
 
     def "should query for changes (and snapshots) with property filter"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
-        javers.commit("me", new Employee(name:"bob", age:30, salary:1000) )
-        javers.commit("me", new Employee(name:"bob", age:31, salary:1100) )
-        javers.commit("me", new Employee(name:"bob", age:31, salary:1200) )
+        itauAuditable.commit("me", new Employee(name:"bob", age:30, salary:1000) )
+        itauAuditable.commit("me", new Employee(name:"bob", age:31, salary:1100) )
+        itauAuditable.commit("me", new Employee(name:"bob", age:31, salary:1200) )
 
         when:
         def query = QueryBuilder.byInstanceId("bob", Employee.class)
                 .withChangedProperty("salary").build()
-        Changes changes = javers.findChanges(query)
+        Changes changes = itauAuditable.findChanges(query)
 
         then:
         println changes.prettyPrint()
         assert changes.size() == 2
-        assert javers.findSnapshots(query).size() == 3
+        assert itauAuditable.findSnapshots(query).size() == 3
     }
 
     def "should query for changes (and snapshots) with properties filter"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
-        javers.commit("me", new Employee(name:"bob", age:30, salary:1000) )
-        javers.commit("me", new Employee(name:"bob", age:31, salary:1100) )
-        javers.commit("me", new Employee(name:"bob", age:31, salary:1200) )
+        itauAuditable.commit("me", new Employee(name:"bob", age:30, salary:1000) )
+        itauAuditable.commit("me", new Employee(name:"bob", age:31, salary:1100) )
+        itauAuditable.commit("me", new Employee(name:"bob", age:31, salary:1200) )
 
         when:
         def query = QueryBuilder.byInstanceId("bob", Employee.class)
                 .withChangedPropertyIn("salary", "age").build()
-        Changes changes = javers.findChanges(query)
+        Changes changes = itauAuditable.findChanges(query)
 
         then:
         println changes.prettyPrint()
         assert changes.size() == 3
-        assert javers.findSnapshots(query).size() == 3
+        assert itauAuditable.findSnapshots(query).size() == 3
     }
 
     def "should query for changes (and snapshots) with limit filter"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
-        javers.commit( "me", new Employee(name:"bob", salary: 900) )
-        javers.commit( "me", new Employee(name:"bob", salary: 1000) )
-        javers.commit( "me", new Employee(name:"bob", salary: 1100) )
-        javers.commit( "me", new Employee(name:"bob", salary: 1200) )
+        itauAuditable.commit( "me", new Employee(name:"bob", salary: 900) )
+        itauAuditable.commit( "me", new Employee(name:"bob", salary: 1000) )
+        itauAuditable.commit( "me", new Employee(name:"bob", salary: 1100) )
+        itauAuditable.commit( "me", new Employee(name:"bob", salary: 1200) )
 
         when:
         def query = QueryBuilder.byInstanceId("bob", Employee.class).limit(2).build()
-        Changes changes = javers.findChanges(query)
+        Changes changes = itauAuditable.findChanges(query)
 
         then:
         println changes.prettyPrint()
         assert changes.size() == 2
-        assert javers.findSnapshots(query).size() == 2
+        assert itauAuditable.findSnapshots(query).size() == 2
     }
 
     def "should query for changes (and snapshots) with skip filter"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
-        javers.commit( "me", new Employee(name:"bob", age:29, salary: 900) )
-        javers.commit( "me", new Employee(name:"bob", age:30, salary: 1000) )
-        javers.commit( "me", new Employee(name:"bob", age:31, salary: 1100) )
-        javers.commit( "me", new Employee(name:"bob", age:32, salary: 1200) )
+        itauAuditable.commit( "me", new Employee(name:"bob", age:29, salary: 900) )
+        itauAuditable.commit( "me", new Employee(name:"bob", age:30, salary: 1000) )
+        itauAuditable.commit( "me", new Employee(name:"bob", age:31, salary: 1100) )
+        itauAuditable.commit( "me", new Employee(name:"bob", age:32, salary: 1200) )
 
         when:
         def query = QueryBuilder.byInstanceId("bob", Employee.class).skip(1).build()
-        Changes changes = javers.findChanges( query )
+        Changes changes = itauAuditable.findChanges( query )
 
         then:
         println changes.prettyPrint()
         assert changes.size() == 4
-        assert javers.findSnapshots(query).size() == 3
+        assert itauAuditable.findSnapshots(query).size() == 3
     }
 
     def "should query for changes (and snapshots) with author filter"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
-        javers.commit( "Jim", new Employee(name:"bob", age:29, salary: 900) )
-        javers.commit( "Pam", new Employee(name:"bob", age:30, salary: 1000) )
-        javers.commit( "Jim", new Employee(name:"bob", age:31, salary: 1100) )
-        javers.commit( "Pam", new Employee(name:"bob", age:32, salary: 1200) )
+        itauAuditable.commit( "Jim", new Employee(name:"bob", age:29, salary: 900) )
+        itauAuditable.commit( "Pam", new Employee(name:"bob", age:30, salary: 1000) )
+        itauAuditable.commit( "Jim", new Employee(name:"bob", age:31, salary: 1100) )
+        itauAuditable.commit( "Pam", new Employee(name:"bob", age:32, salary: 1200) )
 
         when:
         def query = QueryBuilder.byInstanceId("bob", Employee.class).byAuthor("Pam").build()
-        Changes changes = javers.findChanges( query )
+        Changes changes = itauAuditable.findChanges( query )
 
         then:
         println changes.prettyPrint()
         assert changes.size() == 4
-        assert javers.findSnapshots(query).size() == 2
+        assert itauAuditable.findSnapshots(query).size() == 2
     }
 
     def "should query for changes (and snapshots) with commit property filters"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         def bob = new Employee(name: "bob", position: "Assistant", salary: 900)
-        javers.commit( "author", bob, ["tenant": "ACME", "event": "birthday"] )
+        itauAuditable.commit( "author", bob, ["tenant": "ACME", "event": "birthday"] )
         bob.position = "Specialist"
         bob.salary = 1600
-        javers.commit( "author", bob, ["tenant": "ACME", "event": "promotion"] )
+        itauAuditable.commit( "author", bob, ["tenant": "ACME", "event": "promotion"] )
 
         def pam = new Employee(name: "pam", position: "Secretary", salary: 1300)
-        javers.commit( "author", pam, ["tenant": "Dunder Mifflin", "event": "hire"] )
+        itauAuditable.commit( "author", pam, ["tenant": "Dunder Mifflin", "event": "hire"] )
         bob.position = "Saleswoman"
         bob.salary = 1700
-        javers.commit( "author", pam, ["tenant": "Dunder Mifflin", "event": "promotion"] )
+        itauAuditable.commit( "author", pam, ["tenant": "Dunder Mifflin", "event": "promotion"] )
 
         when:
         def query = QueryBuilder.anyDomainObject()
             .withCommitProperty("tenant", "ACME")
             .withCommitProperty("event", "promotion").build()
-        Changes changes = javers.findChanges( query )
+        Changes changes = itauAuditable.findChanges( query )
 
         then:
         println changes.prettyPrint()
         assert changes.size() == 2
-        assert javers.findSnapshots(query).size() == 1
+        assert itauAuditable.findSnapshots(query).size() == 1
     }
 
     def "should query for changes (and snapshots) with commitDate filter"(){
       given:
       def fakeDateProvider = new FakeDateProvider()
-      def javers = ItauAuditableBuilder.javers().withDateTimeProvider(fakeDateProvider).build()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().withDateTimeProvider(fakeDateProvider).build()
 
       (0..5).each{ i ->
           def now = ZonedDateTime.of(2015+i,01,1,0,0,0,0, ZoneId.of("UTC"))
           fakeDateProvider.set( now )
           def bob = new Employee(name:"bob", age:20+i)
-          javers.commit("author", bob)
+          itauAuditable.commit("author", bob)
           println "comitting bob on $now"
       }
 
@@ -512,66 +512,66 @@ class JqlExample extends Specification {
       def query = QueryBuilder.byInstanceId("bob", Employee.class)
               .from(new LocalDate(2016,01,1))
               .to  (new LocalDate(2018,01,1)).build()
-      Changes changes = javers.findChanges( query )
+      Changes changes = itauAuditable.findChanges( query )
 
       then:
       println changes.prettyPrint()
       assert changes.size() == 3
-      assert javers.findSnapshots(query).size() == 3
+      assert itauAuditable.findSnapshots(query).size() == 3
     }
 
     def "should query for changes (and snapshots) with commitId filter"(){
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         (1..3).each {
-            javers.commit("author", new Employee(name:"john", age:20+it))
-            javers.commit("author", new Employee(name:"bob",  age:20+it))
+            itauAuditable.commit("author", new Employee(name:"john", age:20+it))
+            itauAuditable.commit("author", new Employee(name:"bob",  age:20+it))
         }
 
         when:
         def query = QueryBuilder.byInstanceId("bob", Employee.class )
                 .withCommitId( CommitId.valueOf(4) ).build()
-        Changes changes = javers.findChanges(query)
+        Changes changes = itauAuditable.findChanges(query)
 
         then:
         println changes.prettyPrint()
         assert changes.size() == 1
         assert changes[0].left == 21
         assert changes[0].right == 22
-        assert javers.findSnapshots(query).size() == 1
+        assert itauAuditable.findSnapshots(query).size() == 1
     }
 
     def "should query for changes (and snapshots) with version filter"(){
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         (1..5).each {
-            javers.commit("author", new Employee(name: "john",age: 20+it))
-            javers.commit("author", new Employee(name: "bob", age: 20+it))
+            itauAuditable.commit("author", new Employee(name: "john",age: 20+it))
+            itauAuditable.commit("author", new Employee(name: "bob", age: 20+it))
         }
 
         when:
         def query = QueryBuilder.byInstanceId("bob", Employee.class).withVersion(4).build()
-        Changes changes = javers.findChanges( query )
+        Changes changes = itauAuditable.findChanges( query )
 
         then:
         println changes.prettyPrint()
         assert changes.size() == 1
         assert changes[0].left == 23
         assert changes[0].right == 24
-        assert javers.findSnapshots(query).size() == 1
+        assert itauAuditable.findSnapshots(query).size() == 1
     }
 
     def "should query for changes with NewObject filter"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
-        javers.commit( "author", new Employee(name:"bob", age:30, salary: 1000) )
-        javers.commit( "author", new Employee(name:"bob", age:30, salary: 1200) )
+        itauAuditable.commit( "author", new Employee(name:"bob", age:30, salary: 1000) )
+        itauAuditable.commit( "author", new Employee(name:"bob", age:30, salary: 1200) )
 
         when:
-        Changes changes = javers
+        Changes changes = itauAuditable
             .findChanges( QueryBuilder.byInstanceId("bob", Employee.class)
             .withNewObjectChanges(true).build() )
 
@@ -583,20 +583,20 @@ class JqlExample extends Specification {
 
     def "should query for changes made on Entity and its ValueObjects by InstanceId and Class"(){
       given:
-      def javers = ItauAuditableBuilder.javers().build()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
       def bob = new Employee(name:"bob", age:30, salary: 1000,
               primaryAddress: new Address(city:"Paris"),
               postalAddress: new Address(city:"Paris"))
-      javers.commit("author", bob)
+      itauAuditable.commit("author", bob)
 
       bob.age = 31
       bob.primaryAddress.city = "London"
-      javers.commit("author", bob)
+      itauAuditable.commit("author", bob)
 
       when: "query by instance Id"
       def query = QueryBuilder.byInstanceId("bob", Employee.class).withChildValueObjects().build()
-      Changes changes = javers.findChanges( query )
+      Changes changes = itauAuditable.findChanges( query )
 
       then:
       println changes.prettyPrint()
@@ -604,7 +604,7 @@ class JqlExample extends Specification {
 
       when: "query by Entity class"
       query = QueryBuilder.byClass(Employee.class).withChildValueObjects().build()
-      changes = javers.findChanges( query )
+      changes = itauAuditable.findChanges( query )
 
       then:
       assert changes.size() == 2

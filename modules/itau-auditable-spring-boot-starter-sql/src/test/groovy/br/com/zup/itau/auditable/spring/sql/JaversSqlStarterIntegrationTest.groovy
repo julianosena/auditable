@@ -22,17 +22,17 @@ import static br.com.zup.itau.auditable.repository.jql.QueryBuilder.byInstanceId
 class ItauAuditableSqlStarterIntegrationTest extends Specification {
 
     @Autowired
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Autowired
     DummyEntityRepository dummyEntityRepository
 
-    def "should build default javers instance with auto-audit aspect"() {
+    def "should build default itauAuditable instance with auto-audit aspect"() {
         when:
         def entity = dummyEntityRepository.save(DummyEntity.random())
         assert dummyEntityRepository.getOne(entity.id)
 
-        def snapshots = javers.findSnapshots(byInstanceId(entity.id, DummyEntity).build())
+        def snapshots = itauAuditable.findSnapshots(byInstanceId(entity.id, DummyEntity).build())
 
         then:
         snapshots.size() == 1
@@ -51,7 +51,7 @@ class ItauAuditableSqlStarterIntegrationTest extends Specification {
       List persisted = dummyEntityRepository.saveAll(entities)
 
       then:
-      persisted.collect {p -> javers.getLatestSnapshot(p.id, DummyEntity)}
+      persisted.collect {p -> itauAuditable.getLatestSnapshot(p.id, DummyEntity)}
                .each {s -> assert s.isPresent() }
     }
 }

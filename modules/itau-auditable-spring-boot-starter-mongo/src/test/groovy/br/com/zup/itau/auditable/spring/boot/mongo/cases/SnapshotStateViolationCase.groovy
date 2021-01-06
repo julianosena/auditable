@@ -13,9 +13,9 @@ import spock.lang.Specification
 @ActiveProfiles("test")
 class SnapshotStateViolationCase extends Specification {
 
-	@Autowired ItauAuditable javers
+	@Autowired ItauAuditable itauAuditable
 
-	@Autowired ItauAuditableSpringProperties javersProperties
+	@Autowired ItauAuditableSpringProperties itauAuditableProperties
 
 	interface ISimplePojo {
 		int getName()
@@ -57,15 +57,15 @@ class SnapshotStateViolationCase extends Specification {
 
 	def "should expect not to get snapshot violation exception when mappingStyle: bean" () {
 		given:
-		javersProperties.mappingStyle == "bean"
+		itauAuditableProperties.mappingStyle == "bean"
 
 		ExtendedPojo ep = new ExtendedPojo()
 		ep.setAnotherName(1)
 		ep.setName(2)
 
 		when:
-		javers.commit("a", ep)
-		def snapshots = javers.findSnapshots(QueryBuilder.byInstance(ep).build())
+		itauAuditable.commit("a", ep)
+		def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstance(ep).build())
 		
 		then:
 		assert snapshots.size() == 1

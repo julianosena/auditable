@@ -18,7 +18,7 @@ class ItauAuditableSpringDataJpaAspectIntegrationTest extends Specification {
     ApplicationContext context
 
     @Autowired
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Autowired
     DummyAuditedJpaRepository repository
@@ -34,7 +34,7 @@ class ItauAuditableSpringDataJpaAspectIntegrationTest extends Specification {
         repository.save(o)
 
         then:
-        javers.findSnapshots(byInstanceId(o.id, DummyObject).build()).size() == 1
+        itauAuditable.findSnapshots(byInstanceId(o.id, DummyObject).build()).size() == 1
     }
 
     def "should commit to JaVers on audited jpaRepository.saveAndFlush(object)"() {
@@ -45,7 +45,7 @@ class ItauAuditableSpringDataJpaAspectIntegrationTest extends Specification {
         repository.saveAndFlush(o)
 
         then:
-        javers.findSnapshots(br.com.zup.itau.auditable.repository.jql.QueryBuilder.byInstanceId(o.id, DummyObject).build()).size() == 1
+        itauAuditable.findSnapshots(br.com.zup.itau.auditable.repository.jql.QueryBuilder.byInstanceId(o.id, DummyObject).build()).size() == 1
     }
 
     def "should commitDelete on audited jpaRepository.delete(object)"() {
@@ -57,7 +57,7 @@ class ItauAuditableSpringDataJpaAspectIntegrationTest extends Specification {
         repository.delete(o)
 
         then:
-        def snapshots = javers.findSnapshots(byInstanceId(o.id, DummyObject).build())
+        def snapshots = itauAuditable.findSnapshots(byInstanceId(o.id, DummyObject).build())
         snapshots.size() == 2
         snapshots[0].terminal
         snapshots[1].initial
@@ -73,6 +73,6 @@ class ItauAuditableSpringDataJpaAspectIntegrationTest extends Specification {
         noAuditRepository.getOne(o.id)
 
         then:
-        javers.findSnapshots(byInstanceId(o.id, DummyObject).build()).size() == 0
+        itauAuditable.findSnapshots(byInstanceId(o.id, DummyObject).build()).size() == 0
     }
 }

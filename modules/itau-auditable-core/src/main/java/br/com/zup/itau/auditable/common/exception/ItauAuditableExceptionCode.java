@@ -7,13 +7,13 @@ package br.com.zup.itau.auditable.common.exception;
  */
 public enum ItauAuditableExceptionCode {
     WRONG_USAGE_OF_JAVERS_AUDITABLE_DELETE("" +
-            "The argument '%s' you have passed to a method '%s' annotated with @ItauAuditableAuditableDelete " +
+            "The argument '%s' you have passed to a method '%s' annotated with @ItauAuditableDelete " +
             "is not an Entity, nor a Value Object. " +
             "If your intention is to delete by Id, provide the Entity class parameter."),
 
-    MALFORMED_JAVERS_MONGODB_PROPERTIES("Malformed configuration for dedicated MongoDB in javers.mongodb properties, either host or url mus be defined"),
+    MALFORMED_JAVERS_MONGODB_PROPERTIES("Malformed configuration for dedicated MongoDB in itauAuditable.mongodb properties, either host or url mus be defined"),
 
-    CM("Malformed configuration for dedicated MongoDB in javers.mongodb properties, either host or url mus be defined"),
+    CM("Malformed configuration for dedicated MongoDB in itauAuditable.mongodb properties, either host or url mus be defined"),
 
     ID_TYPE_NOT_SUPPORTED("%s %s can't be used as Id-property type. Problematic class: '%s'.") ,
 
@@ -33,9 +33,9 @@ public enum ItauAuditableExceptionCode {
 
     NOT_INSTANCE_OF("Can't create InstanceId for EntityType '%s', class '%s' bounded to EntityType is not assignable from given class '%s'"),
 
-    UNDEFINED_PROPERTY(ItauAuditableException.BOOTSTRAP_ERROR + "undefined mandatory property '%s'. Define it in your classpath:javers.properties"),
+    UNDEFINED_PROPERTY(ItauAuditableException.BOOTSTRAP_ERROR + "undefined mandatory property '%s'. Define it in your classpath:itauAuditable.properties"),
 
-    MALFORMED_PROPERTY(ItauAuditableException.BOOTSTRAP_ERROR + "unwrap '%s' is invalid for property '%s'. Fix it in your classpath:javers.properties"),
+    MALFORMED_PROPERTY(ItauAuditableException.BOOTSTRAP_ERROR + "unwrap '%s' is invalid for property '%s'. Fix it in your classpath:itauAuditable.properties"),
 
     CLASSPATH_RESOURCE_NOT_FOUND(ItauAuditableException.BOOTSTRAP_ERROR + "classpath resource '%s' could not be found"),
 
@@ -121,7 +121,7 @@ public enum ItauAuditableExceptionCode {
 
     RUNTIME_EXCEPTION("uncategorized runtime exception. %s"),
 
-    TRANSACTION_MANAGER_NOT_SET("Can't create javers bean due to missing configuration. Since itau-auditable-spring 2.8.0, transactionManager bean should be explicitly provided in TransactionalItauAuditableBuilder.withTxManager(). See example at http://javers.org/documentation/spring-integration/#spring-jpa-example")
+    TRANSACTION_MANAGER_NOT_SET("Can't create itauAuditable bean due to missing configuration. Since itau-auditable-spring 2.8.0, transactionManager bean should be explicitly provided in TransactionalItauAuditableBuilder.withTxManager(). See example at http://itauAuditable.org/documentation/spring-integration/#spring-jpa-example")
     ;
 
     private final String message;

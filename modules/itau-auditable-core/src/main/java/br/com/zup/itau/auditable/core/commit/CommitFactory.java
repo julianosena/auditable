@@ -29,7 +29,7 @@ import static br.com.zup.itau.auditable.common.validation.Validate.argumentsAreN
  */
 public class CommitFactory {
     private final DiffFactory diffFactory;
-    private final ItauAuditableExtendedRepository javersRepository;
+    private final ItauAuditableExtendedRepository itauAuditableRepository;
     private final DateProvider dateProvider;
     private final LiveGraphFactory liveGraphFactory;
     private final SnapshotFactory snapshotFactory;
@@ -37,9 +37,9 @@ public class CommitFactory {
     private final ChangedCdoSnapshotsFactory changedCdoSnapshotsFactory;
     private final CommitIdFactory commitIdFactory;
 
-    public CommitFactory(DiffFactory diffFactory, ItauAuditableExtendedRepository javersRepository, DateProvider dateProvider, LiveGraphFactory liveGraphFactory, SnapshotFactory snapshotFactory, SnapshotGraphFactory snapshotGraphFactory, ChangedCdoSnapshotsFactory changedCdoSnapshotsFactory, CommitIdFactory commitIdFactory) {
+    public CommitFactory(DiffFactory diffFactory, ItauAuditableExtendedRepository itauAuditableRepository, DateProvider dateProvider, LiveGraphFactory liveGraphFactory, SnapshotFactory snapshotFactory, SnapshotGraphFactory snapshotGraphFactory, ChangedCdoSnapshotsFactory changedCdoSnapshotsFactory, CommitIdFactory commitIdFactory) {
         this.diffFactory = diffFactory;
-        this.javersRepository = javersRepository;
+        this.itauAuditableRepository = itauAuditableRepository;
         this.dateProvider = dateProvider;
         this.liveGraphFactory = liveGraphFactory;
         this.snapshotFactory = snapshotFactory;
@@ -50,7 +50,7 @@ public class CommitFactory {
 
     public Commit createTerminalByGlobalId(String author, Map<String, String> properties, GlobalId removedId){
         argumentsAreNotNull(author, properties, removedId);
-        Optional<CdoSnapshot> previousSnapshot = javersRepository.getLatest(removedId);
+        Optional<CdoSnapshot> previousSnapshot = itauAuditableRepository.getLatest(removedId);
 
         CommitMetadata commitMetadata = newCommitMetadata(author, properties);
         CdoSnapshot terminalSnapshot = previousSnapshot

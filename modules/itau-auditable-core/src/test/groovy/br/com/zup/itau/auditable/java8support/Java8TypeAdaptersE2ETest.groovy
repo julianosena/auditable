@@ -19,7 +19,7 @@ import java.time.ZoneOffset
 import java.time.ZonedDateTime
 
 import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.valueObjectId
-import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
+import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.itauAuditable
 import static br.com.zup.itau.auditable.core.diff.DiffAssert.assertThat
 
 /**
@@ -30,10 +30,10 @@ class Java8TypeAdaptersE2ETest extends Specification {
     @Unroll
     def "should register #j8type.simpleName as ValueTypes"(){
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
 
         expect:
-        javers.getTypeMapping(j8type) instanceof ValueType
+        itauAuditable.getTypeMapping(j8type) instanceof ValueType
 
         where:
         j8type << [LocalDate, LocalDateTime, LocalTime, Year, ZonedDateTime, ZoneOffset, OffsetDateTime, Instant, Period, Duration]
@@ -42,12 +42,12 @@ class Java8TypeAdaptersE2ETest extends Specification {
     @Unroll
     def "should support optional values (#leftOptional, #rightOptional) changes" (){
         given:
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def left =  new SnapshotEntity(optionalInteger: leftOptional)
         def right = new SnapshotEntity(optionalInteger: rightOptional)
 
         when:
-        def diff = javers.compare(left,right)
+        def diff = itauAuditable.compare(left,right)
 
         then:
         assertThat(diff).hasValueChangeAt("optionalInteger", leftOptional, rightOptional)
@@ -59,12 +59,12 @@ class Java8TypeAdaptersE2ETest extends Specification {
     }
 
     def "should support value changes in optional ValueObjects"(){
-        def javers = javers().build()
+        def itauAuditable = itauAuditable().build()
         def left =  new SnapshotEntity(optionalValueObject: Optional.of(new DummyAddress("New York")) )
         def right = new SnapshotEntity(optionalValueObject: Optional.of(new DummyAddress("Paris")) )
 
         when:
-        def diff = javers.compare(left,right)
+        def diff = itauAuditable.compare(left,right)
 
         then:
         diff.changes.size() == 1

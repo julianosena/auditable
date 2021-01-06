@@ -42,7 +42,7 @@ class ClassAnnotationsScanner {
 
         Optional<String> typeName = annotationNamesProvider.findTypeNameAnnValue(annotations);
 
-        Optional<Class<? extends Annotation>> javersTypeAnnotation =
+        Optional<Class<? extends Annotation>> itauAuditableTypeAnnotation =
                 JAVERS_TYPE_ANNOTATIONS.stream().filter(annTypes::contains).findFirst();
 
         boolean hasIgnoreDeclaredProperties = annTypes.contains(IGNORE_DECLARED_PROPERTIES_ANN);
@@ -53,11 +53,11 @@ class ClassAnnotationsScanner {
     }
 
     private TypeFromAnnotation typeFromAnnotation(Set<Class<? extends Annotation>> annTypes) {
-        Optional<Class<? extends Annotation>> javersTypeAnnotation =
+        Optional<Class<? extends Annotation>> itauAuditableTypeAnnotation =
                 JAVERS_TYPE_ANNOTATIONS.stream().filter(annTypes::contains).findFirst();
 
-        if (javersTypeAnnotation.isPresent()) {
-            return new TypeFromAnnotation(javersTypeAnnotation.get());
+        if (itauAuditableTypeAnnotation.isPresent()) {
+            return new TypeFromAnnotation(itauAuditableTypeAnnotation.get());
         }
         else {
             boolean hasValue = annotationNamesProvider.hasValueAnnAlias(annTypes);

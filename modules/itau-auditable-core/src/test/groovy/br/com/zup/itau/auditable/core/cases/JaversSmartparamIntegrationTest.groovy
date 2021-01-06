@@ -18,7 +18,7 @@ class ItauAuditableSmartparamIntegrationTest extends Specification{
 
     def "should serialize parameter entry"() {
         given:
-        ItauAuditable javers = ItauAuditableBuilder.javers()
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable()
                                      .withTypeSafeValues(true)
                                      .build()
 
@@ -30,8 +30,8 @@ class ItauAuditableSmartparamIntegrationTest extends Specification{
                                               "enum":FEMALE])
 
         when:
-        Diff diff = javers.compare(entry1, entry2)
-        String jsonText = javers.jsonConverter.toJson(diff)
+        Diff diff = itauAuditable.compare(entry1, entry2)
+        String jsonText = itauAuditable.jsonConverter.toJson(diff)
 
         then:
         def json = new JsonSlurper().parseText(jsonText)

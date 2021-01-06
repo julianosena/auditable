@@ -16,10 +16,10 @@ class QueryRunnerIntegrationTest extends Specification {
 
     def "should throw MALFORMED_JQL when  "(){
       given:
-      def javers = ItauAuditableBuilder.javers().build()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
       when:
-      javers.findSnapshots(QueryBuilder.byInstance("value").build())
+      itauAuditable.findSnapshots(QueryBuilder.byInstance("value").build())
 
       then:
       def e = thrown(ItauAuditableException)
@@ -30,9 +30,9 @@ class QueryRunnerIntegrationTest extends Specification {
     @Unroll
     def "should touch Entity and ValueObject classes before running #queryType query"(){
         given:
-        def javers = ItauAuditableTestBuilder.javersTestAssembly()
-        def queryRunner = javers.queryRunner
-        def typeMapper = javers.typeMapper
+        def itauAuditable = ItauAuditableTestBuilder.itauAuditableTestAssembly()
+        def queryRunner = itauAuditable.queryRunner
+        def typeMapper = itauAuditable.typeMapper
 
         when:
         action.call(queryRunner, query)

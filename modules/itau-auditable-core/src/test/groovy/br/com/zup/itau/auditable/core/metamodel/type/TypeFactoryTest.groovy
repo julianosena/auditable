@@ -23,7 +23,7 @@ import spock.lang.Unroll
 import javax.persistence.Id
 import javax.persistence.Transient
 
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 import static br.com.zup.itau.auditable.core.MappingStyle.BEAN
 import static br.com.zup.itau.auditable.core.MappingStyle.FIELD
 import static br.com.zup.itau.auditable.core.metamodel.clazz.EntityDefinitionBuilder.entityDefinition
@@ -40,9 +40,9 @@ class TypeFactoryTest extends Specification {
     }
 
     static TypeFactory create(MappingStyle mappingStyle){
-        def javersTestAssembly = javersTestAssembly(mappingStyle)
-        def classScanner = javersTestAssembly.getContainerComponent(ClassScanner)
-        new TypeFactory(classScanner, javersTestAssembly.typeMapper, new DynamicMappingStrategy())
+        def itauAuditableTestAssembly = itauAuditableTestAssembly(mappingStyle)
+        def classScanner = itauAuditableTestAssembly.getContainerComponent(ClassScanner)
+        new TypeFactory(classScanner, itauAuditableTestAssembly.typeMapper, new DynamicMappingStrategy())
     }
 
     def setupSpec() {
@@ -194,7 +194,7 @@ class TypeFactoryTest extends Specification {
         @Id int id
     }
 
-    def "should use javers type annotations first, when ambiguous type mapping"(){
+    def "should use itauAuditable type annotations first, when ambiguous type mapping"(){
         expect:
         typeFactory.infer(AmbiguousEntityType) instanceof EntityType
         typeFactory.infer(AmbiguousValueObjectType) instanceof ValueObjectType
@@ -226,11 +226,11 @@ class TypeFactoryTest extends Specification {
 
     def "should ignore @Transient and @DiffIgnore when @DiffInclude is present and only use included properties"() {
         when:
-        def javersType = typeFactory.infer(EntityWithMixedAnnotations)
+        def itauAuditableType = typeFactory.infer(EntityWithMixedAnnotations)
 
         then:
-        !((ManagedType)javersType).getManagedClass().getManagedPropertiesFilter().hasIgnoredProperties()
-        ((ManagedType)javersType).getPropertyNames().toArray() == ["includedField"]
+        !((ManagedType)itauAuditableType).getManagedClass().getManagedPropertiesFilter().hasIgnoredProperties()
+        ((ManagedType)itauAuditableType).getPropertyNames().toArray() == ["includedField"]
     }
 
     class PropsClass {

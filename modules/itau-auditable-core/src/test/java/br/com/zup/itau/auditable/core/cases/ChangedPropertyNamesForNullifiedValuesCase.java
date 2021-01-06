@@ -13,7 +13,7 @@ import java.util.Date;
 
 
 /**
- * see https://github.com/javers/javers/issues/213
+ * see https://github.com/itauAuditable/itauAuditable/issues/213
  * @author bartosz.walacik
  */
 public class ChangedPropertyNamesForNullifiedValuesCase {
@@ -21,22 +21,22 @@ public class ChangedPropertyNamesForNullifiedValuesCase {
     @Test
     public void shouldCalculateChangedPropertyNamesForNullifiedValues() {
         //given
-        ItauAuditable javers = ItauAuditableBuilder.javers().build();
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
         SimpleTypes obj = new SimpleTypes("1");
-        javers.commit("anonymous", obj);
+        itauAuditable.commit("anonymous", obj);
 
         //when
         obj.shortNumber = -1;
-        javers.commit("anonymous", obj);
-        CdoSnapshot s = javers.getLatestSnapshot("1", SimpleTypes.class).get();
+        itauAuditable.commit("anonymous", obj);
+        CdoSnapshot s = itauAuditable.getLatestSnapshot("1", SimpleTypes.class).get();
 
         //then
         Assertions.assertThat(s.getChanged()).containsExactly("shortNumber");
 
         //when
         obj.nullify();
-        javers.commit("anonymous", obj);
-        s = javers.getLatestSnapshot("1", SimpleTypes.class).get();
+        itauAuditable.commit("anonymous", obj);
+        s = itauAuditable.getLatestSnapshot("1", SimpleTypes.class).get();
 
         //then
         Assertions.assertThat(s.getChanged()).hasSize(11);

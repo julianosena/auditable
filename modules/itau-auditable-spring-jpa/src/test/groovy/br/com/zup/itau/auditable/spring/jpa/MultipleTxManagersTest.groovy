@@ -14,7 +14,7 @@ import static br.com.zup.itau.auditable.hibernate.integration.config.HibernateCo
 @ContextConfiguration(classes = MultipleTxManagersConfig)
 class MultipleTxManagersTest extends Specification {
     @Autowired
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Autowired
     PersonCrudRepository repository
@@ -32,6 +32,6 @@ class MultipleTxManagersTest extends Specification {
         repository.save(person)
 
         then:
-        javers.findSnapshots(QueryBuilder.byInstanceId("kaz", Person).build()).size() == 1
+        itauAuditable.findSnapshots(QueryBuilder.byInstanceId("kaz", Person).build()).size() == 1
     }
 }

@@ -35,11 +35,11 @@ public class TypeMapper {
 
     private final DehydratedTypeFactory dehydratedTypeFactory = new DehydratedTypeFactory(this);
 
-    public TypeMapper(ClassScanner classScanner, ItauAuditableCoreConfiguration javersCoreConfiguration, DynamicMappingStrategy dynamicMappingStrategy) {
+    public TypeMapper(ClassScanner classScanner, ItauAuditableCoreConfiguration itauAuditableCoreConfiguration, DynamicMappingStrategy dynamicMappingStrategy) {
         //Pico doesn't support cycles, so manual construction
         TypeFactory typeFactory = new TypeFactory(classScanner, this, dynamicMappingStrategy);
 
-        engine.registerCoreTypes(javersCoreConfiguration.getListCompareAlgorithm());
+        engine.registerCoreTypes(itauAuditableCoreConfiguration.getListCompareAlgorithm());
         this.typeFactory = typeFactory;
     }
 
@@ -75,12 +75,12 @@ public class TypeMapper {
     /**
      * is Set, List or Array of ManagedClasses
      */
-    public boolean isContainerOfManagedTypes(ItauAuditableType javersType){
-        if (! (javersType instanceof ContainerType)) {
+    public boolean isContainerOfManagedTypes(ItauAuditableType itauAuditableType){
+        if (! (itauAuditableType instanceof ContainerType)) {
             return false;
         }
 
-        return getItauAuditableType(((ContainerType)javersType).getItemType()) instanceof ManagedType;
+        return getItauAuditableType(((ContainerType)itauAuditableType).getItemType()) instanceof ManagedType;
     }
 
     /**
@@ -99,12 +99,12 @@ public class TypeMapper {
         }
     }
 
-    public boolean isManagedType(ItauAuditableType javersType){
-        return javersType instanceof ManagedType;
+    public boolean isManagedType(ItauAuditableType itauAuditableType){
+        return itauAuditableType instanceof ManagedType;
     }
 
-    public boolean isEnumerableOfManagedTypes(ItauAuditableType javersType){
-        return isContainerOfManagedTypes(javersType) || isKeyValueTypeWithManagedTypes(javersType);
+    public boolean isEnumerableOfManagedTypes(ItauAuditableType itauAuditableType){
+        return isContainerOfManagedTypes(itauAuditableType) || isKeyValueTypeWithManagedTypes(itauAuditableType);
     }
 
     /**
@@ -225,7 +225,7 @@ public class TypeMapper {
     public void registerClientsClass(ClientsClassDefinition def) {
         ItauAuditableType newType = typeFactory.create(def);
 
-        logger.debug("javersType of '{}' " + "mapped explicitly to {}",
+        logger.debug("itauAuditableType of '{}' " + "mapped explicitly to {}",
                 def.getBaseJavaClass().getSimpleName(), newType.getClass().getSimpleName());
 
         engine.registerExplicitType(newType);

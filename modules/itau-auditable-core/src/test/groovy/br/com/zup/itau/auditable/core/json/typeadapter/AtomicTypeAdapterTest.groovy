@@ -6,8 +6,8 @@ import java.time.LocalDate
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssemblyTypeSafe
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssemblyTypeSafe
 
 /**
  * @author bartosz walacik
@@ -15,7 +15,7 @@ import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTest
 class AtomicTypeAdapterTest extends Specification {
     def "should serialize Atomic type-safely when switched on"() {
         given:
-        def jsonConverter = javersTestAssemblyTypeSafe().jsonConverter
+        def jsonConverter = itauAuditableTestAssemblyTypeSafe().jsonConverter
 
         when:
         def jsonText = jsonConverter.toJson(new Atomic(new LocalDate(2000, 1, 1)))
@@ -28,7 +28,7 @@ class AtomicTypeAdapterTest extends Specification {
 
     def "should serialize Atomic without type-safety by default"() {
         given:
-        def jsonConverter = javersTestAssembly().jsonConverter
+        def jsonConverter = itauAuditableTestAssembly().jsonConverter
 
         when:
         def jsonText = jsonConverter.toJson(new Atomic(new LocalDate(2000, 1, 1)))
@@ -40,7 +40,7 @@ class AtomicTypeAdapterTest extends Specification {
     @Unroll
     def "should not wrap primitive #primitive.class.simpleName when typeSafe is switched on"() {
         given:
-        def jsonConverter = javersTestAssemblyTypeSafe().jsonConverter
+        def jsonConverter = itauAuditableTestAssemblyTypeSafe().jsonConverter
 
         when:
         def jsonText = jsonConverter.toJson(new AtomicHolder(primitive))

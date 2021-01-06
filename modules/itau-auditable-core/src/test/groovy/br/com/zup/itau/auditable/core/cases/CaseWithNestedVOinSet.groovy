@@ -10,12 +10,12 @@ import spock.lang.Specification
 import static java.util.UUID.randomUUID
 
 /**
- * see https://github.com/javers/javers/issues/795
+ * see https://github.com/itauAuditable/itauAuditable/issues/795
  */
 class CaseWithNestedVOinSet extends Specification {
 
-    def javers = ItauAuditableBuilder
-            .javers()
+    def itauAuditable = ItauAuditableBuilder
+            .itauAuditable()
             .registerValueObject(IngressRule)
             .registerValueObject(Port)
             .build()
@@ -37,7 +37,7 @@ class CaseWithNestedVOinSet extends Specification {
         )
 
         when:
-        def diff = javers.compare(a, b)
+        def diff = itauAuditable.compare(a, b)
         print diff
 
         then:

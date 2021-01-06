@@ -8,19 +8,19 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Builds SnapshotGraph from latest snapshots loaded from javersRepository
+ * Builds SnapshotGraph from latest snapshots loaded from itauAuditableRepository
  */
 public class SnapshotGraphFactory {
-    private final ItauAuditableExtendedRepository javersRepository;
+    private final ItauAuditableExtendedRepository itauAuditableRepository;
 
-    SnapshotGraphFactory(ItauAuditableExtendedRepository javersRepository) {
-        this.javersRepository = javersRepository;
+    SnapshotGraphFactory(ItauAuditableExtendedRepository itauAuditableRepository) {
+        this.itauAuditableRepository = itauAuditableRepository;
     }
 
     public SnapshotGraph createLatest(Set<GlobalId> globalIds){
         Validate.argumentIsNotNull(globalIds);
 
-        Set<SnapshotNode> snapshotNodes = javersRepository.getLatest(globalIds)
+        Set<SnapshotNode> snapshotNodes = itauAuditableRepository.getLatest(globalIds)
                 .stream()
                 .map(SnapshotNode::new)
                 .collect(Collectors.toSet());

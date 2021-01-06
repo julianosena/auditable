@@ -15,13 +15,13 @@ class TypeRefactorE2ETest extends Specification {
 
     def "should manage Entity class name refactor when old and new class uses @TypeName"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         when:
-        javers.commit("author", new OldEntityWithTypeAlias(id: 1, val: 5))
-        javers.commit("author", new NewEntityWithTypeAlias(id: 1, val: 15))
+        itauAuditable.commit("author", new OldEntityWithTypeAlias(id: 1, val: 5))
+        itauAuditable.commit("author", new NewEntityWithTypeAlias(id: 1, val: 15))
 
-        def changes = javers.findChanges(byInstanceId(1, NewEntityWithTypeAlias).build())
+        def changes = itauAuditable.findChanges(byInstanceId(1, NewEntityWithTypeAlias).build())
 
         then:
         changes.size() == 1
@@ -33,14 +33,14 @@ class TypeRefactorE2ETest extends Specification {
 
     def "should manage ValueObject class name refactor without TypeName when querying by owning Instance"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         when:
-        javers.commit("author", new EntityWithRefactoredValueObject(id: 1, value: new OldValueObject(5, 5)))
-        javers.commit("author", new EntityWithRefactoredValueObject(id: 1, value: new NewValueObject(5, 10)))
-        javers.commit("author", new EntityWithRefactoredValueObject(id: 1, value: new NewValueObject(5, 15)))
+        itauAuditable.commit("author", new EntityWithRefactoredValueObject(id: 1, value: new OldValueObject(5, 5)))
+        itauAuditable.commit("author", new EntityWithRefactoredValueObject(id: 1, value: new NewValueObject(5, 10)))
+        itauAuditable.commit("author", new EntityWithRefactoredValueObject(id: 1, value: new NewValueObject(5, 15)))
 
-        def changes = javers.findChanges(QueryBuilder.byValueObject(EntityWithRefactoredValueObject, "value").build())
+        def changes = itauAuditable.findChanges(QueryBuilder.byValueObject(EntityWithRefactoredValueObject, "value").build())
 
         then:
         changes.size() == 3
@@ -60,13 +60,13 @@ class TypeRefactorE2ETest extends Specification {
 
     def "should manage ValueObject class name refactor when querying using new class with @TypeName retrofitted to old class name"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         when:
-        javers.commit("author", new EntityWithRefactoredValueObject(id: 1, value: new OldValueObject(5, 10)))
-        javers.commit("author", new EntityWithRefactoredValueObject(id: 1, value: new NewNamedValueObject(6, 10)))
+        itauAuditable.commit("author", new EntityWithRefactoredValueObject(id: 1, value: new OldValueObject(5, 10)))
+        itauAuditable.commit("author", new EntityWithRefactoredValueObject(id: 1, value: new NewNamedValueObject(6, 10)))
 
-        def changes = javers.findChanges(QueryBuilder.byClass(NewNamedValueObject).build())
+        def changes = itauAuditable.findChanges(QueryBuilder.byClass(NewNamedValueObject).build())
 
         then:
         changes.size() == 3
@@ -82,13 +82,13 @@ class TypeRefactorE2ETest extends Specification {
 
     def "should treat refactored VOs as different versions of the same client's domain object"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
-        javers.commit('author', new EntityWithRefactoredValueObject(id: 1, value: new OldValueObject(5, 5)))
-        javers.commit('author', new EntityWithRefactoredValueObject(id: 1, value: new NewValueObject(5, 10)))
+        itauAuditable.commit('author', new EntityWithRefactoredValueObject(id: 1, value: new OldValueObject(5, 5)))
+        itauAuditable.commit('author', new EntityWithRefactoredValueObject(id: 1, value: new NewValueObject(5, 10)))
 
         when:
-        def snapshots = javers.findSnapshots(QueryBuilder.byValueObject(EntityWithRefactoredValueObject, 'value').build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byValueObject(EntityWithRefactoredValueObject, 'value').build())
 
         then:
         snapshots.version == [2, 1]
@@ -97,13 +97,13 @@ class TypeRefactorE2ETest extends Specification {
     @Unroll
     def "should manage Entity class name refactor when querying using new class with @TypeName retrofitted to old class name"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         when:
-        javers.commit("author", new OldEntity(id: 1, value: 5))
-        javers.commit("author", new NewEntity(id: 1, value: 15))
+        itauAuditable.commit("author", new OldEntity(id: 1, value: 5))
+        itauAuditable.commit("author", new NewEntity(id: 1, value: 15))
 
-        def changes = javers.findChanges(byInstanceId(1, type).build())
+        def changes = itauAuditable.findChanges(byInstanceId(1, type).build())
 
         then:
         changes.size() == 1
@@ -129,22 +129,22 @@ class TypeRefactorE2ETest extends Specification {
         given:
         def repo = new InMemoryRepository()
 
-        def javers = ItauAuditableBuilder.javers()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
                 .registerItauAuditableRepository(repo)
                 .registerEntity(new EntityDefinition(Ref, "id"))
                 .build()
 
-        javers.commit("a", new Entity(id:1, ref:new Ref(id:2)))
+        itauAuditable.commit("a", new Entity(id:1, ref:new Ref(id:2)))
 
-        javers = ItauAuditableBuilder.javers()
+        itauAuditable = ItauAuditableBuilder.itauAuditable()
                 .registerItauAuditableRepository(repo)
                 .registerValue(Ref)
                 .build()
 
-        javers.commit("a", new Entity(id:1, ref:new Ref(id:2)))
+        itauAuditable.commit("a", new Entity(id:1, ref:new Ref(id:2)))
 
         when: "Snapshots read"
-        def snapshots = javers.findSnapshots(QueryBuilder.anyDomainObject().build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.anyDomainObject().build())
 
         then:
         snapshots.size() == 3

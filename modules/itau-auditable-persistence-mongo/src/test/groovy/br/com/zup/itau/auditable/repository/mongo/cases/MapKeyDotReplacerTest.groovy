@@ -46,14 +46,14 @@ class MapKeyDotReplacerTest extends Specification {
 		given:
 		MongoDatabase mongo = mongoClient.getDatabase("test")
 
-		def javers = ItauAuditableBuilder.javers()
+		def itauAuditable = ItauAuditableBuilder.itauAuditable()
 				.registerItauAuditableRepository(new MongoRepository(mongo))
 				.build()
 		def cdo = new SampleDoc(id: 1, state: ['key.test1': 1, 'key.test2': 2])
 
 		when:
-		javers.commit('author', cdo)
-		def snapshots = javers.findSnapshots(byInstanceId(1, SampleDoc).build())
+		itauAuditable.commit('author', cdo)
+		def snapshots = itauAuditable.findSnapshots(byInstanceId(1, SampleDoc).build())
 
 		then:
 		snapshots[0].getPropertyValue('state') == ['key.test1': 1, 'key.test2': 2]

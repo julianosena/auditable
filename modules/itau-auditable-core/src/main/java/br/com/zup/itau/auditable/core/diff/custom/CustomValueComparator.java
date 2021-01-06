@@ -15,13 +15,13 @@ import br.com.zup.itau.auditable.core.metamodel.type.ValueType;
  *
  * <b>Usage</b>:
  * <pre>
- * ItauAuditableBuilder.javers()
+ * ItauAuditableBuilder.itauAuditable()
  *              .registerValue(BigDecimal.class, new CustomBigDecimalComparator(2))
  *              .build()
  * </pre>
  * @param <T> Value Type
- * @see <a href="http://javers.org/documentation/domain-configuration/#ValueType">http://javers.org/documentation/domain-configuration/#ValueType</a>
- * @see <a href="https://javers.org/documentation/diff-configuration/#custom-comparators">https://javers.org/documentation/diff-configuration/#custom-comparators</a>
+ * @see <a href="http://itauAuditable.org/documentation/domain-configuration/#ValueType">http://itauAuditable.org/documentation/domain-configuration/#ValueType</a>
+ * @see <a href="https://itauAuditable.org/documentation/diff-configuration/#custom-comparators">https://itauAuditable.org/documentation/diff-configuration/#custom-comparators</a>
  */
 public interface CustomValueComparator<T> {
     /**
@@ -63,7 +63,7 @@ public interface CustomValueComparator<T> {
      * , default {@link ReflectionUtil#reflectiveToString(Object)}) is used.
      * <br/><br/>
      *
-     * See full example <a href="https://github.com/javers/javers/blob/master/itau-auditable-core/src/test/groovy/org/javers/core/examples/CustomToStringExample.groovy">CustomToStringExample.groovy</a>.
+     * See full example <a href="https://github.com/itauAuditable/itauAuditable/blob/master/itau-auditable-core/src/test/groovy/org/itauAuditable/core/examples/CustomToStringExample.groovy">CustomToStringExample.groovy</a>.
      *
      * @param value not null
      */

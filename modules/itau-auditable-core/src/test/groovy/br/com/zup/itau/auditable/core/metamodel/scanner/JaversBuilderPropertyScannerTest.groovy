@@ -4,7 +4,7 @@ import br.com.zup.itau.auditable.core.ItauAuditableBuilder
 import br.com.zup.itau.auditable.core.MappingStyle
 import spock.lang.Specification
 
-import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
+import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.itauAuditable
 
 /**
  * @author bartosz.walacik
@@ -12,34 +12,34 @@ import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
 class ItauAuditableBuilderPropertyScannerTest extends Specification{
     def "should load default properties file"() {
         given:
-        ItauAuditableBuilder javersBuilder = javers()
+        ItauAuditableBuilder itauAuditableBuilder = itauAuditable()
 
         when:
-        javersBuilder.build()
+        itauAuditableBuilder.build()
 
         then:
-        javersBuilder.getContainerComponent(PropertyScanner) instanceof FieldBasedPropertyScanner
+        itauAuditableBuilder.getContainerComponent(PropertyScanner) instanceof FieldBasedPropertyScanner
     }
 
     def "should contain FieldBasedPropertyScanner when Field style"() {
         given:
-        ItauAuditableBuilder javersBuilder = javers().withMappingStyle(MappingStyle.FIELD)
+        ItauAuditableBuilder itauAuditableBuilder = itauAuditable().withMappingStyle(MappingStyle.FIELD)
 
         when:
-        javersBuilder.build()
+        itauAuditableBuilder.build()
 
         then:
-        javersBuilder.getContainerComponent(PropertyScanner) instanceof FieldBasedPropertyScanner
+        itauAuditableBuilder.getContainerComponent(PropertyScanner) instanceof FieldBasedPropertyScanner
     }
 
     def "should contain BeanBasedPropertyScanner when Bean style"() {
         given:
-        ItauAuditableBuilder javersBuilder = javers().withMappingStyle(MappingStyle.BEAN)
+        ItauAuditableBuilder itauAuditableBuilder = itauAuditable().withMappingStyle(MappingStyle.BEAN)
 
         when:
-        javersBuilder.build()
+        itauAuditableBuilder.build()
 
         then:
-        javersBuilder.getContainerComponent(PropertyScanner) instanceof BeanBasedPropertyScanner
+        itauAuditableBuilder.getContainerComponent(PropertyScanner) instanceof BeanBasedPropertyScanner
     }
 }

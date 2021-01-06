@@ -48,8 +48,8 @@ class ManagedClassFactory {
     private List<ItauAuditableProperty> convert(List<Property> properties) {
         return Lists.transform(properties,  p -> {
             if (typeMapper.contains(p.getGenericType())) {
-                final ItauAuditableType javersType = typeMapper.getItauAuditableType(p.getGenericType());
-                return new ItauAuditableProperty(() -> javersType, p);
+                final ItauAuditableType itauAuditableType = typeMapper.getItauAuditableType(p.getGenericType());
+                return new ItauAuditableProperty(() -> itauAuditableType, p);
             }
             return new ItauAuditableProperty(() -> typeMapper.getItauAuditableType(p.getGenericType()), p);
         });

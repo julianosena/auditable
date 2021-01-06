@@ -41,72 +41,72 @@ import java.util.stream.Collectors
  * @author bartosz walacik
  */
 class ItauAuditableTestBuilder {
-    ItauAuditableBuilder javersBuilder
+    ItauAuditableBuilder itauAuditableBuilder
 
-    private ItauAuditableTestBuilder (ItauAuditableBuilder javersBuilder) {
-       this.javersBuilder = javersBuilder
-       this.javersBuilder.build()
+    private ItauAuditableTestBuilder (ItauAuditableBuilder itauAuditableBuilder) {
+       this.itauAuditableBuilder = itauAuditableBuilder
+       this.itauAuditableBuilder.build()
     }
 
     private ItauAuditableTestBuilder (MappingStyle mappingStyle) {
-       javersBuilder = new ItauAuditableBuilder()
-       javersBuilder.withMappingStyle(mappingStyle).build()
+       itauAuditableBuilder = new ItauAuditableBuilder()
+       itauAuditableBuilder.withMappingStyle(mappingStyle).build()
     }
 
     private ItauAuditableTestBuilder (DateProvider dateProvider) {
-        javersBuilder = new ItauAuditableBuilder()
-        javersBuilder.withDateTimeProvider(dateProvider).build()
+        itauAuditableBuilder = new ItauAuditableBuilder()
+        itauAuditableBuilder.withDateTimeProvider(dateProvider).build()
     }
 
-    private ItauAuditableTestBuilder (ItauAuditableRepository javersRepository) {
-        javersBuilder = new ItauAuditableBuilder()
-        javersBuilder.registerItauAuditableRepository(javersRepository).build()
+    private ItauAuditableTestBuilder (ItauAuditableRepository itauAuditableRepository) {
+        itauAuditableBuilder = new ItauAuditableBuilder()
+        itauAuditableBuilder.registerItauAuditableRepository(itauAuditableRepository).build()
     }
 
     private ItauAuditableTestBuilder (Class classToScan) {
-        javersBuilder = new ItauAuditableBuilder()
-        javersBuilder.scanTypeName(classToScan).build()
+        itauAuditableBuilder = new ItauAuditableBuilder()
+        itauAuditableBuilder.scanTypeName(classToScan).build()
     }
 
     private ItauAuditableTestBuilder (String packagesToScan) {
-        javersBuilder = new ItauAuditableBuilder()
-        javersBuilder.withPackagesToScan(packagesToScan).build()
+        itauAuditableBuilder = new ItauAuditableBuilder()
+        itauAuditableBuilder.withPackagesToScan(packagesToScan).build()
     }
 
-    static ItauAuditableTestBuilder javersTestAssembly(){
+    static ItauAuditableTestBuilder itauAuditableTestAssembly(){
         new ItauAuditableTestBuilder(MappingStyle.FIELD)
     }
 
-    static ItauAuditableTestBuilder javersTestAssembly(String packagesToScan){
+    static ItauAuditableTestBuilder itauAuditableTestAssembly(String packagesToScan){
         new ItauAuditableTestBuilder(packagesToScan)
     }
 
-    static ItauAuditableTestBuilder javersTestAssembly(Class classToScan){
+    static ItauAuditableTestBuilder itauAuditableTestAssembly(Class classToScan){
         new ItauAuditableTestBuilder(classToScan)
     }
 
-    static ItauAuditableTestBuilder javersTestAssembly(ItauAuditableRepository javersRepository){
-        new ItauAuditableTestBuilder(javersRepository)
+    static ItauAuditableTestBuilder itauAuditableTestAssembly(ItauAuditableRepository itauAuditableRepository){
+        new ItauAuditableTestBuilder(itauAuditableRepository)
     }
 
-    static ItauAuditableTestBuilder javersTestAssembly(MappingStyle mappingStyle){
+    static ItauAuditableTestBuilder itauAuditableTestAssembly(MappingStyle mappingStyle){
         new ItauAuditableTestBuilder(mappingStyle)
     }
 
-    static ItauAuditableTestBuilder javersTestAssembly(DateProvider dateProvider){
+    static ItauAuditableTestBuilder itauAuditableTestAssembly(DateProvider dateProvider){
         new ItauAuditableTestBuilder(dateProvider)
     }
 
-    static ItauAuditableTestBuilder javersTestAssemblyTypeSafe() {
+    static ItauAuditableTestBuilder itauAuditableTestAssemblyTypeSafe() {
         new ItauAuditableTestBuilder(new ItauAuditableBuilder().withTypeSafeValues(true))
     }
 
     static ItauAuditable newInstance() {
-        javersTestAssembly().javers()
+        itauAuditableTestAssembly().itauAuditable()
     }
 
-    ItauAuditable javers() {
-        javersBuilder.getContainerComponent(ItauAuditable)
+    ItauAuditable itauAuditable() {
+        itauAuditableBuilder.getContainerComponent(ItauAuditable)
     }
 
     Cdo createCdoWrapper(Object cdo){
@@ -121,52 +121,52 @@ class ItauAuditableTestBuilder {
     }
 
     SnapshotFactory getSnapshotFactory() {
-        javersBuilder.getContainerComponent(SnapshotFactory)
+        itauAuditableBuilder.getContainerComponent(SnapshotFactory)
     }
 
     ItauAuditableExtendedRepository getItauAuditableRepository(){
-        javersBuilder.getContainerComponent(ItauAuditableExtendedRepository)
+        itauAuditableBuilder.getContainerComponent(ItauAuditableExtendedRepository)
     }
 
     TypeMapper getTypeMapper(){
-        javersBuilder.getContainerComponent(TypeMapper)
+        itauAuditableBuilder.getContainerComponent(TypeMapper)
     }
 
     QueryRunner getQueryRunner(){
-        javersBuilder.getContainerComponent(QueryRunner)
+        itauAuditableBuilder.getContainerComponent(QueryRunner)
     }
 
     GlobalIdFactory getGlobalIdFactory(){
-        javersBuilder.getContainerComponent(GlobalIdFactory)
+        itauAuditableBuilder.getContainerComponent(GlobalIdFactory)
     }
 
     LiveCdoFactory getLiveCdoFactory(){
-        javersBuilder.getContainerComponent(LiveCdoFactory)
+        itauAuditableBuilder.getContainerComponent(LiveCdoFactory)
     }
 
     CommitFactory getCommitFactory(){
-        javersBuilder.getContainerComponent(CommitFactory)
+        itauAuditableBuilder.getContainerComponent(CommitFactory)
     }
 
     JsonConverter getJsonConverter() {
-        javersBuilder.getContainerComponent(JsonConverter)
+        itauAuditableBuilder.getContainerComponent(JsonConverter)
     }
 
     ShadowFactory getShadowFactory() {
-        javersBuilder.getContainerComponent(ShadowFactory)
+        itauAuditableBuilder.getContainerComponent(ShadowFactory)
     }
 
 
     JsonConverter getJsonConverterMinifiedPrint() {
-        ItauAuditableBuilder.javers().withPrettyPrint(false).build().getJsonConverter()
+        ItauAuditableBuilder.itauAuditable().withPrettyPrint(false).build().getJsonConverter()
     }
 
     JsonConverterBuilder getJsonConverterBuilder() {
-        javersBuilder.getContainerComponent(JsonConverterBuilder)
+        itauAuditableBuilder.getContainerComponent(JsonConverterBuilder)
     }
 
     String hash(Object obj) {
-        def jsonState = jsonConverter.toJson(javers().commit("", obj).snapshots[0].state)
+        def jsonState = jsonConverter.toJson(itauAuditable().commit("", obj).snapshots[0].state)
         ShaDigest.longDigest(jsonState)
     }
 
@@ -175,15 +175,15 @@ class ItauAuditableTestBuilder {
     }
 
     def getContainerComponent(Class type) {
-        javersBuilder.getContainerComponent(type)
+        itauAuditableBuilder.getContainerComponent(type)
     }
 
     ObjectGraph createLiveGraph(Object liveCdo) {
-        javersBuilder.getContainerComponent(LiveGraphFactory).createLiveGraph(liveCdo)
+        itauAuditableBuilder.getContainerComponent(LiveGraphFactory).createLiveGraph(liveCdo)
     }
 
     LiveNode createLiveNode(Object liveCdo) {
-        javersBuilder.getContainerComponent(LiveGraphFactory).createLiveGraph(liveCdo).root()
+        itauAuditableBuilder.getContainerComponent(LiveGraphFactory).createLiveGraph(liveCdo).root()
     }
 
     InstanceId instanceId(Object instance){

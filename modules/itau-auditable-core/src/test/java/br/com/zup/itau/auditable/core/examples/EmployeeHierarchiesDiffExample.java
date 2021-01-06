@@ -14,7 +14,7 @@ public class EmployeeHierarchiesDiffExample {
   @Test
   public void shouldDetectHired() {
     //given
-    ItauAuditable javers = ItauAuditableBuilder.javers().build();
+    ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
     Employee oldBoss = new Employee("Big Boss")
         .addSubordinates(
@@ -27,7 +27,7 @@ public class EmployeeHierarchiesDiffExample {
             new Employee("Hired Second"));
 
     //when
-    Diff diff = javers.compare(oldBoss, newBoss);
+    Diff diff = itauAuditable.compare(oldBoss, newBoss);
 
     //then
     assertThat(diff.getObjectsByChangeType(NewObject.class))
@@ -42,7 +42,7 @@ public class EmployeeHierarchiesDiffExample {
   @Test
   public void shouldDetectFired() {
     //given
-    ItauAuditable javers = ItauAuditableBuilder.javers().build();
+    ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
     Employee oldBoss = new Employee("Big Boss")
             .addSubordinates(
@@ -60,7 +60,7 @@ public class EmployeeHierarchiesDiffExample {
                     ));
 
     //when
-    Diff diff = javers.compare(oldBoss, newBoss);
+    Diff diff = itauAuditable.compare(oldBoss, newBoss);
 
     //then
     assertThat(diff.getChangesByType(ObjectRemoved.class)).hasSize(1);
@@ -72,7 +72,7 @@ public class EmployeeHierarchiesDiffExample {
   @Test
   public void shouldDetectSalaryChange(){
     //given
-    ItauAuditable javers = ItauAuditableBuilder.javers().build();
+    ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
     Employee oldBoss = new Employee("Big Boss")
             .addSubordinates(
@@ -85,7 +85,7 @@ public class EmployeeHierarchiesDiffExample {
                     new Employee("Great Developer", 20000));
 
     //when
-    Diff diff = javers.compare(oldBoss, newBoss);
+    Diff diff = itauAuditable.compare(oldBoss, newBoss);
 
     //then
     ValueChange change =  diff.getChangesByType(ValueChange.class).get(0);
@@ -102,7 +102,7 @@ public class EmployeeHierarchiesDiffExample {
   @Test
   public void shouldDetectBossChange() {
     //given
-    ItauAuditable javers = ItauAuditableBuilder.javers().build();
+    ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
     Employee oldBoss = new Employee("Big Boss")
         .addSubordinates(
@@ -117,7 +117,7 @@ public class EmployeeHierarchiesDiffExample {
                  .addSubordinate(new Employee("Great Developer")));
 
     //when
-    Diff diff = javers.compare(oldBoss, newBoss);
+    Diff diff = itauAuditable.compare(oldBoss, newBoss);
 
     //then
     ReferenceChange change = diff.getChangesByType(ReferenceChange.class).get(0);

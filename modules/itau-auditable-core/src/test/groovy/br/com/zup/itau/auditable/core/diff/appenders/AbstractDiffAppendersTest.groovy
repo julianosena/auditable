@@ -9,26 +9,26 @@ import br.com.zup.itau.auditable.core.diff.appenders.levenshtein.LevenshteinList
 abstract class AbstractDiffAppendersTest extends AbstractDiffTest {
 
     SimpleListChangeAppender listChangeAppender() {
-        new SimpleListChangeAppender(mapChangeAppender(), javers.typeMapper)
+        new SimpleListChangeAppender(mapChangeAppender(), itauAuditable.typeMapper)
     }
 
     MapChangeAppender mapChangeAppender() {
-        new MapChangeAppender(javers.typeMapper)
+        new MapChangeAppender(itauAuditable.typeMapper)
     }
 
     OptionalChangeAppender optionalChangeAppender(){
-        new OptionalChangeAppender(javers.typeMapper)
+        new OptionalChangeAppender(itauAuditable.typeMapper)
     }
 
     LevenshteinListChangeAppender levenshteinListChangeAppender() {
-        new LevenshteinListChangeAppender(javers.typeMapper)
+        new LevenshteinListChangeAppender(itauAuditable.typeMapper)
     }
 
     ArrayChangeAppender arrayChangeAppender() {
-        new ArrayChangeAppender(mapChangeAppender(), javers.typeMapper)
+        new ArrayChangeAppender(mapChangeAppender(), itauAuditable.typeMapper)
     }
 
     SetChangeAppender setChangeAppender() {
-        new SetChangeAppender(javers.typeMapper)
+        new SetChangeAppender(itauAuditable.typeMapper)
     }
 }

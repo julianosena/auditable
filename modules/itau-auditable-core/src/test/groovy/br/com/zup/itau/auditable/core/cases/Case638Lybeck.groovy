@@ -40,10 +40,10 @@ class Case638Lybeck extends Specification {
 
       def object2 = new DataObject(id:1, map: [(new KeyObject(2, 3)) : null])
 
-      def javers = ItauAuditableBuilder.javers().build()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
       when:
-      def diff = javers.compare(object1, object2)
+      def diff = itauAuditable.compare(object1, object2)
       println("object diff = " + diff)
 
 

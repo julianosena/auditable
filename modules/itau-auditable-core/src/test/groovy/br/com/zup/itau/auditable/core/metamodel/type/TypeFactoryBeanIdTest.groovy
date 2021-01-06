@@ -26,7 +26,7 @@ class TypeFactoryBeanIdTest extends TypeFactoryIdTest {
         void setId(Long id) { }
     }
 
-    // see https://github.com/javers/javers/issues/457
+    // see https://github.com/itauAuditable/itauAuditable/issues/457
     def "should not fail for Entity annotated with @Id on the extended generic method"() {
         when:
         def entity = typeFactory.create(new EntityDefinition(Entity))

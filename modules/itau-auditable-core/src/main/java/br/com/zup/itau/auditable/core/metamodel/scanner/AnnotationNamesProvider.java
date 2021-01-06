@@ -68,14 +68,14 @@ class AnnotationNamesProvider {
         return getAnnotationValue(annotations, ItauAuditableAnnotationsNameSpace.PROPERTY_NAME_ANN, propertyNameAliases);
     }
 
-    private Optional<String> getAnnotationValue(Set<Annotation> annotations, Class<? extends Annotation> javersAnnType, Set<String> aliases) {
-        Optional<Annotation> annotation = findAnnotation(annotations, javersAnnType, aliases);
+    private Optional<String> getAnnotationValue(Set<Annotation> annotations, Class<? extends Annotation> itauAuditableAnnType, Set<String> aliases) {
+        Optional<Annotation> annotation = findAnnotation(annotations, itauAuditableAnnType, aliases);
         return annotation.map(ann -> ReflectionUtil.getAnnotationValue(ann, "value"));
     }
 
-    private Optional<Annotation> findAnnotation(Set<Annotation> annotations, Class<? extends Annotation> javersAnnType, Set<String> aliases) {
+    private Optional<Annotation> findAnnotation(Set<Annotation> annotations, Class<? extends Annotation> itauAuditableAnnType, Set<String> aliases) {
         Optional<Annotation> jTypeName = annotations.stream()
-                .filter(ann -> javersAnnType.isAssignableFrom(ann.getClass()))
+                .filter(ann -> itauAuditableAnnType.isAssignableFrom(ann.getClass()))
                 .findAny();
         if (jTypeName.isPresent()) {
             return jTypeName;

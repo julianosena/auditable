@@ -7,14 +7,14 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 import static java.math.RoundingMode.HALF_UP
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 
 /**
  * @author bartosz walacik
  */
 class JsonConverterWellKnownValuesTest extends Specification {
     @Shared
-    def jsonConverter = javersTestAssembly().jsonConverterMinifiedPrint
+    def jsonConverter = itauAuditableTestAssembly().jsonConverterMinifiedPrint
 
     @Unroll
     def "should convert array of type #arrayType to and from JSON"(){

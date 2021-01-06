@@ -15,11 +15,11 @@ class Case441UUID extends Specification {
 
     def "should use UUID.toString() in InstanceId"(){
         when:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         UUID u = UUID.randomUUID()
 
-        def diff = javers.compare(new Entity(id:u, val:"a"), new Entity(id:u, val:"b"))
+        def diff = itauAuditable.compare(new Entity(id:u, val:"a"), new Entity(id:u, val:"b"))
 
         then:
         InstanceId id = diff.changes[0].affectedGlobalId

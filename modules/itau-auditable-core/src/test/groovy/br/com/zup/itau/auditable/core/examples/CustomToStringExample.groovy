@@ -31,13 +31,13 @@ class CustomToStringExample extends Specification {
       Entity entity1 = new Entity(id: p1)
       Entity entity2 = new Entity(id: p2)
 
-      def javers = ItauAuditableBuilder.javers().build()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
       expect:
       !p1.equals(p2)
-      javers.compare(entity1, entity2).changes.size() == 0
+      itauAuditable.compare(entity1, entity2).changes.size() == 0
 
-      def id = javers.getTypeMapping(Entity).createIdFromInstance(entity1)
+      def id = itauAuditable.getTypeMapping(Entity).createIdFromInstance(entity1)
       id.value() == "Entity/1.0,3.0"
     }
 
@@ -47,8 +47,8 @@ class CustomToStringExample extends Specification {
       Entity entity = new Entity(id: new Point(x: 1/3, y: 4/3))
 
       when:
-      def javers = ItauAuditableBuilder.javers().build()
-      InstanceId id = javers.getTypeMapping(Entity).createIdFromInstance(entity)
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
+      InstanceId id = itauAuditable.getTypeMapping(Entity).createIdFromInstance(entity)
 
       then:
       id.value() == "Entity/0.3333333333,1.3333333333"
@@ -60,10 +60,10 @@ class CustomToStringExample extends Specification {
         Entity entity = new Entity(id: new Point(x: 1/3, y: 4/3))
 
         when:
-        def javers = ItauAuditableBuilder.javers()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
                 .registerValue(Point, {a,b -> Objects.equals(a,b)}, {p -> p.myToString()})
                 .build()
-        InstanceId id = javers.getTypeMapping(Entity).createIdFromInstance(entity)
+        InstanceId id = itauAuditable.getTypeMapping(Entity).createIdFromInstance(entity)
 
         then:
         id.value() == "Entity/(0,1)"

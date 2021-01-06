@@ -166,7 +166,7 @@ public class ItauAuditableSqlRepository implements ItauAuditableRepository {
 
     /**
      * Clears the sequence allocation cache. It can be useful for testing.
-     * See https://github.com/javers/javers/issues/532
+     * See https://github.com/itauAuditable/itauAuditable/issues/532
      * @since 3.1.1
      */
     public void evictSequenceAllocationCache() {

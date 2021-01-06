@@ -9,7 +9,7 @@ import org.junit.Test;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
- * see https://github.com/javers/javers/issues/250
+ * see https://github.com/itauAuditable/itauAuditable/issues/250
  * @author Rick Schertz
  */
 public class Case250CharSequence {
@@ -30,13 +30,13 @@ public class Case250CharSequence {
     @Test
     public void shouldCompareTwoObjectsWithCharSequencePropertiesOfString() {
         //given
-        ItauAuditable javers = ItauAuditableBuilder.javers().build();
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
         AvroAddress oldVersion = new AvroAddress("New York", "First Avenue");
         AvroAddress currentVersion = new AvroAddress("New York", "Second Avenue");
 
         //when
-        Diff diff = javers.compare(oldVersion, currentVersion);
+        Diff diff = itauAuditable.compare(oldVersion, currentVersion);
         System.out.println(diff);
 
         //then

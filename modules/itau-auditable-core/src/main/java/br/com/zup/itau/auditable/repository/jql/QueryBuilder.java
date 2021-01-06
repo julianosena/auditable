@@ -31,7 +31,7 @@ import static br.com.zup.itau.auditable.repository.jql.ShadowScope.*;
  * Fluent API for building {@link JqlQuery},
  * executed with {@link ItauAuditable#findChanges(JqlQuery)} and {@link ItauAuditable#findSnapshots(JqlQuery)}
  *
- * @see <a href="http://javers.org/documentation/jql-examples/">http://javers.org/documentation/jql-examples</a>
+ * @see <a href="http://itauAuditable.org/documentation/jql-examples/">http://itauAuditable.org/documentation/jql-examples</a>
  * @author bartosz.walacik
  */
 public class QueryBuilder {
@@ -59,7 +59,7 @@ public class QueryBuilder {
      *
      * For example, last changes committed on any object can be fetched with:
      * <pre>
-     * javers.findChanges( QueryBuilder.anyDomainObject().build() );
+     * itauAuditable.findChanges( QueryBuilder.anyDomainObject().build() );
      * </pre>
      * @since 2.0
      */
@@ -74,7 +74,7 @@ public class QueryBuilder {
      *
      * For example, last changes on any object of MyClass.class:
      * <pre>
-     * javers.findChanges( QueryBuilder.byClass(MyClass.class).build() );
+     * itauAuditable.findChanges( QueryBuilder.byClass(MyClass.class).build() );
      * </pre>
      */
     public static QueryBuilder byClass(Class... requiredClasses){
@@ -87,13 +87,13 @@ public class QueryBuilder {
      *
      * For example, last Changes on "bob" Person:
      * <pre>
-     * javers.findChanges( QueryBuilder.byInstanceId("bob", Person.class).build() );
+     * itauAuditable.findChanges( QueryBuilder.byInstanceId("bob", Person.class).build() );
      * </pre>
      *
      * @param localId Value of an Id-property. When an Entity has Composite-Id (more than one Id-property) &mdash;
      *                <code>localId</code> should be <code>Map&lt;String, Object&gt;</code> with
      *                Id-property name to value pairs.
-     * @see <a href="https://github.com/javers/javers/blob/master/itau-auditable-core/src/test/groovy/org/javers/core/examples/CompositeIdExample.groovy">CompositeIdExample.groovy</a>
+     * @see <a href="https://github.com/itauAuditable/itauAuditable/blob/master/itau-auditable-core/src/test/groovy/org/itauAuditable/core/examples/CompositeIdExample.groovy">CompositeIdExample.groovy</a>
      */
     public static QueryBuilder byInstanceId(Object localId, Class entityClass){
         Validate.argumentsAreNotNull(localId, entityClass);
@@ -107,13 +107,13 @@ public class QueryBuilder {
      *
      * For example, last Changes on "bob" Person:
      * <pre>
-     * javers.findChanges( QueryBuilder.byInstanceId("bob", "Person").build() );
+     * itauAuditable.findChanges( QueryBuilder.byInstanceId("bob", "Person").build() );
      * </pre>
      *
      * @param localId Value of an Id-property. When an Entity has Composite-Id (more than one Id-property) &mdash;
      *                <code>localId</code> should be <code>Map&lt;String, Object&gt;</code> with
      *                Id-property name to value pairs.
-     * @see <a href="https://github.com/javers/javers/blob/master/itau-auditable-core/src/test/groovy/org/javers/core/examples/CompositeIdExample.groovy">CompositeIdExample.groovy</a>
+     * @see <a href="https://github.com/itauAuditable/itauAuditable/blob/master/itau-auditable-core/src/test/groovy/org/itauAuditable/core/examples/CompositeIdExample.groovy">CompositeIdExample.groovy</a>
      */
     public static QueryBuilder byInstanceId(Object localId, String typeName){
         Validate.argumentsAreNotNull(localId, typeName);
@@ -126,7 +126,7 @@ public class QueryBuilder {
      *
      * For example, last changes on "bob" Person:
      * <pre>
-     * javers.findChanges( QueryBuilder.byInstanceId(new Person("bob")).build() );
+     * itauAuditable.findChanges( QueryBuilder.byInstanceId(new Person("bob")).build() );
      * </pre>
      * @Since 2.8.0
      */
@@ -162,7 +162,7 @@ public class QueryBuilder {
      *     Address primaryAddress;
      * }
      * ...
-     * javers.findChanges( QueryBuilder.byValueObjectId("bob", Employee.class, "primaryAddress").build() );
+     * itauAuditable.findChanges( QueryBuilder.byValueObjectId("bob", Employee.class, "primaryAddress").build() );
      * </pre>
      *
      * When ValueObject is stored in <b>a List</b>, use propertyName and list index separated by "/", for example:
@@ -172,7 +172,7 @@ public class QueryBuilder {
      *     List&lt;Address&gt; addresses;
      * }
      * ...
-     * javers.findChanges( QueryBuilder.byValueObjectId("bob", Employee.class, "addresses/0").build() );
+     * itauAuditable.findChanges( QueryBuilder.byValueObjectId("bob", Employee.class, "addresses/0").build() );
      * </pre>
      *
      * When ValueObject is stored as <b>a Map value</b>, use propertyName and map key separated by "/", for example:
@@ -182,7 +182,7 @@ public class QueryBuilder {
      *     Map&lt;String,Address&gt; addressMap;
      * }
      * ...
-     * javers.findChanges( QueryBuilder.byValueObjectId("bob", Employee.class, "addressMap/HOME").build() );
+     * itauAuditable.findChanges( QueryBuilder.byValueObjectId("bob", Employee.class, "addressMap/HOME").build() );
      * </pre>
      */
     public static QueryBuilder byValueObjectId(Object ownerLocalId, Class ownerEntityClass, String path){
@@ -247,7 +247,7 @@ public class QueryBuilder {
      * Typical use case:
      *
      * <pre>
-     * javers.findSnapshots(QueryBuilder.byClass(SnapshotEntity)
+     * itauAuditable.findSnapshots(QueryBuilder.byClass(SnapshotEntity)
      *       .withChangedProperty("someProperty")
      *       .withSnapshotTypeUpdate().build())
      * </pre>
@@ -285,7 +285,7 @@ public class QueryBuilder {
      * (see  {@link ShadowScope#CHILD_VALUE_OBJECT}).
      *
      * @since 2.1
-     * @see <a href="http://javers.org/documentation/jql-examples/">http://javers.org/documentation/jql-examples</a>
+     * @see <a href="http://itauAuditable.org/documentation/jql-examples/">http://itauAuditable.org/documentation/jql-examples</a>
      */
     public QueryBuilder withChildValueObjects() {
         queryParamsBuilder.withChildValueObjects(true);
@@ -332,7 +332,7 @@ public class QueryBuilder {
      * <br/><br/>
      *
      * See
-     * <a href="https://github.com/javers/javers/blob/master/itau-auditable-core/src/test/groovy/org/javers/core/examples/QueryBuilderLimitExamples.groovy">
+     * <a href="https://github.com/itauAuditable/itauAuditable/blob/master/itau-auditable-core/src/test/groovy/org/itauAuditable/core/examples/QueryBuilderLimitExamples.groovy">
      * QueryBuilderLimitExamples.groovy
      * </a>.
      *
@@ -496,7 +496,7 @@ public class QueryBuilder {
      *
      * Only for Shadow queries.
      *
-     * @see <a href="http://javers.org/documentation/jql-examples/">http://javers.org/documentation/jql-examples</a>
+     * @see <a href="http://itauAuditable.org/documentation/jql-examples/">http://itauAuditable.org/documentation/jql-examples</a>
      * @since 3.2
      */
     public QueryBuilder withShadowScope(ShadowScope shadowScope){
@@ -515,7 +515,7 @@ public class QueryBuilder {
      *
      * Read about query scopes in {@link ItauAuditable#findShadows(JqlQuery)} javadoc.
      *
-     * @see <a href="http://javers.org/documentation/jql-examples/">http://javers.org/documentation/jql-examples</a>
+     * @see <a href="http://itauAuditable.org/documentation/jql-examples/">http://itauAuditable.org/documentation/jql-examples</a>
      * @since 3.5
      */
     public QueryBuilder withScopeCommitDeep() {
@@ -532,7 +532,7 @@ public class QueryBuilder {
      *
      * Only for Shadow queries.
      *
-     * @see <a href="http://javers.org/documentation/jql-examples/">http://javers.org/documentation/jql-examples</a>
+     * @see <a href="http://itauAuditable.org/documentation/jql-examples/">http://itauAuditable.org/documentation/jql-examples</a>
      * @since 3.5
      */
     public QueryBuilder withScopeDeepPlus() {
@@ -552,7 +552,7 @@ public class QueryBuilder {
      * @param maxGapsToFill Limits the number of referenced entity Shadows to be eagerly loaded.
      *                      The limit is global for a query. When it is exceeded,
      *                      references to other entities are nulled. Collections of entities may not be fully loaded.
-     * @see <a href="http://javers.org/documentation/jql-examples/">http://javers.org/documentation/jql-examples</a>
+     * @see <a href="http://itauAuditable.org/documentation/jql-examples/">http://itauAuditable.org/documentation/jql-examples</a>
      * @since 3.5
      */
     public QueryBuilder withScopeDeepPlus(int maxGapsToFill) {

@@ -16,7 +16,7 @@ abstract class ObjectNodeTest extends Specification {
     protected def createEntity
 
     @Shared
-    GlobalIdFactory globalIdFactory = ItauAuditableTestBuilder.javersTestAssembly().globalIdFactory
+    GlobalIdFactory globalIdFactory = ItauAuditableTestBuilder.itauAuditableTestAssembly().globalIdFactory
 
     private ObjectNode objectNode(Object cdo, EntityType entity) {
         new LiveNode(new LiveCdoWrapper(cdo, entity.createIdFromInstance(cdo), entity))

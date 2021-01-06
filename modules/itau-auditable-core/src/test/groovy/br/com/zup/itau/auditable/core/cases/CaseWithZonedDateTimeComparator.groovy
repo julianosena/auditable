@@ -13,8 +13,8 @@ class CaseWithZonedDateTimeComparator extends Specification {
 
     def "should used customValueComparator for ZonedDateTime" () {
         given:
-        def javers = ItauAuditableBuilder
-                .javers()
+        def itauAuditable = ItauAuditableBuilder
+                .itauAuditable()
                 .registerValue(ZonedDateTime,
                         {a, b -> a.toInstant().getEpochSecond() == b.toInstant().getEpochSecond()},
                         {a -> String.valueOf(a.toInstant().getEpochSecond())}
@@ -22,7 +22,7 @@ class CaseWithZonedDateTimeComparator extends Specification {
                 .build()
 
         when:
-        println javers.getTypeMapping(ZonedDateTime).prettyPrint()
+        println itauAuditable.getTypeMapping(ZonedDateTime).prettyPrint()
 
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTimeHolder a = new ZonedDateTimeHolder(
@@ -31,7 +31,7 @@ class CaseWithZonedDateTimeComparator extends Specification {
         ZonedDateTimeHolder b = new ZonedDateTimeHolder(
                 zonedDateTime:(now.withZoneSameInstant(ZoneId.of("Z"))))
 
-        def diff = javers.compare(a, b)
+        def diff = itauAuditable.compare(a, b)
 
         then:
         diff.changes.size()==0

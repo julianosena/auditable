@@ -14,7 +14,7 @@ import java.util.Set;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
- * see https://github.com/javers/javers/issues/601
+ * see https://github.com/itauAuditable/itauAuditable/issues/601
  * @author Philippe Boyd
  */
 public class Case601WithSerializable {
@@ -46,12 +46,12 @@ public class Case601WithSerializable {
     @Test
     public void shouldResolveTypeTokensInIdProperty(){
         //given
-        final ItauAuditable javers = ItauAuditableBuilder.javers().build();
+        final ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
         //when
-        final ItauAuditableType roleType = javers.getTypeMapping(Role.class);
-        final ItauAuditableType permissionType = javers.getTypeMapping(Permission.class);
-        final ItauAuditableType mongoBaseModelType = javers.getTypeMapping(MongoBaseModel.class);
+        final ItauAuditableType roleType = itauAuditable.getTypeMapping(Role.class);
+        final ItauAuditableType permissionType = itauAuditable.getTypeMapping(Permission.class);
+        final ItauAuditableType mongoBaseModelType = itauAuditable.getTypeMapping(MongoBaseModel.class);
 
         //then
         assertThat(roleType).isInstanceOf(EntityType.class);

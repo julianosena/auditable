@@ -16,7 +16,7 @@ class LargeNumberDeserializationCase extends Specification {
   public static final long ID_ONE_TRILLION = 1000000000L * 1000
 
   @Shared
-  ItauAuditable javers
+  ItauAuditable itauAuditable
 
   @Shared
   def embeddedMongo = EmbeddedMongoFactory.create()
@@ -25,7 +25,7 @@ class LargeNumberDeserializationCase extends Specification {
     MongoDatabase mongo = embeddedMongo.getClient().getDatabase("test")
 
     MongoRepository mongoRepo = new MongoRepository(mongo)
-    javers = ItauAuditableBuilder.javers().registerItauAuditableRepository(mongoRepo).build()
+    itauAuditable = ItauAuditableBuilder.itauAuditable().registerItauAuditableRepository(mongoRepo).build()
   }
 
   void cleanupSpec() {
@@ -45,8 +45,8 @@ class LargeNumberDeserializationCase extends Specification {
 
   def verifyMappingOfLargeId() {
     when:
-    javers.commit("kent", new MyEntity(ID_ONE_BILLION, "red"))
-    javers.commit("kent", new MyEntity(ID_ONE_BILLION, "blue"))
+    itauAuditable.commit("kent", new MyEntity(ID_ONE_BILLION, "red"))
+    itauAuditable.commit("kent", new MyEntity(ID_ONE_BILLION, "blue"))
 
     then:
     noExceptionThrown()
@@ -54,8 +54,8 @@ class LargeNumberDeserializationCase extends Specification {
 
   def verifyMappingOfLargerId() {
     when:
-    javers.commit("kent", new MyEntity(ID_ONE_TRILLION, "red"))
-    javers.commit("kent", new MyEntity(ID_ONE_TRILLION, "blue"))
+    itauAuditable.commit("kent", new MyEntity(ID_ONE_TRILLION, "red"))
+    itauAuditable.commit("kent", new MyEntity(ID_ONE_TRILLION, "blue"))
 
     then:
     noExceptionThrown()

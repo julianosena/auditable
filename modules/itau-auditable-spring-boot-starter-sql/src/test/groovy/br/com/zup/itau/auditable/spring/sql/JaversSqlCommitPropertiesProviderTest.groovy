@@ -23,7 +23,7 @@ import static br.com.zup.itau.auditable.repository.jql.QueryBuilder.byInstanceId
 class ItauAuditableSqlCommitPropertiesProviderTest extends Specification {
 
     @Autowired
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Autowired
     EmployeeRepositoryWithItauAuditable employeeRepositoryWithItauAuditable
@@ -40,7 +40,7 @@ class ItauAuditableSqlCommitPropertiesProviderTest extends Specification {
         def employeeEntity = new EmployeeEntity(id:UUID.randomUUID())
         employeeRepositoryWithItauAuditable.save(employeeEntity)
 
-        def snapshots = javers.findSnapshots(QueryBuilder.anyDomainObject()
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.anyDomainObject()
                 .withCommitProperty("employeeId", employeeEntity.id.toString()).build())
 
         then:
@@ -56,7 +56,7 @@ class ItauAuditableSqlCommitPropertiesProviderTest extends Specification {
         def shallowEntity = new ShallowEntity(id:1, value: "kaz")
         shallowEntityRepository.save(shallowEntity)
 
-        snapshots = javers.findSnapshots(QueryBuilder.anyDomainObject()
+        snapshots = itauAuditable.findSnapshots(QueryBuilder.anyDomainObject()
                 .withCommitProperty("ShallowEntity.value", "kaz").build())
 
         then:
@@ -76,7 +76,7 @@ class ItauAuditableSqlCommitPropertiesProviderTest extends Specification {
         def jFreshEmployee = employeeRepositoryWithItauAuditable.save(employeeEntity)
         employeeRepositoryWithItauAuditable.delete(jFreshEmployee)
 
-        def snapshots = javers.findSnapshots(QueryBuilder.anyDomainObject()
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.anyDomainObject()
                 .withCommitProperty("deleted employeeId", employeeEntity.id.toString()).build())
 
         then:
@@ -101,7 +101,7 @@ class ItauAuditableSqlCommitPropertiesProviderTest extends Specification {
 
         def save = employeeRepositoryWithItauAuditable.saveAll(employees)
 
-        def employeeSnapshots = javers.findSnapshots(QueryBuilder.byClass(EmployeeEntity)
+        def employeeSnapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(EmployeeEntity)
                 .withCommitProperty("departmentId", dept1.id.toString()).build())
 
         then:
@@ -118,7 +118,7 @@ class ItauAuditableSqlCommitPropertiesProviderTest extends Specification {
                 new EmployeeEntity(id:UUID.randomUUID()))
         employeeRepositoryWithItauAuditable.deleteById(employee.id)
 
-        def snapshots = javers.findSnapshots(QueryBuilder.anyDomainObject()
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.anyDomainObject()
                 .withCommitProperty("employee deletedById", employee.id.toString()).build())
 
         then:

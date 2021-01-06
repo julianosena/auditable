@@ -1,4 +1,4 @@
-CREATE USER javers
-  IDENTIFIED BY javers;
+CREATE USER itauAuditable
+  IDENTIFIED BY itauAuditable;
 
-GRANT dba TO javers WITH ADMIN OPTION;
+GRANT dba TO itauAuditable WITH ADMIN OPTION;

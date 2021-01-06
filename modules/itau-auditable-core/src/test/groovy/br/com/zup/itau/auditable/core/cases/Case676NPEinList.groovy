@@ -34,11 +34,11 @@ class Case676NPEinList extends Specification {
     def "should support nulls in List of Value Objects "(){
       given:
       Customer customer = new Customer(id:"1", orders:[null, new Order(orderNumber: "oo")])
-      def javers = ItauAuditableBuilder.javers().build()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
       when:
-      javers.commit("a", customer)
-      def snapshot = javers.findSnapshots(QueryBuilder.byInstanceId("1", Customer).build())[0]
+      itauAuditable.commit("a", customer)
+      def snapshot = itauAuditable.findSnapshots(QueryBuilder.byInstanceId("1", Customer).build())[0]
 
       then:
       println "Customer snapshot : " + snapshot

@@ -1,7 +1,7 @@
 package br.com.zup.itau.auditable.spring.repository
 
-import br.com.zup.itau.auditable.spring.annotation.ItauAuditableAuditable
-import br.com.zup.itau.auditable.spring.annotation.ItauAuditableAuditableDelete
+import br.com.zup.itau.auditable.spring.annotation.ItauAuditable
+import br.com.zup.itau.auditable.spring.annotation.ItauAuditableDelete
 import br.com.zup.itau.auditable.spring.model.DummyObject
 import org.springframework.stereotype.Repository
 
@@ -11,22 +11,22 @@ import org.springframework.stereotype.Repository
 @Repository
 class DummyAuditedRepository {
 
-    @ItauAuditableAuditable
+    @ItauAuditable
     void save(DummyObject obj){
       //... omitted
     }
 
-    @ItauAuditableAuditable
+    @ItauAuditable
     void saveAndFail(DummyObject obj) {
         throw new RuntimeException()
     }
 
-    @ItauAuditableAuditable
+    @ItauAuditable
     void saveTwo(DummyObject obj, obj2){
         //... omitted
     }
 
-    @ItauAuditableAuditable
+    @ItauAuditable
     void saveAll(Iterable<DummyObject> objetcs){
         //... omitted
     }
@@ -36,30 +36,30 @@ class DummyAuditedRepository {
         null
     }
 
-    @ItauAuditableAuditableDelete
+    @ItauAuditableDelete
     void delete(DummyObject obj) {
         //... omitted
     }
 
-    @ItauAuditableAuditableDelete(entity = DummyObject)
+    @ItauAuditableDelete(entity = DummyObject)
     void deleteById(String id) {
     }
 
-    @ItauAuditableAuditableDelete(entity = DummyObject.class)
+    @ItauAuditableDelete(entity = DummyObject.class)
     void deleteAllById(Iterable<String> ids) {
     }
 
-    @ItauAuditableAuditableDelete
+    @ItauAuditableDelete
     void deleteByIdNoClass(String id) {
     }
 
 
-    @ItauAuditableAuditableDelete
+    @ItauAuditableDelete
     void deleteTwo(DummyObject obj, obj2) {
         //... omitted
     }
 
-    @ItauAuditableAuditableDelete
+    @ItauAuditableDelete
     void deleteAll(Iterable<DummyObject> objetcs) {
         //... omitted
     }

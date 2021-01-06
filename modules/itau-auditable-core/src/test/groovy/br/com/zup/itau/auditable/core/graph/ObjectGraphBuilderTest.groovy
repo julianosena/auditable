@@ -20,10 +20,10 @@ import static br.com.zup.itau.auditable.repository.jql.ValueObjectIdDTO.withUnbo
  */
 abstract class ObjectGraphBuilderTest extends Specification {
 
-    @Shared ItauAuditableTestBuilder javers
+    @Shared ItauAuditableTestBuilder itauAuditable
 
     ObjectGraphBuilder newBuilder(){
-        new ObjectGraphBuilder(javers.typeMapper, javers.liveCdoFactory)
+        new ObjectGraphBuilder(itauAuditable.typeMapper, itauAuditable.liveCdoFactory)
     }
 
     def "should provide dehydrated property value for references and values"(){
@@ -410,8 +410,8 @@ abstract class ObjectGraphBuilderTest extends Specification {
 
         then:
         def expectedIds = [
-                javers.valueObjectId(1, SnapshotEntity, "setOfValueObjects/"+javers.addressHash("London")),
-                javers.valueObjectId(1, SnapshotEntity, "setOfValueObjects/"+javers.addressHash("London City"))
+                itauAuditable.valueObjectId(1, SnapshotEntity, "setOfValueObjects/"+itauAuditable.addressHash("London")),
+                itauAuditable.valueObjectId(1, SnapshotEntity, "setOfValueObjects/"+itauAuditable.addressHash("London City"))
         ] as Set
 
         node.getEdge("setOfValueObjects").references.collect{it.globalId} as Set == expectedIds

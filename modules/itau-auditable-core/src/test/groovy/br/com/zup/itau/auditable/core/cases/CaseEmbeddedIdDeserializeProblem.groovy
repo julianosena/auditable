@@ -17,23 +17,23 @@ import javax.persistence.Id
 import static java.util.UUID.*
 
 /**
- * https://github.com/javers/javers/issues/897
+ * https://github.com/itauAuditable/itauAuditable/issues/897
  */
 class CaseEmbeddedIdDeserializeProblem extends Specification {
 
     protected ItauAuditableRepository repository = new InMemoryRepository()
-    protected ItauAuditable javers
+    protected ItauAuditable itauAuditable
 
     def setup() {
-        javers = buildItauAuditableInstance()
+        itauAuditable = buildItauAuditableInstance()
     }
 
     ItauAuditable buildItauAuditableInstance() {
-        def javersBuilder = ItauAuditableBuilder
-                .javers()
+        def itauAuditableBuilder = ItauAuditableBuilder
+                .itauAuditable()
                 .registerItauAuditableRepository(repository)
 
-        javersBuilder.build()
+        itauAuditableBuilder.build()
     }
 
     @TypeName("Agreement")
@@ -74,14 +74,14 @@ class CaseEmbeddedIdDeserializeProblem extends Specification {
                 agreementMembers: [agreementMember]
         )
 
-        javers.commit("Agreement", agreement)
+        itauAuditable.commit("Agreement", agreement)
 
         //query by typeName:
         JqlQuery query = QueryBuilder.byInstanceId(agreement.agreementId, "Agreement").build()
 
         //read immediately:
         when:
-        List<CdoSnapshot> snapshots1 = javers.findSnapshots(query)
+        List<CdoSnapshot> snapshots1 = itauAuditable.findSnapshots(query)
 
         then:
         snapshots1.size() > 0
@@ -90,13 +90,13 @@ class CaseEmbeddedIdDeserializeProblem extends Specification {
 
         //read same data after restart:
         when:
-        def javers2 = buildItauAuditableInstance()
+        def itauAuditable2 = buildItauAuditableInstance()
 
         //This is critical, because fresh ItauAuditable instance doesn't know the Agreement class.
         //On production, ItauAuditableBuilder.withPackagesToScan() should be used.
-        javers2.getTypeMapping(Agreement)
+        itauAuditable2.getTypeMapping(Agreement)
 
-        List<CdoSnapshot> snapshots2 = javers2.findSnapshots(query)
+        List<CdoSnapshot> snapshots2 = itauAuditable2.findSnapshots(query)
 
         //expecting the same result but fail:
         then:

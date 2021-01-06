@@ -18,13 +18,13 @@ public class ComparingTopLevelCollectionExample {
   @Test
   public void shouldDeeplyCompareTwoTopLevelCollections() {
     //given
-    ItauAuditable javers = ItauAuditableBuilder.javers().build();
+    ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
     List<Person> oldList = Lists.asList( new Person("tommy", "Tommy Smart") );
     List<Person> newList = Lists.asList( new Person("tommy", "Tommy C. Smart") );
 
     //when
-    Diff diff = javers.compareCollections(oldList, newList, Person.class);
+    Diff diff = itauAuditable.compareCollections(oldList, newList, Person.class);
 
     //then
     //there should be one change of type {@link ValueChange}

@@ -6,24 +6,24 @@ import br.com.zup.itau.auditable.core.diff.ListCompareAlgorithm
 import spock.lang.Specification
 
 /**
- * https://github.com/javers/javers/issues/820
+ * https://github.com/itauAuditable/itauAuditable/issues/820
  */
 class Case820NPEinLevenshteinDistance extends Specification {
 
     def "should not fail when comparing list to null or empty list"(){
         given:
-        ItauAuditable javers = ItauAuditableBuilder.javers().withNewObjectsSnapshot(true)
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().withNewObjectsSnapshot(true)
                 .withListCompareAlgorithm(ListCompareAlgorithm.LEVENSHTEIN_DISTANCE).build()
 
 
         when:
-        def diff = javers.compare(null, new Obj(["test"]))
+        def diff = itauAuditable.compare(null, new Obj(["test"]))
 
         then:
         diff.changes
 
         when:
-        def diff2 = javers.compareCollections(Collections.emptyList(),
+        def diff2 = itauAuditable.compareCollections(Collections.emptyList(),
                                               Collections.singletonList(new Obj(["test"])), Obj)
 
         then:

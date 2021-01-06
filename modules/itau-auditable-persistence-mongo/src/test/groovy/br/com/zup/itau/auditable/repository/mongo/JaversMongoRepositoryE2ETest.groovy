@@ -19,12 +19,12 @@ import static br.com.zup.itau.auditable.repository.jql.QueryBuilder.byInstanceId
 abstract class ItauAuditableMongoRepositoryE2ETest extends ItauAuditableRepositoryShadowE2ETest {
     protected abstract MongoDatabase getMongoDb()
 
-    ItauAuditableTestBuilder javersTestBuilder
+    ItauAuditableTestBuilder itauAuditableTestBuilder
 
     @Override
     def setup() {
-        repository.jsonConverter = javers.jsonConverter
-        javersTestBuilder = ItauAuditableTestBuilder.javersTestAssembly()
+        repository.jsonConverter = itauAuditable.jsonConverter
+        itauAuditableTestBuilder = ItauAuditableTestBuilder.itauAuditableTestAssembly()
     }
 
     @Override
@@ -39,8 +39,8 @@ abstract class ItauAuditableMongoRepositoryE2ETest extends ItauAuditableReposito
         def cdo = new SnapshotEntity(id: 1, mapOfPrimitives: ['primitive.value':1])
 
         when:
-        javers.commit('author', cdo)
-        def snapshots = javers.findSnapshots(byInstanceId(1, SnapshotEntity).build())
+        itauAuditable.commit('author', cdo)
+        def snapshots = itauAuditable.findSnapshots(byInstanceId(1, SnapshotEntity).build())
 
         then:
         snapshots[0].getPropertyValue('mapOfPrimitives') == ['primitive.value':1]
@@ -50,7 +50,7 @@ abstract class ItauAuditableMongoRepositoryE2ETest extends ItauAuditableReposito
         given:
         MongoRepository mongoRepository = (MongoRepository)repository
 
-        def commitFactory = javersTestBuilder.commitFactory
+        def commitFactory = itauAuditableTestBuilder.commitFactory
 
         def kazikV1 = dummyUser("Kazik").withAge(1)
         def kazikV2 = dummyUser("Kazik").withAge(2)
@@ -76,10 +76,10 @@ abstract class ItauAuditableMongoRepositoryE2ETest extends ItauAuditableReposito
     def "should persist commit and get latest snapshot"() {
         given:
         MongoRepository mongoRepository = (MongoRepository)repository
-        def commitFactory = javersTestBuilder.commitFactory
+        def commitFactory = itauAuditableTestBuilder.commitFactory
 
         def kazik = new DummyUser("kazik")
-        def id = javersTestBuilder.instanceId(new DummyUser("kazik"))
+        def id = itauAuditableTestBuilder.instanceId(new DummyUser("kazik"))
 
         when:
         //persist
@@ -97,8 +97,8 @@ abstract class ItauAuditableMongoRepositoryE2ETest extends ItauAuditableReposito
         given:
         MongoRepository mongoRepository = (MongoRepository)repository
 
-        def commitFactory = javersTestBuilder.commitFactory
-        def id = javersTestBuilder.globalIdFactory.createInstanceId("kazik", DummyUser)
+        def commitFactory = itauAuditableTestBuilder.commitFactory
+        def id = itauAuditableTestBuilder.globalIdFactory.createInstanceId("kazik", DummyUser)
 
         //create entity & persist commit
         def kazik = new DummyUser("kazik")
@@ -115,8 +115,8 @@ abstract class ItauAuditableMongoRepositoryE2ETest extends ItauAuditableReposito
     def "should get last commit by InstanceIdDTO"() {
         given:
         MongoRepository mongoRepository = (MongoRepository)repository
-        def commitFactory = javersTestBuilder.commitFactory
-        def id = javersTestBuilder.instanceId(new DummyUser("kazik"))
+        def commitFactory = itauAuditableTestBuilder.commitFactory
+        def id = itauAuditableTestBuilder.instanceId(new DummyUser("kazik"))
 
         //create entity & persist commit
         def kazik = new DummyUser("kazik")
@@ -137,10 +137,10 @@ abstract class ItauAuditableMongoRepositoryE2ETest extends ItauAuditableReposito
         def kazikV1 = dummyUser("kazik").withAge(12)
         def kazikV2 = dummyUser("kazik").withAge(13)
 
-        javers.commit("andy", kazikV1)
-        javers.commit("andy", kazikV2)
+        itauAuditable.commit("andy", kazikV1)
+        itauAuditable.commit("andy", kazikV2)
 
-        def id = javersTestBuilder.instanceId(new DummyUser("kazik"))
+        def id = itauAuditableTestBuilder.instanceId(new DummyUser("kazik"))
         def queryParams = QueryParamsBuilder.withLimit(2).build()
 
         when:

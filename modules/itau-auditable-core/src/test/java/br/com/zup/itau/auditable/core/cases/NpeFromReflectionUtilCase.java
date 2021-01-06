@@ -13,7 +13,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 /**
- * https://github.com/javers/javers/issues/78
+ * https://github.com/itauAuditable/itauAuditable/issues/78
  *
  * test for NPE from {@link br.com.zup.itau.auditable.common.reflection.ReflectionUtil#getAllFields(Class)}
  * when property type is an interface
@@ -25,10 +25,10 @@ public class NpeFromReflectionUtilCase {
         // given
         TestClassWithInterfaceProperty foo = new TestClassWithInterfaceProperty("1", new TestInterfaceImpl("Foo"));
         TestClassWithInterfaceProperty bar = new TestClassWithInterfaceProperty("1", new TestInterfaceImpl("Bar"));
-        ItauAuditable javers = ItauAuditableBuilder.javers().build();
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
         // when
-        Diff diff = javers.compare(foo, bar);
+        Diff diff = itauAuditable.compare(foo, bar);
 
         System.out.println(diff);
 

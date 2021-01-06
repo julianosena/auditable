@@ -34,7 +34,7 @@ class H2SqlRepositoryE2ETest extends ItauAuditableSqlRepositoryE2ETest {
 
     def "should fail when schema is not created"(){
         given:
-        def javers = ItauAuditableBuilder.javers()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
                 .registerItauAuditableRepository(sqlRepository()
                 .withConnectionProvider({ DriverManager.getConnection("jdbc:h2:mem:empty-test") } as ConnectionProvider)
                 .withSchemaManagementEnabled(false)
@@ -46,7 +46,7 @@ class H2SqlRepositoryE2ETest extends ItauAuditableSqlRepositoryE2ETest {
                 .build()).build()
 
         when:
-        javers.commit("author", new SnapshotEntity(id: 1))
+        itauAuditable.commit("author", new SnapshotEntity(id: 1))
 
         then:
         ItauAuditableException e = thrown()
@@ -54,12 +54,12 @@ class H2SqlRepositoryE2ETest extends ItauAuditableSqlRepositoryE2ETest {
     }
 
     /**
-     * see https://github.com/javers/javers/issues/532
+     * see https://github.com/itauAuditable/itauAuditable/issues/532
      */
     def "should evict sequence allocation cache"() {
         given:
         (1..50).each {
-            javers.commit("author", new SnapshotEntity(id: 1, intProperty: it))
+            itauAuditable.commit("author", new SnapshotEntity(id: 1, intProperty: it))
         }
 
         when:
@@ -73,7 +73,7 @@ class H2SqlRepositoryE2ETest extends ItauAuditableSqlRepositoryE2ETest {
 
         then:
         (1..150).each {
-            javers.commit("author", new SnapshotEntity(id: 1, intProperty: it))
+            itauAuditable.commit("author", new SnapshotEntity(id: 1, intProperty: it))
         }
     }
 }

@@ -6,8 +6,8 @@ import br.com.zup.itau.auditable.repository.sql.DialectName;
 import br.com.zup.itau.auditable.repository.sql.ItauAuditableSqlRepository;
 import br.com.zup.itau.auditable.repository.sql.SqlRepositoryBuilder;
 import br.com.zup.itau.auditable.spring.auditable.*;
-import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAuditableAspect;
-import br.com.zup.itau.auditable.spring.auditable.aspect.springdatajpa.ItauAuditableSpringDataJpaAuditableRepositoryAspect;
+import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAspect;
+import br.com.zup.itau.auditable.spring.auditable.aspect.springdatajpa.ItauAuditableSpringDataJpaRepositoryAspect;
 import br.com.zup.itau.auditable.spring.jpa.JpaHibernateConnectionProvider;
 import br.com.zup.itau.auditable.spring.jpa.TransactionalItauAuditableBuilder;
 import org.hibernate.dialect.Dialect;
@@ -40,13 +40,13 @@ public class ItauAuditableSqlAutoConfiguration {
     private final DialectMapper dialectMapper = new DialectMapper();
 
     @Autowired
-    private ItauAuditableSqlProperties javersSqlProperties;
+    private ItauAuditableSqlProperties itauAuditableSqlProperties;
 
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
     @Bean
-    public DialectName javersSqlDialectName() {
+    public DialectName itauAuditableSqlDialectName() {
         SessionFactoryImplementor sessionFactory =
                 entityManagerFactory.unwrap(SessionFactoryImplementor.class);
 
@@ -58,30 +58,30 @@ public class ItauAuditableSqlAutoConfiguration {
 
     @Bean(name = "ItauAuditableSqlRepositoryFromStarter")
     @ConditionalOnMissingBean
-    public ItauAuditableSqlRepository javersSqlRepository(ConnectionProvider connectionProvider) {
+    public ItauAuditableSqlRepository itauAuditableSqlRepository(ConnectionProvider connectionProvider) {
         return SqlRepositoryBuilder
                 .sqlRepository()
-                .withSchema(javersSqlProperties.getSqlSchema())
+                .withSchema(itauAuditableSqlProperties.getSqlSchema())
                 .withConnectionProvider(connectionProvider)
-                .withDialect(javersSqlDialectName())
-                .withSchemaManagementEnabled(javersSqlProperties.isSqlSchemaManagementEnabled())
-                .withGlobalIdCacheDisabled(javersSqlProperties.isSqlGlobalIdCacheDisabled())
-                .withGlobalIdTableName(javersSqlProperties.getSqlGlobalIdTableName())
-                .withCommitTableName(javersSqlProperties.getSqlCommitTableName())
-                .withSnapshotTableName(javersSqlProperties.getSqlSnapshotTableName())
-                .withCommitPropertyTableName(javersSqlProperties.getSqlCommitPropertyTableName())
+                .withDialect(itauAuditableSqlDialectName())
+                .withSchemaManagementEnabled(itauAuditableSqlProperties.isSqlSchemaManagementEnabled())
+                .withGlobalIdCacheDisabled(itauAuditableSqlProperties.isSqlGlobalIdCacheDisabled())
+                .withGlobalIdTableName(itauAuditableSqlProperties.getSqlGlobalIdTableName())
+                .withCommitTableName(itauAuditableSqlProperties.getSqlCommitTableName())
+                .withSnapshotTableName(itauAuditableSqlProperties.getSqlSnapshotTableName())
+                .withCommitPropertyTableName(itauAuditableSqlProperties.getSqlCommitPropertyTableName())
                 .build();
     }
 
     @Bean(name = "ItauAuditableFromStarter")
     @ConditionalOnMissingBean
-    public ItauAuditable javers(ItauAuditableSqlRepository sqlRepository, PlatformTransactionManager transactionManager) {
+    public ItauAuditable itauAuditable(ItauAuditableSqlRepository sqlRepository, PlatformTransactionManager transactionManager) {
         return TransactionalItauAuditableBuilder
-                .javers()
+                .itauAuditable()
                 .withTxManager(transactionManager)
                 .registerItauAuditableRepository(sqlRepository)
-                .withObjectAccessHook(javersSqlProperties.createObjectAccessHookInstance())
-                .withProperties(javersSqlProperties)
+                .withObjectAccessHook(itauAuditableSqlProperties.createObjectAccessHookInstance())
+                .withProperties(itauAuditableSqlProperties)
                 .build();
     }
 
@@ -112,14 +112,14 @@ public class ItauAuditableSqlAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "javers.auditableAspectEnabled", havingValue = "true", matchIfMissing = true)
-    public ItauAuditableAuditableAspect javersAuditableAspect(ItauAuditable javers, AuthorProvider authorProvider, CommitPropertiesProvider commitPropertiesProvider) {
-        return new ItauAuditableAuditableAspect(javers, authorProvider, commitPropertiesProvider);
+    @ConditionalOnProperty(name = "itauAuditable.auditableAspectEnabled", havingValue = "true", matchIfMissing = true)
+    public ItauAuditableAspect itauAuditableAuditableAspect(ItauAuditable itauAuditable, AuthorProvider authorProvider, CommitPropertiesProvider commitPropertiesProvider) {
+        return new ItauAuditableAspect(itauAuditable, authorProvider, commitPropertiesProvider);
     }
 
     @Bean
-    @ConditionalOnProperty(name = "javers.springDataAuditableRepositoryAspectEnabled", havingValue = "true", matchIfMissing = true)
-    public ItauAuditableSpringDataJpaAuditableRepositoryAspect javersSpringDataAuditableAspect(ItauAuditable javers, AuthorProvider authorProvider, CommitPropertiesProvider commitPropertiesProvider) {
-        return new ItauAuditableSpringDataJpaAuditableRepositoryAspect(javers, authorProvider, commitPropertiesProvider);
+    @ConditionalOnProperty(name = "itauAuditable.springDataAuditableRepositoryAspectEnabled", havingValue = "true", matchIfMissing = true)
+    public ItauAuditableSpringDataJpaRepositoryAspect itauAuditableSpringDataAspect(ItauAuditable itauAuditable, AuthorProvider authorProvider, CommitPropertiesProvider commitPropertiesProvider) {
+        return new ItauAuditableSpringDataJpaRepositoryAspect(itauAuditable, authorProvider, commitPropertiesProvider);
     }
 }

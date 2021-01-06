@@ -15,7 +15,7 @@ public abstract class ItauAuditableSpringProperties extends ItauAuditableCorePro
         return auditableAspectEnabled;
     }
 
-    public boolean isSpringDataAuditableRepositoryAspectEnabled() {
+    public boolean isSpringDataRepositoryAspectEnabled() {
         return springDataAuditableRepositoryAspectEnabled;
     }
 
@@ -23,7 +23,7 @@ public abstract class ItauAuditableSpringProperties extends ItauAuditableCorePro
         this.auditableAspectEnabled = auditableAspectEnabled;
     }
 
-    public void setSpringDataAuditableRepositoryAspectEnabled(boolean springDataAuditableRepositoryAspectEnabled) {
+    public void setSpringDataRepositoryAspectEnabled(boolean springDataAuditableRepositoryAspectEnabled) {
         this.springDataAuditableRepositoryAspectEnabled = springDataAuditableRepositoryAspectEnabled;
     }
 

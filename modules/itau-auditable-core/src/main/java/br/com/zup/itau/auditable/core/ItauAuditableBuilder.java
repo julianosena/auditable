@@ -63,17 +63,17 @@ import static br.com.zup.itau.auditable.common.validation.Validate.argumentsAreN
  *
  * For example, to build a JaVers instance configured with reasonable defaults:
  * <pre>
- * ItauAuditable javers = ItauAuditableBuilder.javers().build();
+ * ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
  * </pre>
  *
  * To build a JaVers instance with Entity type registered:
  * <pre>
- * ItauAuditable javers = ItauAuditableBuilder.javers()
+ * ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable()
  *                              .registerEntity(MyEntity.class)
  *                              .build();
  * </pre>
  *
- * @see <a href="http://javers.org/documentation/domain-configuration/">http://javers.org/documentation/domain-configuration</a>
+ * @see <a href="http://itauAuditable.org/documentation/domain-configuration/">http://itauAuditable.org/documentation/domain-configuration</a>
  * @author bartosz walacik
  */
 public class ItauAuditableBuilder extends AbstractContainerBuilder {
@@ -93,12 +93,12 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
 
     private IgnoredClassesStrategy ignoredClassesStrategy;
 
-    public static ItauAuditableBuilder javers() {
+    public static ItauAuditableBuilder itauAuditable() {
         return new ItauAuditableBuilder();
     }
 
     /**
-     * use static factory method {@link ItauAuditableBuilder#javers()}
+     * use static factory method {@link ItauAuditableBuilder#itauAuditable()}
      */
     protected ItauAuditableBuilder() {
         logger.debug("starting up JaVers ...");
@@ -123,12 +123,12 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
 
     public ItauAuditable build() {
 
-        ItauAuditable javers = assembleItauAuditableInstance();
+        ItauAuditable itauAuditable = assembleItauAuditableInstance();
         repository.ensureSchema();
 
         long boot = System.currentTimeMillis() - bootStart;
         logger.info("JaVers instance started in {} ms", boot);
-        return javers;
+        return itauAuditable;
     }
 
     protected ItauAuditable assembleItauAuditableInstance(){
@@ -169,7 +169,7 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
     }
 
     /**
-     * @see <a href="http://javers.org/documentation/repository-configuration">http://javers.org/documentation/repository-configuration</a>
+     * @see <a href="http://itauAuditable.org/documentation/repository-configuration">http://itauAuditable.org/documentation/repository-configuration</a>
      */
     public ItauAuditableBuilder registerItauAuditableRepository(ItauAuditableRepository repository) {
         argumentsAreNotNull(repository);
@@ -187,7 +187,7 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
      *
      * For example, Entities are: Person, Document
      *
-     * @see <a href="http://javers.org/documentation/domain-configuration/#entity">http://javers.org/documentation/domain-configuration/#entity</a>
+     * @see <a href="http://itauAuditable.org/documentation/domain-configuration/#entity">http://itauAuditable.org/documentation/domain-configuration/#entity</a>
      * @see #registerEntity(EntityDefinition)
      */
     public ItauAuditableBuilder registerEntity(Class<?> entityClass) {
@@ -202,7 +202,7 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
      *
      * For example, ValueObjects are: Address, Point
      *
-     * @see <a href="http://javers.org/documentation/domain-configuration/#value-object">http://javers.org/documentation/domain-configuration/#value-object</a>
+     * @see <a href="http://itauAuditable.org/documentation/domain-configuration/#value-object">http://itauAuditable.org/documentation/domain-configuration/#value-object</a>
      * @see #registerValueObject(ValueObjectDefinition)
      */
     public ItauAuditableBuilder registerValueObject(Class<?> valueObjectClass) {
@@ -219,7 +219,7 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
      * Recommended way to create {@link EntityDefinition} is {@link EntityDefinitionBuilder},
      * for example:
      * <pre>
-     * javersBuilder.registerEntity(
+     * itauAuditableBuilder.registerEntity(
      *     EntityDefinitionBuilder.entityDefinition(Person.class)
      *     .withIdPropertyName("id")
      *     .withTypeName("Person")
@@ -230,10 +230,10 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
      * For simple cases, you can use {@link EntityDefinition} constructors,
      * for example:
      * <pre>
-     * javersBuilder.registerEntity( new EntityDefinition(Person.class, "login") );
+     * itauAuditableBuilder.registerEntity( new EntityDefinition(Person.class, "login") );
      * </pre>
      *
-     * @see <a href="http://javers.org/documentation/domain-configuration/#entity">http://javers.org/documentation/domain-configuration/#entity</a>
+     * @see <a href="http://itauAuditable.org/documentation/domain-configuration/#entity">http://itauAuditable.org/documentation/domain-configuration/#entity</a>
      * @see EntityDefinitionBuilder#entityDefinition(Class)
      */
     public ItauAuditableBuilder registerEntity(EntityDefinition entityDefinition){
@@ -259,7 +259,7 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
      * Recommended way to create {@link ValueObjectDefinition} is {@link ValueObjectDefinitionBuilder}.
      * For example:
      * <pre>
-     * javersBuilder.registerValueObject(ValueObjectDefinitionBuilder.valueObjectDefinition(Address.class)
+     * itauAuditableBuilder.registerValueObject(ValueObjectDefinitionBuilder.valueObjectDefinition(Address.class)
      *     .withIgnoredProperties(ignoredProperties)
      *     .withTypeName(typeName)
      *     .build();
@@ -268,10 +268,10 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
      * For simple cases, you can use {@link ValueObjectDefinition} constructors,
      * for example:
      * <pre>
-     * javersBuilder.registerValueObject( new ValueObjectDefinition(Address.class, "ignored") );
+     * itauAuditableBuilder.registerValueObject( new ValueObjectDefinition(Address.class, "ignored") );
      * </pre>
      *
-     * @see <a href="http://javers.org/documentation/domain-configuration/#value-object">http://javers.org/documentation/domain-configuration/#value-object</a>
+     * @see <a href="http://itauAuditable.org/documentation/domain-configuration/#value-object">http://itauAuditable.org/documentation/domain-configuration/#value-object</a>
      * @see ValueObjectDefinitionBuilder#valueObjectDefinition(Class)
      */
     public ItauAuditableBuilder registerValueObject(ValueObjectDefinition valueObjectDefinition) {
@@ -362,7 +362,7 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
      * by registering a {@link CustomValueComparator}.
      * See {@link #registerValue(Class, CustomValueComparator)}.
      *
-     * @see <a href="http://javers.org/documentation/domain-configuration/#ValueType">http://javers.org/documentation/domain-configuration/#ValueType</a>
+     * @see <a href="http://itauAuditable.org/documentation/domain-configuration/#ValueType">http://itauAuditable.org/documentation/domain-configuration/#ValueType</a>
      */
     public ItauAuditableBuilder registerValue(Class<?> valueClass) {
         argumentIsNotNull(valueClass);
@@ -387,14 +387,14 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
      * register this comparator:
      *
      * <pre>
-     * ItauAuditableBuilder.javers()
+     * ItauAuditableBuilder.itauAuditable()
      *     .registerValue(BigDecimal.class, new BigDecimalComparatorWithFixedEquals())
      *     .build();
      * </pre>
      *
      * @param <T> Value Type
-     * @see <a href="http://javers.org/documentation/domain-configuration/#ValueType">http://javers.org/documentation/domain-configuration/#ValueType</a>
-     * @see <a href="https://javers.org/documentation/diff-configuration/#custom-comparators">https://javers.org/documentation/diff-configuration/#custom-comparators</a>
+     * @see <a href="http://itauAuditable.org/documentation/domain-configuration/#ValueType">http://itauAuditable.org/documentation/domain-configuration/#ValueType</a>
+     * @see <a href="https://itauAuditable.org/documentation/diff-configuration/#custom-comparators">https://itauAuditable.org/documentation/diff-configuration/#custom-comparators</a>
      * @see BigDecimalComparatorWithFixedEquals
      * @see CustomBigDecimalComparator
      * @since 3.3
@@ -418,7 +418,7 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
      * For example, you can register the comparator for BigDecimals with fixed equals:
      *
      * <pre>
-     * ItauAuditable javers = ItauAuditableBuilder.javers()
+     * ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable()
      *     .registerValue(BigDecimal.class, (a, b) -> a.compareTo(b) == 0,
      *                                           a -> a.stripTrailingZeros().toString())
      *     .build();
@@ -509,7 +509,7 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
      * For example, you can ignore classes by package naming convention:
      *
      * <pre>
-     * ItauAuditable javers = ItauAuditableBuilder.javers()
+     * ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable()
      *         .registerIgnoredClassesStrategy(c -> c.getName().startsWith("com.ignore.me"))
      *         .build();
      * </pre>
@@ -529,7 +529,7 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
      *
      * Useful for not trivial ValueTypes when Gson's default representation isn't appropriate
      *
-     * @see <a href="http://javers.org/documentation/repository-configuration/#json-type-adapters">http://javers.org/documentation/repository-configuration/#json-type-adapters</a>
+     * @see <a href="http://itauAuditable.org/documentation/repository-configuration/#json-type-adapters">http://itauAuditable.org/documentation/repository-configuration/#json-type-adapters</a>
      * @see JsonTypeAdapter
      */
     public ItauAuditableBuilder registerValueTypeAdapter(JsonTypeAdapter typeAdapter) {
@@ -626,7 +626,7 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
     /**
      * Default style is {@link MappingStyle#FIELD}.
      *
-     * @see <a href="http://javers.org/documentation/domain-configuration/#property-mapping-style">http://javers.org/documentation/domain-configuration/#property-mapping-style</a>
+     * @see <a href="http://itauAuditable.org/documentation/domain-configuration/#property-mapping-style">http://itauAuditable.org/documentation/domain-configuration/#property-mapping-style</a>
      */
     public ItauAuditableBuilder withMappingStyle(MappingStyle mappingStyle) {
         argumentIsNotNull(mappingStyle);
@@ -687,7 +687,7 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
      * see {@link #registerValue(Class, CustomValueComparator)}.
      *
      * @param <T> Custom Type
-     * @see <a href="https://javers.org/documentation/diff-configuration/#custom-comparators">https://javers.org/documentation/diff-configuration/#custom-comparators</a>
+     * @see <a href="https://itauAuditable.org/documentation/diff-configuration/#custom-comparators">https://itauAuditable.org/documentation/diff-configuration/#custom-comparators</a>
      */
     public <T> ItauAuditableBuilder registerCustomType(Class<T> customType, CustomPropertyComparator<T, ?> comparator){
         registerType(new CustomDefinition(customType, comparator));
@@ -711,7 +711,7 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
      * However, it can be slow for long lists, so SIMPLE is enabled by default.
      * <br/><br/>
      *
-     * Refer to <a href="http://javers.org/documentation/diff-configuration/#list-algorithms">http://javers.org/documentation/diff-configuration/#list-algorithms</a>
+     * Refer to <a href="http://itauAuditable.org/documentation/diff-configuration/#list-algorithms">http://itauAuditable.org/documentation/diff-configuration/#list-algorithms</a>
      * for description of both algorithms
      *
      * @param algorithm ListCompareAlgorithm.SIMPLE is used by default
@@ -740,15 +740,15 @@ public class ItauAuditableBuilder extends AbstractContainerBuilder {
         return this;
     }
 
-    public ItauAuditableBuilder withProperties(ItauAuditableCoreProperties javersProperties) {
-        this.withListCompareAlgorithm(ListCompareAlgorithm.valueOf(javersProperties.getAlgorithm().toUpperCase()))
-            .withCommitIdGenerator(CommitIdGenerator.valueOf(javersProperties.getCommitIdGenerator().toUpperCase()))
-            .withMappingStyle(MappingStyle.valueOf(javersProperties.getMappingStyle().toUpperCase()))
-            .withNewObjectsSnapshot(javersProperties.isNewObjectSnapshot())
-            .withPrettyPrint(javersProperties.isPrettyPrint())
-            .withTypeSafeValues(javersProperties.isTypeSafeValues())
-            .withPackagesToScan(javersProperties.getPackagesToScan())
-            .withPrettyPrintDateFormats(javersProperties.getPrettyPrintDateFormats());
+    public ItauAuditableBuilder withProperties(ItauAuditableCoreProperties itauAuditableProperties) {
+        this.withListCompareAlgorithm(ListCompareAlgorithm.valueOf(itauAuditableProperties.getAlgorithm().toUpperCase()))
+            .withCommitIdGenerator(CommitIdGenerator.valueOf(itauAuditableProperties.getCommitIdGenerator().toUpperCase()))
+            .withMappingStyle(MappingStyle.valueOf(itauAuditableProperties.getMappingStyle().toUpperCase()))
+            .withNewObjectsSnapshot(itauAuditableProperties.isNewObjectSnapshot())
+            .withPrettyPrint(itauAuditableProperties.isPrettyPrint())
+            .withTypeSafeValues(itauAuditableProperties.isTypeSafeValues())
+            .withPackagesToScan(itauAuditableProperties.getPackagesToScan())
+            .withPrettyPrintDateFormats(itauAuditableProperties.getPrettyPrintDateFormats());
         return this;
     }
 

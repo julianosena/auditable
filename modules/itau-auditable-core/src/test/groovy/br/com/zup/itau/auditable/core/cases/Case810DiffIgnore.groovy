@@ -10,7 +10,7 @@ import br.com.zup.itau.auditable.core.metamodel.annotation.Id
 import spock.lang.Specification
 
 /**
- * https://github.com/javers/javers/issues/810
+ * https://github.com/itauAuditable/itauAuditable/issues/810
  */
 
 class Building {
@@ -73,7 +73,7 @@ class Case810DiffIgnore extends Specification {
 
     def "should ignore containers of ValueObjects when calculating Object Hash"() {
       when:
-      ItauAuditable javers = ItauAuditableBuilder.javers()
+      ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable()
               .withListCompareAlgorithm(ListCompareAlgorithm.LEVENSHTEIN_DISTANCE)
               .withMappingStyle(MappingStyle.BEAN)
               .build();
@@ -88,7 +88,7 @@ class Case810DiffIgnore extends Specification {
       Building building1 = new Building(id:1, floors:[floor1])
       Building building2 = new Building(id:1, floors:[floor2])
 
-      Diff diff = javers.compare(building1, building2)
+      Diff diff = itauAuditable.compare(building1, building2)
 
       println diff.prettyPrint()
       println diff.getChanges().size()

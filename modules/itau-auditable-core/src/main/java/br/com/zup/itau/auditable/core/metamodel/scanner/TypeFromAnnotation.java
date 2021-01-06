@@ -9,59 +9,59 @@ import java.util.Optional;
  * @author bartosz.walacik
  */
 class TypeFromAnnotation {
-    private final Optional<Class<? extends ItauAuditableType>> javersType;
+    private final Optional<Class<? extends ItauAuditableType>> itauAuditableType;
 
-    TypeFromAnnotation(Class<? extends Annotation> javersTypeAnnotation) {
-        if (javersTypeAnnotation == ItauAuditableAnnotationsNameSpace.VALUE_ANN) {
-            javersType = Optional.of(ValueType.class);
+    TypeFromAnnotation(Class<? extends Annotation> itauAuditableTypeAnnotation) {
+        if (itauAuditableTypeAnnotation == ItauAuditableAnnotationsNameSpace.VALUE_ANN) {
+            itauAuditableType = Optional.of(ValueType.class);
         } else
-        if (javersTypeAnnotation == ItauAuditableAnnotationsNameSpace.VALUE_OBJECT_ANN) {
-            javersType = Optional.of(ValueObjectType.class);
+        if (itauAuditableTypeAnnotation == ItauAuditableAnnotationsNameSpace.VALUE_OBJECT_ANN) {
+            itauAuditableType = Optional.of(ValueObjectType.class);
         } else
-        if (javersTypeAnnotation == ItauAuditableAnnotationsNameSpace.ENTITY_ANN) {
-            javersType = Optional.of(EntityType.class);
+        if (itauAuditableTypeAnnotation == ItauAuditableAnnotationsNameSpace.ENTITY_ANN) {
+            itauAuditableType = Optional.of(EntityType.class);
         } else
-        if (javersTypeAnnotation == ItauAuditableAnnotationsNameSpace.DIFF_IGNORE_ANN) {
-            javersType = Optional.of(IgnoredType.class);
+        if (itauAuditableTypeAnnotation == ItauAuditableAnnotationsNameSpace.DIFF_IGNORE_ANN) {
+            itauAuditableType = Optional.of(IgnoredType.class);
         } else
-        if (javersTypeAnnotation == ItauAuditableAnnotationsNameSpace.SHALLOW_REFERENCE_ANN) {
-            javersType = Optional.of(ShallowReferenceType.class);
+        if (itauAuditableTypeAnnotation == ItauAuditableAnnotationsNameSpace.SHALLOW_REFERENCE_ANN) {
+            itauAuditableType = Optional.of(ShallowReferenceType.class);
         } else {
-            javersType = Optional.empty();
+            itauAuditableType = Optional.empty();
         }
     }
 
     TypeFromAnnotation(boolean hasEntity, boolean hasValueObject, boolean hasValue) {
         if (hasEntity){
-            javersType = Optional.of(EntityType.class);
+            itauAuditableType = Optional.of(EntityType.class);
         } else
         if (hasValueObject) {
-            javersType = Optional.of(ValueObjectType.class);
+            itauAuditableType = Optional.of(ValueObjectType.class);
         } else
         if (hasValue) {
-            javersType = Optional.of(ValueType.class);
+            itauAuditableType = Optional.of(ValueType.class);
         } else {
-            javersType = Optional.empty();
+            itauAuditableType = Optional.empty();
         }
     }
 
     boolean isValue() {
-        return javersType.map(it -> it == ValueType.class).orElse(false);
+        return itauAuditableType.map(it -> it == ValueType.class).orElse(false);
     }
 
     boolean isValueObject() {
-        return javersType.map(it -> it == ValueObjectType.class).orElse(false);
+        return itauAuditableType.map(it -> it == ValueObjectType.class).orElse(false);
     }
 
     boolean isEntity() {
-        return javersType.map(it -> it == EntityType.class).orElse(false);
+        return itauAuditableType.map(it -> it == EntityType.class).orElse(false);
     }
 
     boolean isIgnored() {
-        return javersType.map(it -> it == IgnoredType.class).orElse(false);
+        return itauAuditableType.map(it -> it == IgnoredType.class).orElse(false);
     }
 
     boolean isShallowReference() {
-        return javersType.map(it -> it == ShallowReferenceType.class).orElse(false);
+        return itauAuditableType.map(it -> it == ShallowReferenceType.class).orElse(false);
     }
 }

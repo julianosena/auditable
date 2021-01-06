@@ -19,15 +19,15 @@ class ItauAuditableGroovyObjectTest extends Specification {
     @Unroll
     def "should support GroovyObjects in #mappingStyle mappingStyle"(){
         given:
-        def javers = ItauAuditableBuilder.javers().withMappingStyle(mappingStyle).build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().withMappingStyle(mappingStyle).build()
 
         when:
-        javers.commit('author', new GPerson(1,'bob'))
-        javers.commit('author', new GPerson(1,'john'))
-        def changes = javers.findChanges(QueryBuilder.byClass(GPerson).build())
+        itauAuditable.commit('author', new GPerson(1,'bob'))
+        itauAuditable.commit('author', new GPerson(1,'john'))
+        def changes = itauAuditable.findChanges(QueryBuilder.byClass(GPerson).build())
 
         then:
-        def jtype = javers.getTypeMapping(GPerson)
+        def jtype = itauAuditable.getTypeMapping(GPerson)
         jtype.properties.name as Set == ['id','name'] as Set
 
         changes.size() == 1

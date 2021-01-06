@@ -15,7 +15,7 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.valueObjectId
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.instanceId
 
 /**
@@ -52,7 +52,7 @@ class GlobalIdTypeAdapterTest extends Specification {
             '''
 
       when:
-      InstanceId instanceId = javersTestAssembly().jsonConverter.fromJson(instanceIdLegacyJson, InstanceId)
+      InstanceId instanceId = itauAuditableTestAssembly().jsonConverter.fromJson(instanceIdLegacyJson, InstanceId)
 
       then:
       println instanceId.value()
@@ -83,7 +83,7 @@ class GlobalIdTypeAdapterTest extends Specification {
             '''
 
         when:
-        InstanceId instanceId = javersTestAssembly().jsonConverter.fromJson(instanceIdLegacyJson, InstanceId)
+        InstanceId instanceId = itauAuditableTestAssembly().jsonConverter.fromJson(instanceIdLegacyJson, InstanceId)
 
         then:
         println instanceId.value()
@@ -94,7 +94,7 @@ class GlobalIdTypeAdapterTest extends Specification {
     @Unroll
     def "should deserialize InstanceId with #type cdoId"() {
         when:
-        def idHolder = javersTestAssembly().jsonConverter.fromJson(givenJson, IdHolder)
+        def idHolder = itauAuditableTestAssembly().jsonConverter.fromJson(givenJson, IdHolder)
 
         then:
         idHolder.id instanceof InstanceId
@@ -114,11 +114,11 @@ class GlobalIdTypeAdapterTest extends Specification {
 
     def "should serialize Instance @EmbeddedId using json fields"(){
         given:
-        def javers = javersTestAssembly()
-        def id = javers.instanceId(new DummyPoint(2,3),DummyEntityWithEmbeddedId)
+        def itauAuditable = itauAuditableTestAssembly()
+        def id = itauAuditable.instanceId(new DummyPoint(2,3),DummyEntityWithEmbeddedId)
 
         when:
-        def jsonText = javers.jsonConverter.toJson(id)
+        def jsonText = itauAuditable.jsonConverter.toJson(id)
 
         then:
         def json = new JsonSlurper().parseText(jsonText)
@@ -129,11 +129,11 @@ class GlobalIdTypeAdapterTest extends Specification {
     @Unroll
     def "should serialize InstanceId with #what name"() {
         given:
-        def javers = javersTestAssembly()
-        def id = javers.instanceId("kaz",clazz)
+        def itauAuditable = itauAuditableTestAssembly()
+        def id = itauAuditable.instanceId("kaz",clazz)
 
         when:
-        def jsonText = javers.jsonConverter.toJson(id)
+        def jsonText = itauAuditable.jsonConverter.toJson(id)
 
         then:
         def json = new JsonSlurper().parseText(jsonText)
@@ -148,11 +148,11 @@ class GlobalIdTypeAdapterTest extends Specification {
 
     def "should serialize UnboundedValueObjectId"() {
         given:
-        def javers = javersTestAssembly()
-        def id = javers.unboundedValueObjectId(DummyAddress)
+        def itauAuditable = itauAuditableTestAssembly()
+        def id = itauAuditable.unboundedValueObjectId(DummyAddress)
 
         when:
-        def jsonText = javers.jsonConverter.toJson(id)
+        def jsonText = itauAuditable.jsonConverter.toJson(id)
 
         then:
         def json = new JsonSlurper().parseText(jsonText)
@@ -162,14 +162,14 @@ class GlobalIdTypeAdapterTest extends Specification {
     def "should deserialize UnboundedValueObjectId from JSON"() {
         given:
         def json = '{"id":{"valueObject":"br.com.zup.itau.auditable.core.model.DummyAddress","cdoId":"/"}}'
-        def javers = javersTestAssembly()
+        def itauAuditable = itauAuditableTestAssembly()
 
         when:
-        def idHolder = javers.jsonConverter.fromJson(json, IdHolder)
+        def idHolder = itauAuditable.jsonConverter.fromJson(json, IdHolder)
 
         then:
         idHolder.id instanceof UnboundedValueObjectId
-        idHolder.id == javers.unboundedValueObjectId(DummyAddress)
+        idHolder.id == itauAuditable.unboundedValueObjectId(DummyAddress)
     }
 
     def "should deserialize InstanceId with @EmbeddedId to original Type"(){
@@ -182,10 +182,10 @@ class GlobalIdTypeAdapterTest extends Specification {
             "y": 3
           }}
         '''
-        def javers = javersTestAssembly()
+        def itauAuditable = itauAuditableTestAssembly()
 
         when:
-        def id = javers.jsonConverter.fromJson(json, GlobalId)
+        def id = itauAuditable.jsonConverter.fromJson(json, GlobalId)
 
         then:
         id instanceof InstanceId
@@ -197,11 +197,11 @@ class GlobalIdTypeAdapterTest extends Specification {
     def "should deserialize InstanceId with @TypeName when EntityType is mapped"(){
         given:
         def json = '{ "entity": "myName", "cdoId": 1}'
-        def javers = javersTestAssembly()
-        javers.typeMapper.getItauAuditableType(NewEntityWithTypeAlias)
+        def itauAuditable = itauAuditableTestAssembly()
+        itauAuditable.typeMapper.getItauAuditableType(NewEntityWithTypeAlias)
 
         when:
-        def id = javers.jsonConverter.fromJson(json, GlobalId)
+        def id = itauAuditable.jsonConverter.fromJson(json, GlobalId)
 
         then:
         id instanceof InstanceId
@@ -211,11 +211,11 @@ class GlobalIdTypeAdapterTest extends Specification {
 
     def "should serialize ValueObjectId"() {
         given:
-        def javers = javersTestAssembly()
-        def id = javers.valueObjectId(5,DummyUserDetails,"dummyAddress")
+        def itauAuditable = itauAuditableTestAssembly()
+        def id = itauAuditable.valueObjectId(5,DummyUserDetails,"dummyAddress")
 
         when:
-        def jsonText = javers.jsonConverter.toJson(id)
+        def jsonText = itauAuditable.jsonConverter.toJson(id)
 
         then:
         def json = new JsonSlurper().parseText(jsonText)
@@ -238,7 +238,7 @@ class GlobalIdTypeAdapterTest extends Specification {
         }
 
         when:
-        def idHolder = javersTestAssembly().jsonConverter.fromJson(json.toString(), IdHolder)
+        def idHolder = itauAuditableTestAssembly().jsonConverter.fromJson(json.toString(), IdHolder)
 
         then:
         idHolder.id instanceof ValueObjectId

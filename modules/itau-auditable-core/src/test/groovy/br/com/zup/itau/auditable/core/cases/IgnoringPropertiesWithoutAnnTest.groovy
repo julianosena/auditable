@@ -10,7 +10,7 @@ import spock.lang.Specification
 import static br.com.zup.itau.auditable.core.metamodel.clazz.EntityDefinitionBuilder.entityDefinition
 
 /**
- * https://github.com/javers/javers/issues/94
+ * https://github.com/itauAuditable/itauAuditable/issues/94
  *
  * Specify ignored properties without annotations
  *
@@ -19,13 +19,13 @@ import static br.com.zup.itau.auditable.core.metamodel.clazz.EntityDefinitionBui
 class IgnoringPropertiesWithoutAnnTest extends Specification {
     def "should ignore selected properties of Entity"() {
         given:
-        def javers = ItauAuditableBuilder.javers().registerEntity( new EntityDefinition(DummyUser, "name", ["surname"])).build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().registerEntity( new EntityDefinition(DummyUser, "name", ["surname"])).build()
 
         when:
         def user1 = new DummyUser("Lord", "Smith")
         def user2 = new DummyUser("Lord", "Garmadon")
 
-        def diff = javers.compare(user1, user2)
+        def diff = itauAuditable.compare(user1, user2)
 
         then:
         ! diff.changes
@@ -33,13 +33,13 @@ class IgnoringPropertiesWithoutAnnTest extends Specification {
 
     def "should ignore selected properties of ValueObject"() {
         given:
-        def javers = ItauAuditableBuilder.javers().registerValueObject( new ValueObjectDefinition(DummyUser, ["surname"])).build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().registerValueObject( new ValueObjectDefinition(DummyUser, ["surname"])).build()
 
         when:
         def user1 = new DummyUser("Lord", "Smith")
         def user2 = new DummyUser("Lord", "Garmadon")
 
-        def diff = javers.compare(user1, user2)
+        def diff = itauAuditable.compare(user1, user2)
 
         then:
         ! diff.changes

@@ -15,7 +15,7 @@ import spock.lang.Specification
 class ObjectAccessHookBeanSpec extends Specification {
 
     @Autowired
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Autowired
     EbookCrudRepository ebookRepository
@@ -39,7 +39,7 @@ class ObjectAccessHookBeanSpec extends Specification {
         ebookRepository.save(book.author)
 
         then:
-        def snapshot = javers.getLatestSnapshot("1", Author).get()
+        def snapshot = itauAuditable.getLatestSnapshot("1", Author).get()
         snapshot.getPropertyValue("name") == "kazik"
     }
 }

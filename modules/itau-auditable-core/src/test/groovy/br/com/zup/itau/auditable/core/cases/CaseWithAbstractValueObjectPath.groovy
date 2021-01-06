@@ -10,7 +10,7 @@ import br.com.zup.itau.auditable.repository.jql.QueryBuilder
 import spock.lang.Specification
 
 /**
- * see https://stackoverflow.com/questions/51634751/javersexception-property-not-found-property-in-derived-class-not-found-in-abstr
+ * see https://stackoverflow.com/questions/51634751/itauAuditableexception-property-not-found-property-in-derived-class-not-found-in-abstr
  */
 class CaseWithAbstractValueObjectPath extends Specification {
 
@@ -45,7 +45,7 @@ class CaseWithAbstractValueObjectPath extends Specification {
     def "should manage query for Value Object by concrete path"(){
       given:
       def repo = new InMemoryRepository()
-      def javers = ItauAuditableBuilder.javers().registerItauAuditableRepository(repo) .build()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().registerItauAuditableRepository(repo) .build()
       def staticInputFormGroup =
               new StaticInputFormGroup(id: "100", inputControl: new InputControl("static Input"))
 
@@ -55,32 +55,32 @@ class CaseWithAbstractValueObjectPath extends Specification {
       def inputForm = new InputForm(id:"inputFormId", inputFormGroups: [staticInputFormGroup, dynamicInputFormGroup])
 
       when:
-      javers.commit("author", inputForm)
+      itauAuditable.commit("author", inputForm)
 
       //Change the value
       dynamicInputFormGroup.inputControlList[0].value = "New Value"
 
-      javers.commit("author", inputForm)
+      itauAuditable.commit("author", inputForm)
 
       //Change the value again
       dynamicInputFormGroup.inputControlList[0].value = "New Value 2"
 
-      javers.commit("author", inputForm)
+      itauAuditable.commit("author", inputForm)
 
-      Changes changes = javers.findChanges(QueryBuilder.byClass(InputForm).withChildValueObjects().build())
+      Changes changes = itauAuditable.findChanges(QueryBuilder.byClass(InputForm).withChildValueObjects().build())
       println "all " + changes.prettyPrint()
 
 
       def path = changes.find {it instanceof ValueChange}.affectedGlobalId.fragment
       println "query path: " + path
 
-      // new javers instance - fresh TypeMapper state
-      javers = ItauAuditableBuilder.javers().registerItauAuditableRepository(repo) .build()
+      // new itauAuditable instance - fresh TypeMapper state
+      itauAuditable = ItauAuditableBuilder.itauAuditable().registerItauAuditableRepository(repo) .build()
 
       then:
       // This has thrown
-      // ItauAuditableException: PROPERTY_NOT_FOUND: Property 'inputControlList' not found in class 'com.example.javerspolymorphismissue.model.InputFormGroup'. If the name is correct - check annotations. Properties with @DiffIgnore or @Transient are not visible for JaVers.
-      Changes valueChanges = javers.findChanges(QueryBuilder.byValueObject(InputForm, path).build())
+      // ItauAuditableException: PROPERTY_NOT_FOUND: Property 'inputControlList' not found in class 'com.example.itauAuditablepolymorphismissue.model.InputFormGroup'. If the name is correct - check annotations. Properties with @DiffIgnore or @Transient are not visible for JaVers.
+      Changes valueChanges = itauAuditable.findChanges(QueryBuilder.byValueObject(InputForm, path).build())
       println valueChanges.prettyPrint()
 
       valueChanges.size() == 2

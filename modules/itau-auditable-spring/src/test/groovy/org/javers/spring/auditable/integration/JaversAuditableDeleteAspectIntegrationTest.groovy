@@ -11,15 +11,15 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 @ContextConfiguration(classes = [TestApplicationConfig])
-class ItauAuditableAuditableDeleteAspectIntegrationTest extends Specification {
+class ItauAuditableDeleteAspectIntegrationTest extends Specification {
 
     @Autowired
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Autowired
     DummyAuditedRepository repository
 
-    def "should commit single argument when method is annotated with @ItauAuditableAuditableDelete"() {
+    def "should commit single argument when method is annotated with @ItauAuditableDelete"() {
         given: "one arg test"
         def o = new DummyObject()
 
@@ -28,13 +28,13 @@ class ItauAuditableAuditableDeleteAspectIntegrationTest extends Specification {
         repository.delete(o)
 
         then:
-        def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build())
         snapshots.size() == 2
         snapshots[0].terminal
         snapshots[1].initial
     }
 
-    def "should commit few arguments when method is annotated with @ItauAuditableAuditableDelete"() {
+    def "should commit few arguments when method is annotated with @ItauAuditableDelete"() {
         given:
         def o1 = new DummyObject()
         def o2 = new DummyObject()
@@ -44,8 +44,8 @@ class ItauAuditableAuditableDeleteAspectIntegrationTest extends Specification {
         repository.deleteTwo(o1, o2)
 
         then:
-        def snapshots1 = javers.findSnapshots(QueryBuilder.byInstanceId(o1.id, DummyObject).build())
-        def snapshots2 = javers.findSnapshots(QueryBuilder.byInstanceId(o2.id, DummyObject).build())
+        def snapshots1 = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(o1.id, DummyObject).build())
+        def snapshots2 = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(o2.id, DummyObject).build())
 
         [snapshots1, snapshots2].each { snapshots ->
             snapshots.size() == 2
@@ -54,7 +54,7 @@ class ItauAuditableAuditableDeleteAspectIntegrationTest extends Specification {
         }
     }
 
-    def "should commit with properties provided by CommitPropertiesProvider when method is annotated with @ItauAuditableAuditableDelete"(){
+    def "should commit with properties provided by CommitPropertiesProvider when method is annotated with @ItauAuditableDelete"(){
         given:
         def o = new DummyObject()
 
@@ -63,14 +63,14 @@ class ItauAuditableAuditableDeleteAspectIntegrationTest extends Specification {
         repository.delete(o)
 
         then:
-        def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build())
         snapshots.size() == 2
         snapshots[0].terminal
         snapshots[0].commitMetadata.properties["key"] == "ok"
         snapshots[1].initial
     }
 
-    def "should commit iterable argument when method is annotated with @ItauAuditableAuditableDelete"() {
+    def "should commit iterable argument when method is annotated with @ItauAuditableDelete"() {
         given:
         def objects = [new DummyObject(), new DummyObject()]
 
@@ -80,16 +80,16 @@ class ItauAuditableAuditableDeleteAspectIntegrationTest extends Specification {
 
         then:
         objects.each {
-            javers.findSnapshots(QueryBuilder.byInstanceId(it.id, DummyObject).build()).size() == 1
+            itauAuditable.findSnapshots(QueryBuilder.byInstanceId(it.id, DummyObject).build()).size() == 1
 
-            def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(it.id, DummyObject).build())
+            def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(it.id, DummyObject).build())
             snapshots.size() == 2
             snapshots[0].terminal
             snapshots[1].initial
         }
     }
 
-    def "should commit delete by Id when a method is annotated with @ItauAuditableAuditableDelete"() {
+    def "should commit delete by Id when a method is annotated with @ItauAuditableDelete"() {
         given:
         def o = new DummyObject()
 
@@ -98,13 +98,13 @@ class ItauAuditableAuditableDeleteAspectIntegrationTest extends Specification {
         repository.deleteById(o.id)
 
         then:
-        def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(o.id, DummyObject).build())
         snapshots.size() == 2
         snapshots[0].terminal
         snapshots[1].initial
     }
 
-    def "should commit by Ids iterable when a method is annotated with @ItauAuditableAuditableDelete"() {
+    def "should commit by Ids iterable when a method is annotated with @ItauAuditableDelete"() {
         given:
         def objects = [new DummyObject(), new DummyObject()]
 
@@ -114,16 +114,16 @@ class ItauAuditableAuditableDeleteAspectIntegrationTest extends Specification {
 
         then:
         objects.each {
-            javers.findSnapshots(QueryBuilder.byInstanceId(it.id, DummyObject).build()).size() == 1
+            itauAuditable.findSnapshots(QueryBuilder.byInstanceId(it.id, DummyObject).build()).size() == 1
 
-            def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(it.id, DummyObject).build())
+            def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(it.id, DummyObject).build())
             snapshots.size() == 2
             snapshots[0].terminal
             snapshots[1].initial
         }
     }
 
-    def "should throw the exception if no entity parameter is given when deleting by Id using @ItauAuditableAuditableDelete"() {
+    def "should throw the exception if no entity parameter is given when deleting by Id using @ItauAuditableDelete"() {
         given:
         def o = new DummyObject()
 

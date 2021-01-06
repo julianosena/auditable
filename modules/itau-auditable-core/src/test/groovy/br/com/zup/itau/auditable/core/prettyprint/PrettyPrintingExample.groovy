@@ -17,8 +17,8 @@ class PrettyPrintingExample extends Specification {
       def p = new ItauAuditableCoreProperties.PrettyPrintDateFormats()
       p.setZonedDateTime("dd.mm.yyyy HH:mm")
 
-      def javers = ItauAuditableBuilder.javers().withPrettyPrintDateFormats(p).build()
-      //def javers = ItauAuditableBuilder.javers().build()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().withPrettyPrintDateFormats(p).build()
+      //def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
       Employee oldFrodo = new Employee(
               name:"Frodo",
@@ -27,7 +27,7 @@ class PrettyPrintingExample extends Specification {
               skills:["management"],
               performance: [1: "bb", 3: "aa"]
       )
-      javers.commit("author", oldFrodo)
+      itauAuditable.commit("author", oldFrodo)
 
       Employee newFrodo = new Employee(
               name:"Frodo",
@@ -40,19 +40,19 @@ class PrettyPrintingExample extends Specification {
               subordinates: [new Employee("Sam")],
               performance: [1: "aa", 2: "bb"]
       )
-      javers.commit("author", newFrodo)
+      itauAuditable.commit("author", newFrodo)
 
       when:
-      def diff = javers.compare(oldFrodo, newFrodo)
+      def diff = itauAuditable.compare(oldFrodo, newFrodo)
       println( diff )
 
       println "-- SimpleTextChangeLog print --"
 
-      def changes = javers.findChanges(QueryBuilder.byInstance(newFrodo)
+      def changes = itauAuditable.findChanges(QueryBuilder.byInstance(newFrodo)
               .withChildValueObjects()
               .withNewObjectChanges().build())
       println "SimpleTextChangeLog"
-      def changeLog = javers.processChangeList(changes, new SimpleTextChangeLog());
+      def changeLog = itauAuditable.processChangeList(changes, new SimpleTextChangeLog());
       println( changeLog )
 
       then:

@@ -8,7 +8,7 @@ import br.com.zup.itau.auditable.core.model.DummyUser
 import br.com.zup.itau.auditable.core.model.DummyUserDetails
 import spock.lang.Specification
 
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 import static br.com.zup.itau.auditable.core.json.builder.ChangeTestBuilder.referenceChanged
 import static br.com.zup.itau.auditable.core.model.DummyUser.dummyUser
 import static br.com.zup.itau.auditable.core.model.DummyUserDetails.dummyUserDetails
@@ -21,7 +21,7 @@ class ReferenceChangeTypeAdapterTest extends Specification {
 
     def "should serialize ReferenceChange" () {
         given:
-            def jsonConverter = javersTestAssembly().jsonConverter
+            def jsonConverter = itauAuditableTestAssembly().jsonConverter
             def change = referenceChanged(dummyUser(),
                                                       "dummyUserDetails",
                                                       dummyUserDetails(1),
@@ -44,7 +44,7 @@ class ReferenceChangeTypeAdapterTest extends Specification {
 
     def "should deserialize ReferenceChange"() {
         given:
-            def jsonConverter = javersTestAssembly().jsonConverter
+            def jsonConverter = itauAuditableTestAssembly().jsonConverter
             def json = new JsonBuilder()
             json
             {
@@ -76,7 +76,7 @@ class ReferenceChangeTypeAdapterTest extends Specification {
 
     def "should be nullSafe when writing leftId & rightId for ReferenceChange" () {
         given:
-        def jsonConverter = javersTestAssembly().jsonConverter
+        def jsonConverter = itauAuditableTestAssembly().jsonConverter
         def change = referenceChanged(dummyUser(),"dummyUserDetails",null, null)
 
         when:

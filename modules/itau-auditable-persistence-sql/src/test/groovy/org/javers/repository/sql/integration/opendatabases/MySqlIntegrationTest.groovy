@@ -10,7 +10,7 @@ class MySqlIntegrationTest extends ItauAuditableSqlRepositoryE2ETest {
 
     @Override
     Connection createConnection() {
-        DriverManager.getConnection("jdbc:mysql://localhost/travis_ci_test", "javers", "javers");
+        DriverManager.getConnection("jdbc:mysql://localhost/travis_ci_test", "itauAuditable", "itauAuditable");
     }
 
     @Override

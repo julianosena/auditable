@@ -50,10 +50,10 @@ class MultipleTxManagersConfig extends HibernateConfig implements TransactionMan
     }
 
     @Bean
-    ItauAuditable javers(ItauAuditableSqlRepository sqlRepository,
+    ItauAuditable itauAuditable(ItauAuditableSqlRepository sqlRepository,
                   @Qualifier("transactionManager") PlatformTransactionManager transactionManager) {
         TransactionalItauAuditableBuilder
-                .javers()
+                .itauAuditable()
                 .withTxManager(transactionManager)
                 .registerItauAuditableRepository(sqlRepository)
                 .build()

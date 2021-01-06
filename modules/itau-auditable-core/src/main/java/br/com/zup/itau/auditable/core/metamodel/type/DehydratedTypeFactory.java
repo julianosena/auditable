@@ -26,23 +26,23 @@ class DehydratedTypeFactory {
         if (givenType instanceof TypeVariable) {
             return Object.class;
         }
-        final ClassType javersType = mapper.getItauAuditableClassType(givenType);
+        final ClassType itauAuditableType = mapper.getItauAuditableClassType(givenType);
 
         //for Generics, we have list of type arguments to dehydrate
-        if (javersType.isGenericType()) {
-            List<Type> actualDehydratedTypeArguments = extractAndDehydrateTypeArguments(javersType);
-            return new ParametrizedDehydratedType(javersType.getBaseJavaClass(), actualDehydratedTypeArguments);
+        if (itauAuditableType.isGenericType()) {
+            List<Type> actualDehydratedTypeArguments = extractAndDehydrateTypeArguments(itauAuditableType);
+            return new ParametrizedDehydratedType(itauAuditableType.getBaseJavaClass(), actualDehydratedTypeArguments);
         }
 
-        if (javersType instanceof ArrayType){
-            Type dehydratedItemType = build( javersType.getConcreteClassTypeArguments().get(0) );
+        if (itauAuditableType instanceof ArrayType){
+            Type dehydratedItemType = build( itauAuditableType.getConcreteClassTypeArguments().get(0) );
             if (dehydratedItemType == GlobalId.class){
                 return GLOBAL_ID_ARRAY_TYPE;
             }
             return givenType;
         }
 
-        return javersType.getRawDehydratedType();
+        return itauAuditableType.getRawDehydratedType();
     }
 
     private List<Type> extractAndDehydrateTypeArguments(ItauAuditableType genericType){

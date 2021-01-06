@@ -15,19 +15,19 @@ class QueryBuilderLimitExamples extends Specification {
 
     def "snapshot limit with findChanges"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         def bob = new Employee("Bob", 9_000, "ScrumMaster")
-        javers.commit("me", bob)
+        itauAuditable.commit("me", bob)
 
         bob.salary += 1_000
         bob.position = Specialist
         bob.age = 21
         bob.lastPromotionDate = ZonedDateTime.now()
-        javers.commit("me", bob)
+        itauAuditable.commit("me", bob)
 
         when:
-        def changes = javers.findChanges(byInstanceId("Bob", Employee)
+        def changes = itauAuditable.findChanges(byInstanceId("Bob", Employee)
                 .limit(2).build())
 
         print(changes.prettyPrint())
@@ -38,18 +38,18 @@ class QueryBuilderLimitExamples extends Specification {
 
     def "snapshot limit with findShadows and findShadowsAndStream"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
         def bob = new Employee("Bob", 9_000, "ScrumMaster")
         bob.primaryAddress = new Address("London")
-        javers.commit("me", bob) // 2 snapshots are persisted
+        itauAuditable.commit("me", bob) // 2 snapshots are persisted
 
         bob.salary += 1_000
         bob.primaryAddress.city = "New York"
-        javers.commit("me", bob) // 3 snapshots are persisted
+        itauAuditable.commit("me", bob) // 3 snapshots are persisted
 
         when : "findShadows() -- result is incomplete"
-        def shadows = javers.findShadows(byInstanceId("Bob", Employee)
+        def shadows = itauAuditable.findShadows(byInstanceId("Bob", Employee)
                 .limit(2).build())
 
         shadows.each {println(it)}
@@ -58,7 +58,7 @@ class QueryBuilderLimitExamples extends Specification {
         shadows.size() == 1
 
         when : "findShadows() -- result is complete"
-        shadows = javers.findShadows(byInstanceId("Bob", Employee)
+        shadows = itauAuditable.findShadows(byInstanceId("Bob", Employee)
                 .limit(4).build())
 
         shadows.each {println(it)}
@@ -67,7 +67,7 @@ class QueryBuilderLimitExamples extends Specification {
         shadows.size() == 2
 
         when : "findShadowsAndStream() -- result is complete"
-        shadows = javers.findShadowsAndStream(byInstanceId("Bob", Employee)
+        shadows = itauAuditable.findShadowsAndStream(byInstanceId("Bob", Employee)
                 .limit(2).build())
                 .toArray() // casting to array loads the whole stream
 

@@ -1,1 +1,1 @@
-create schema javers;
+create schema itauAuditable;

@@ -27,7 +27,7 @@ class ItauAuditableBeanHibernateProxyConfig {
      * Creates JaVers instance with {@link ItauAuditableSqlRepository}
      */
     @Bean
-    ItauAuditable javers(JpaHibernateConnectionProvider jpaHibernateConnectionProvider,
+    ItauAuditable itauAuditable(JpaHibernateConnectionProvider jpaHibernateConnectionProvider,
                          PlatformTransactionManager txManager) {
 
         ItauAuditableSqlRepository sqlRepository = SqlRepositoryBuilder
@@ -37,7 +37,7 @@ class ItauAuditableBeanHibernateProxyConfig {
                 .build()
 
         return TransactionalItauAuditableBuilder
-                .javers()
+                .itauAuditable()
                 .withTxManager(txManager)
                 .registerItauAuditableRepository(sqlRepository)
                 .withObjectAccessHook(new HibernateUnproxyObjectAccessHook())

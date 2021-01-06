@@ -21,7 +21,7 @@ class DBRefUnproxyObjectAccessHookTest extends Specification {
     MyDummyRefEntityRepository dummyRefEntityRepository
 
     @Autowired
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Unroll
     def "should unproxy a LazyLoadingProxy of DBRef before #commitKind commit to JaVers"() {
@@ -37,10 +37,10 @@ class DBRefUnproxyObjectAccessHookTest extends Specification {
 
         when:
         loaded.name = "mad kaz"
-        commit(loaded, javers, dummyEntityRepository)
+        commit(loaded, itauAuditable, dummyEntityRepository)
 
-        def authorSnapshot = javers.getLatestSnapshot(author.id, MyDummyEntity)
-        def refEntitySnapshot = javers.getLatestSnapshot(refEntity.id, MyDummyRefEntity)
+        def authorSnapshot = itauAuditable.getLatestSnapshot(author.id, MyDummyEntity)
+        def refEntitySnapshot = itauAuditable.getLatestSnapshot(refEntity.id, MyDummyRefEntity)
 
         then:
         refEntitySnapshot.isPresent()
@@ -51,8 +51,8 @@ class DBRefUnproxyObjectAccessHookTest extends Specification {
         where:
         commitKind << ["direct", "AOP"]
         commit     << [
-                {loaded_, javers_, dummyEntityRepository_ -> javers_.commit("me", loaded_)},
-                {loaded_, javers_, dummyEntityRepository_ -> dummyEntityRepository_.save(loaded_)}
+                {loaded_, itauAuditable_, dummyEntityRepository_ -> itauAuditable_.commit("me", loaded_)},
+                {loaded_, itauAuditable_, dummyEntityRepository_ -> dummyEntityRepository_.save(loaded_)}
         ]
     }
 }

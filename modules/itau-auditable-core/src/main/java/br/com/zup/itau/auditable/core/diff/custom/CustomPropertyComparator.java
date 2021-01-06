@@ -22,14 +22,14 @@ import java.util.Optional;
  *
  * <b>Usage</b>:
  * <pre>
- * ItauAuditableBuilder.javers()
+ * ItauAuditableBuilder.itauAuditable()
  *              .registerCustomType( Multimap.class, new GuavaCustomComparator())
  *              .build()
  * </pre>
  *
  * @param <T> Custom Type
  * @param <C> Concrete type of PropertyChange returned by a comparator
- * @see <a href="https://javers.org/documentation/diff-configuration/#custom-comparators">https://javers.org/documentation/diff-configuration/#custom-comparators</a>
+ * @see <a href="https://itauAuditable.org/documentation/diff-configuration/#custom-comparators">https://itauAuditable.org/documentation/diff-configuration/#custom-comparators</a>
  * @see CustomValueComparator
  */
 public interface CustomPropertyComparator<T, C extends PropertyChange> extends CustomValueComparator<T> {

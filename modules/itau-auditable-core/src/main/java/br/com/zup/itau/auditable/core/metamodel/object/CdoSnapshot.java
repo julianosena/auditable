@@ -155,7 +155,7 @@ public final class CdoSnapshot extends Cdo {
      * have version 0.
      * <br/>
      * If it isn't OK for you, run manual DB update.
-     * See <a href="http://javers.org/documentation/features/#release-notes">release-notes</a>
+     * See <a href="http://itauAuditable.org/documentation/features/#release-notes">release-notes</a>
      * for v. 1.4.4
      *
      * @since 1.4.4

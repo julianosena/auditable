@@ -8,30 +8,30 @@ import br.com.zup.itau.auditable.repository.api.ItauAuditableExtendedRepository;
 import static br.com.zup.itau.auditable.core.CommitIdGenerator.*;
 
 class CommitIdFactory {
-    private final ItauAuditableCoreConfiguration javersCoreConfiguration;
-    private final ItauAuditableExtendedRepository javersRepository;
+    private final ItauAuditableCoreConfiguration itauAuditableCoreConfiguration;
+    private final ItauAuditableExtendedRepository itauAuditableRepository;
     private final CommitSeqGenerator commitSeqGenerator;
     private final DistributedCommitSeqGenerator distributedCommitSeqGenerator;
 
-    CommitIdFactory(ItauAuditableCoreConfiguration javersCoreConfiguration, ItauAuditableExtendedRepository javersRepository, CommitSeqGenerator commitSeqGenerator, DistributedCommitSeqGenerator distributedCommitSeqGenerator) {
-        this.javersCoreConfiguration = javersCoreConfiguration;
-        this.javersRepository = javersRepository;
+    CommitIdFactory(ItauAuditableCoreConfiguration itauAuditableCoreConfiguration, ItauAuditableExtendedRepository itauAuditableRepository, CommitSeqGenerator commitSeqGenerator, DistributedCommitSeqGenerator distributedCommitSeqGenerator) {
+        this.itauAuditableCoreConfiguration = itauAuditableCoreConfiguration;
+        this.itauAuditableRepository = itauAuditableRepository;
         this.commitSeqGenerator = commitSeqGenerator;
         this.distributedCommitSeqGenerator = distributedCommitSeqGenerator;
     }
 
     CommitId nextId() {
-        if (javersCoreConfiguration.getCommitIdGenerator() == SYNCHRONIZED_SEQUENCE) {
-            CommitId head = javersRepository.getHeadId();
+        if (itauAuditableCoreConfiguration.getCommitIdGenerator() == SYNCHRONIZED_SEQUENCE) {
+            CommitId head = itauAuditableRepository.getHeadId();
             return commitSeqGenerator.nextId(head);
         }
 
-        if (javersCoreConfiguration.getCommitIdGenerator() == RANDOM) {
+        if (itauAuditableCoreConfiguration.getCommitIdGenerator() == RANDOM) {
             return distributedCommitSeqGenerator.nextId();
         }
 
-        if (javersCoreConfiguration.getCommitIdGenerator() == CUSTOM) {
-            return javersCoreConfiguration.getCustomCommitIdGenerator().get();
+        if (itauAuditableCoreConfiguration.getCommitIdGenerator() == CUSTOM) {
+            return itauAuditableCoreConfiguration.getCustomCommitIdGenerator().get();
         }
 
         throw new ItauAuditableException(ItauAuditableExceptionCode.NOT_IMPLEMENTED);

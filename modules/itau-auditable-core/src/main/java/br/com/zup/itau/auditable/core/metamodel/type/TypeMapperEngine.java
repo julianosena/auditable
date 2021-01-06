@@ -67,8 +67,8 @@ class TypeMapperEngine {
         registerCoreType(new MapType(Map.class));
     }
 
-    void registerExplicitType(ItauAuditableType javersType) {
-        putWithOverwrite(javersType.getBaseJavaType(), javersType);
+    void registerExplicitType(ItauAuditableType itauAuditableType) {
+        putWithOverwrite(itauAuditableType.getBaseJavaType(), itauAuditableType);
     }
 
     private void registerCoreType(ItauAuditableType jType) {
@@ -76,9 +76,9 @@ class TypeMapperEngine {
     }
 
     ItauAuditableType computeIfAbsent(Type javaType, Function<Type, ItauAuditableType> computeFunction) {
-        ItauAuditableType javersType = get(javaType);
-        if (javersType != null) {
-            return javersType;
+        ItauAuditableType itauAuditableType = get(javaType);
+        if (itauAuditableType != null) {
+            return itauAuditableType;
         }
 
         synchronized (javaType) {

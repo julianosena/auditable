@@ -23,18 +23,18 @@ import static br.com.zup.itau.auditable.core.GlobalIdTestBuilder.valueObjectId
  */
 class SnapshotFactoryTest extends Specification{
 
-    @Shared ItauAuditableTestBuilder javers
+    @Shared ItauAuditableTestBuilder itauAuditable
     @Shared SnapshotFactory snapshotFactory
 
     def setupSpec(){
-        javers = ItauAuditableTestBuilder.javersTestAssembly()
-        snapshotFactory = javers.snapshotFactory
+        itauAuditable = ItauAuditableTestBuilder.itauAuditableTestAssembly()
+        snapshotFactory = itauAuditable.snapshotFactory
     }
 
     def "should mark all not-null properties as changed of initial snapshot"() {
         given:
         def cdo = new SnapshotEntity(id:1, arrayOfIntegers:[1], arrayOfInts:[1])
-        def node = javers.createLiveNode(cdo)
+        def node = itauAuditable.createLiveNode(cdo)
 
         when:
         def snapshot = snapshotFactory.createInitial(node, someCommitMetadata())
@@ -46,7 +46,7 @@ class SnapshotFactoryTest extends Specification{
     def "should mark nullified properties of update snapshot"() {
         given:
         def cdo = new SnapshotEntity(id:1, arrayOfIntegers:[1])
-        def node = javers.createLiveNode(cdo)
+        def node = itauAuditable.createLiveNode(cdo)
         def prevSnapshot = snapshotFactory.createInitial(node, someCommitMetadata())
 
         when:
@@ -59,7 +59,7 @@ class SnapshotFactoryTest extends Specification{
 
     def "should update the version of the snapshot"() {
         given:
-        def node = javers.createLiveNode(new SnapshotEntity(id: 1))
+        def node = itauAuditable.createLiveNode(new SnapshotEntity(id: 1))
         def prevSnapshot = snapshotFactory.createInitial(node, someCommitMetadata())
 
         when:
@@ -71,7 +71,7 @@ class SnapshotFactoryTest extends Specification{
 
     def "should initialize the version of the first snapshot"() {
         given:
-        def node = javers.createLiveNode(new SnapshotEntity(id: 1))
+        def node = itauAuditable.createLiveNode(new SnapshotEntity(id: 1))
 
         when:
         def snapshot = snapshotFactory.createInitial(node, someCommitMetadata())
@@ -84,7 +84,7 @@ class SnapshotFactoryTest extends Specification{
         given:
         def ref = new SnapshotEntity(id:2)
         def cdo = new SnapshotEntity(id:1, arrayOfIntegers:[1,1], arrayOfInts:[5,5], entityRef: ref)
-        def node = javers.createLiveNode(cdo)
+        def node = itauAuditable.createLiveNode(cdo)
 
         def prevSnapshot = snapshotFactory.createInitial(node, someCommitMetadata())
 
@@ -100,7 +100,7 @@ class SnapshotFactoryTest extends Specification{
         when:
         prevSnapshot = updateSnapshot1
         cdo.entityRef = new SnapshotEntity(id:3)
-        node = javers.createLiveNode(cdo)
+        node = itauAuditable.createLiveNode(cdo)
         def updateSnapshot2 = snapshotFactory.createUpdate(node, prevSnapshot, someCommitMetadata())
 
         then:
@@ -118,8 +118,8 @@ class SnapshotFactoryTest extends Specification{
     def "should create snapshot with given GlobalId"() {
         given:
         def cdo = new SnapshotEntity(id:1)
-        def node = javers.createLiveNode(cdo)
-        def id = javers.instanceId(cdo)
+        def node = itauAuditable.createLiveNode(cdo)
+        def id = itauAuditable.instanceId(cdo)
 
         when:
         def snapshot = snapshotFactory.createInitial(node, someCommitMetadata())
@@ -131,7 +131,7 @@ class SnapshotFactoryTest extends Specification{
     def "should skip primitives with default value"() {
         given:
         def cdo = new PrimitiveEntity()
-        def node = javers.createLiveNode(cdo)
+        def node = itauAuditable.createLiveNode(cdo)
 
         when:
         def snapshot = snapshotFactory.createInitial(node, someCommitMetadata())
@@ -143,7 +143,7 @@ class SnapshotFactoryTest extends Specification{
     @Unroll
     def "should record #propertyType property value"() {
         when:
-        def node = javers.createLiveNode(cdo)
+        def node = itauAuditable.createLiveNode(cdo)
         def snapshot = snapshotFactory.createInitial(node, someCommitMetadata())
 
         then:
@@ -159,7 +159,7 @@ class SnapshotFactoryTest extends Specification{
     @Unroll
     def "should record #propertyType reference"() {
         when:
-        def node = javers.createLiveNode(cdo)
+        def node = itauAuditable.createLiveNode(cdo)
         def snapshot = snapshotFactory.createInitial(node, someCommitMetadata())
 
         then:
@@ -177,7 +177,7 @@ class SnapshotFactoryTest extends Specification{
     def "should record empty Optional"(){
         given:
         def cdo = new SnapshotEntity(optionalInteger: Optional.empty())
-        def node = javers.createLiveNode(cdo)
+        def node = itauAuditable.createLiveNode(cdo)
 
         when:
         def snapshot = snapshotFactory.createInitial(node, someCommitMetadata())
@@ -189,7 +189,7 @@ class SnapshotFactoryTest extends Specification{
     @Unroll
     def "should record Optional of #propertyType"(){
         when:
-        def node = javers.createLiveNode(cdo)
+        def node = itauAuditable.createLiveNode(cdo)
         def snapshot = snapshotFactory.createInitial(node, someCommitMetadata())
 
         then:
@@ -215,7 +215,7 @@ class SnapshotFactoryTest extends Specification{
     @Unroll
     def "should record #containerType of #propertyType"() {
         when:
-        def node = javers.createLiveNode(cdo)
+        def node = itauAuditable.createLiveNode(cdo)
         def snapshot = snapshotFactory.createInitial(node, someCommitMetadata())
 
         then:
@@ -262,7 +262,7 @@ class SnapshotFactoryTest extends Specification{
     @Unroll
     def "should record Set of #propertyType"() {
         given:
-        def node = javers.createLiveGraph(cdo).root()
+        def node = itauAuditable.createLiveGraph(cdo).root()
 
         when:
         CdoSnapshot snapshot = snapshotFactory.createInitial(node, someCommitMetadata())
@@ -285,15 +285,15 @@ class SnapshotFactoryTest extends Specification{
                 [1, 2] as Set,
                 [new LocalDate(2000, 1, 1), new LocalDate(2002, 1, 1)] as Set,
                 [instanceId(2, SnapshotEntity), instanceId(3, SnapshotEntity)] as Set,
-                [valueObjectId(1, SnapshotEntity, "setOfValueObjects/"+javers.addressHash("London")),
-                 valueObjectId(1, SnapshotEntity, "setOfValueObjects/"+javers.addressHash("London City"))] as Set
+                [valueObjectId(1, SnapshotEntity, "setOfValueObjects/"+itauAuditable.addressHash("London")),
+                 valueObjectId(1, SnapshotEntity, "setOfValueObjects/"+itauAuditable.addressHash("London City"))] as Set
         ]
     }
 
     def "should handle property with not parametrized type"() {
         when:
         def cdo = new SnapshotEntity(nonParametrizedMap:  ["a":1])
-        def node = javers.createLiveNode(cdo)
+        def node = itauAuditable.createLiveNode(cdo)
         def snap = snapshotFactory.createInitial(node, someCommitMetadata())
 
         then:
@@ -303,7 +303,7 @@ class SnapshotFactoryTest extends Specification{
     @Unroll
     def "should record Map of #enrtyType"() {
         when:
-        def node = javers.createLiveNode(cdo)
+        def node = itauAuditable.createLiveNode(cdo)
         CdoSnapshot snapshot = snapshotFactory.createInitial(node, someCommitMetadata())
 
         then:
@@ -324,8 +324,8 @@ class SnapshotFactoryTest extends Specification{
                         ["this":1,"that":2],
                         [(new LocalDate(2000, 1, 1)):1.5],
                         ["key1":valueObjectId(1, SnapshotEntity,"mapPrimitiveToVO/key1")],
-                        [(javers.instanceId(2,SnapshotEntity)):
-                          javers.instanceId(3,SnapshotEntity)]
+                        [(itauAuditable.instanceId(2,SnapshotEntity)):
+                          itauAuditable.instanceId(3,SnapshotEntity)]
                        ]
     }
 

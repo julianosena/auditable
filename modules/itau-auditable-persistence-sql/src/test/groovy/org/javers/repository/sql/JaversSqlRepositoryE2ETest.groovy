@@ -100,15 +100,15 @@ abstract class ItauAuditableSqlRepositoryE2ETest extends ItauAuditableRepository
 
     def "should not create jv_ tables if they already exists"(){
       given:
-      def firstItauAuditable = javers
-      println "javers" + javers
+      def firstItauAuditable = itauAuditable
+      println "itauAuditable" + itauAuditable
 
       when:
       buildItauAuditableInstance()
-      println "javers" + javers
+      println "itauAuditable" + itauAuditable
 
       then:
-      firstItauAuditable != javers
+      firstItauAuditable != itauAuditable
     }
 
     def "should select Head using max CommitId and not table PK"(){
@@ -136,50 +136,50 @@ abstract class ItauAuditableSqlRepositoryE2ETest extends ItauAuditableRepository
         def anEntity = new SnapshotEntity(id: 1)
 
         when:
-        javers.commit("author", anEntity)
+        itauAuditable.commit("author", anEntity)
         getConnection().rollback()
-        def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
 
         then:
         !snapshots
 
         when:
-        javers.commit("author", anEntity)
+        itauAuditable.commit("author", anEntity)
         getConnection().commit()
-        snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
+        snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, SnapshotEntity).build())
 
         then:
         snapshots.size() == 1
     }
 
-    //see https://github.com/javers/javers/issues/206
+    //see https://github.com/itauAuditable/itauAuditable/issues/206
     def "should persist PersistentGlobalId in CdoSnapshot.state"(){
       given:
       def master = new SnapshotEntity(id:1)
-      javers.commit("anonymous", master)
+      itauAuditable.commit("anonymous", master)
       master.valueObjectRef = new DummyAddress("details")
 
       when:
-      javers.commit("anonymous", master)
+      itauAuditable.commit("anonymous", master)
 
       then:
-      def snapshots = javers.findSnapshots(QueryBuilder.byClass(SnapshotEntity).build())
+      def snapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(SnapshotEntity).build())
       snapshots.size() == 2
     }
 
     /**
      * Case 208
-     * see https://github.com/javers/javers/issues/208
+     * see https://github.com/itauAuditable/itauAuditable/issues/208
      */
     def "should not commit when date/time values are unchanged" () {
         given:
         def obj = new Case208DateTimeTypes("1")
 
         when:
-        javers.commit("anonymous", obj)
-        javers.commit("anonymous", obj)
+        itauAuditable.commit("anonymous", obj)
+        itauAuditable.commit("anonymous", obj)
 
-        def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId("1", Case208DateTimeTypes).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId("1", Case208DateTimeTypes).build())
 
         then:
         snapshots.size() == 1
@@ -188,7 +188,7 @@ abstract class ItauAuditableSqlRepositoryE2ETest extends ItauAuditableRepository
 
     /**
      * Case 207
-     * see https://github.com/javers/javers/issues/207
+     * see https://github.com/itauAuditable/itauAuditable/issues/207
      */
     def "should not commit when Arrays of ValueObjects and ints are unchanged" () {
       given:
@@ -198,11 +198,11 @@ abstract class ItauAuditableSqlRepositoryE2ETest extends ItauAuditableRepository
             iArray: [1,2]
         )
 
-        javers.commit("anonymous", master)
-        javers.commit("anonymous", master)
+        itauAuditable.commit("anonymous", master)
+        itauAuditable.commit("anonymous", master)
 
       when:
-        def snapshots = javers.findSnapshots(QueryBuilder.byClass(Case207Arrays.Master).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byClass(Case207Arrays.Master).build())
 
       then:
       snapshots.size() == 1
@@ -212,12 +212,12 @@ abstract class ItauAuditableSqlRepositoryE2ETest extends ItauAuditableRepository
     def "should persist over 100 snapshots with proper sequence of primary keys"() {
         given:
         (150..1).each{
-            javers.commit("author", new SnapshotEntity(id: 1, intProperty: it))
+            itauAuditable.commit("author", new SnapshotEntity(id: 1, intProperty: it))
         }
 
         when:
         def query = QueryBuilder.byInstanceId(1, SnapshotEntity).limit(150).build()
-        def snapshots = javers.findSnapshots(query)
+        def snapshots = itauAuditable.findSnapshots(query)
         def intPropertyValues = snapshots.collect { it.getPropertyValue("intProperty") }
 
         then:
@@ -234,14 +234,14 @@ abstract class ItauAuditableSqlRepositoryE2ETest extends ItauAuditableRepository
             (1..threads).collectParallel {
                 def thread = it
                 4.times {
-                    javers.commit("author", new SnapshotEntity(id: thread, intProperty: cnt.incrementAndGet()))
+                    itauAuditable.commit("author", new SnapshotEntity(id: thread, intProperty: cnt.incrementAndGet()))
                     getConnection().commit()
                 }
             }
         }
 
         then:
-        javers.findSnapshots(QueryBuilder.byClass(SnapshotEntity).limit(1000).build()).size() == threads * 4
+        itauAuditable.findSnapshots(QueryBuilder.byClass(SnapshotEntity).limit(1000).build()).size() == threads * 4
     }
 
     def "should allow concurrent updates of the same Object"(){
@@ -250,20 +250,20 @@ abstract class ItauAuditableSqlRepositoryE2ETest extends ItauAuditableRepository
         def sId = 222
         def threads = 20
         //initial commit
-        javers.commit("author", new SnapshotEntity(id: sId, intProperty: cnt.incrementAndGet()))
+        itauAuditable.commit("author", new SnapshotEntity(id: sId, intProperty: cnt.incrementAndGet()))
         getConnection().commit()
 
         when:
         withPool threads, {
             (1..threads).collectParallel {
                 4.times {
-                    javers.commit("author", new SnapshotEntity(id: sId, intProperty: cnt.incrementAndGet()))
+                    itauAuditable.commit("author", new SnapshotEntity(id: sId, intProperty: cnt.incrementAndGet()))
                     getConnection().commit()
                 }
             }
         }
 
         then:
-        javers.findSnapshots(QueryBuilder.byInstanceId(sId, SnapshotEntity).limit(1000).build()).size() == threads * 4 + 1
+        itauAuditable.findSnapshots(QueryBuilder.byInstanceId(sId, SnapshotEntity).limit(1000).build()).size() == threads * 4 + 1
     }
 }

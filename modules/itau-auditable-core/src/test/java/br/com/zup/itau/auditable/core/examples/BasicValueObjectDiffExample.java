@@ -14,13 +14,13 @@ public class BasicValueObjectDiffExample {
   public void shouldCompareTwoObjects() {
 
     //given
-    ItauAuditable javers = ItauAuditableBuilder.javers().build();
+    ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
     Address address1 = new Address("New York","5th Avenue");
     Address address2 = new Address("New York","6th Avenue");
 
     //when
-    Diff diff = javers.compare(address1, address2);
+    Diff diff = itauAuditable.compare(address1, address2);
 
     //then
     //there should be one change of type {@link ValueChange}

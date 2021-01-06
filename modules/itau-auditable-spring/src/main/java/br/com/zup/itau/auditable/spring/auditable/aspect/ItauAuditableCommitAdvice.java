@@ -10,7 +10,7 @@ import br.com.zup.itau.auditable.core.commit.Commit;
 import br.com.zup.itau.auditable.core.metamodel.type.ItauAuditableType;
 import br.com.zup.itau.auditable.core.metamodel.type.ManagedType;
 import br.com.zup.itau.auditable.core.metamodel.type.PrimitiveOrValueType;
-import br.com.zup.itau.auditable.spring.annotation.ItauAuditableAuditableDelete;
+import br.com.zup.itau.auditable.spring.annotation.ItauAuditableDelete;
 import br.com.zup.itau.auditable.spring.auditable.AspectUtil;
 import br.com.zup.itau.auditable.spring.auditable.AuthorProvider;
 import br.com.zup.itau.auditable.spring.auditable.CommitPropertiesProvider;
@@ -30,20 +30,20 @@ import static br.com.zup.itau.auditable.repository.jql.InstanceIdDTO.instanceId;
  */
 public class ItauAuditableCommitAdvice {
 
-    private final ItauAuditable javers;
+    private final ItauAuditable itauAuditable;
     private final AuthorProvider authorProvider;
     private final CommitPropertiesProvider commitPropertiesProvider;
     private final Executor executor;
 
-    public ItauAuditableCommitAdvice(ItauAuditable javers, AuthorProvider authorProvider, CommitPropertiesProvider commitPropertiesProvider) {
-        this.javers = javers;
+    public ItauAuditableCommitAdvice(ItauAuditable itauAuditable, AuthorProvider authorProvider, CommitPropertiesProvider commitPropertiesProvider) {
+        this.itauAuditable = itauAuditable;
         this.authorProvider = authorProvider;
         this.commitPropertiesProvider = commitPropertiesProvider;
         this.executor = null;
     }
 
-    public ItauAuditableCommitAdvice(ItauAuditable javers, AuthorProvider authorProvider, CommitPropertiesProvider commitPropertiesProvider, Executor executor) {
-		this.javers = javers;
+    public ItauAuditableCommitAdvice(ItauAuditable itauAuditable, AuthorProvider authorProvider, CommitPropertiesProvider commitPropertiesProvider, Executor executor) {
+		this.itauAuditable = itauAuditable;
 		this.authorProvider = authorProvider;
 		this.commitPropertiesProvider = commitPropertiesProvider;
     	this.executor = executor;
@@ -57,10 +57,10 @@ public class ItauAuditableCommitAdvice {
 
     void commitDeleteMethodArguments(JoinPoint jp) {
         for (Object arg : AspectUtil.collectArguments(jp)) {
-            ItauAuditableType javersType = javers.getTypeMapping(arg.getClass());
-            if (javersType instanceof ManagedType) {
+            ItauAuditableType itauAuditableType = itauAuditable.getTypeMapping(arg.getClass());
+            if (itauAuditableType instanceof ManagedType) {
                 commitShallowDelete(arg);
-            } else if (javersType instanceof PrimitiveOrValueType) {
+            } else if (itauAuditableType instanceof PrimitiveOrValueType) {
                 commitShallowDeleteById(arg, getDomainTypeToDelete(jp, arg));
             }
         }
@@ -68,8 +68,8 @@ public class ItauAuditableCommitAdvice {
 
     private Class<?> getDomainTypeToDelete(JoinPoint jp, Object id) {
         Method method = ((MethodSignature) jp.getSignature()).getMethod();
-        ItauAuditableAuditableDelete javersAuditableDelete = method.getAnnotation(ItauAuditableAuditableDelete.class);
-        Class<?> entity = javersAuditableDelete.entity();
+        ItauAuditableDelete itauAuditableAuditableDelete = method.getAnnotation(ItauAuditableDelete.class);
+        Class<?> entity = itauAuditableAuditableDelete.entity();
         if (entity == Void.class) {
             throw new ItauAuditableException(ItauAuditableExceptionCode.WRONG_USAGE_OF_JAVERS_AUDITABLE_DELETE, id, method);
         }
@@ -78,13 +78,13 @@ public class ItauAuditableCommitAdvice {
 
     public void commitObject(Object domainObject) {
         String author = authorProvider.provide();
-        javers.commit(author, domainObject, propsForCommit(domainObject));
+        itauAuditable.commit(author, domainObject, propsForCommit(domainObject));
     }
 
     public void commitShallowDelete(Object domainObject) {
         String author = authorProvider.provide();
 
-        javers.commitShallowDelete(author, domainObject, Maps.merge(
+        itauAuditable.commitShallowDelete(author, domainObject, Maps.merge(
                 commitPropertiesProvider.provideForDeletedObject(domainObject),
                 commitPropertiesProvider.provide()));
     }
@@ -92,7 +92,7 @@ public class ItauAuditableCommitAdvice {
     public void commitShallowDeleteById(Object domainObjectId, Class<?> domainType) {
         String author = authorProvider.provide();
 
-        javers.commitShallowDeleteById(author, instanceId(domainObjectId, domainType), Maps.merge(
+        itauAuditable.commitShallowDeleteById(author, instanceId(domainObjectId, domainType), Maps.merge(
                 commitPropertiesProvider.provideForDeleteById(domainType, domainObjectId),
                 commitPropertiesProvider.provide()));
     }
@@ -108,7 +108,7 @@ public class ItauAuditableCommitAdvice {
 
     CompletableFuture<Commit> commitObjectAsync(Object domainObject) {
         String author = this.authorProvider.provide();
-        return this.javers.commitAsync(author, domainObject, propsForCommit(domainObject), executor);
+        return this.itauAuditable.commitAsync(author, domainObject, propsForCommit(domainObject), executor);
     }
 
     private Map<String, String> propsForCommit(Object domainObject) {

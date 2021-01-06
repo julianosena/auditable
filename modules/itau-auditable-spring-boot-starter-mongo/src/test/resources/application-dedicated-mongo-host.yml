@@ -1,4 +1,4 @@
-javers:
+itauAuditable:
   mongodb:
     host: localhost
     port: 32001

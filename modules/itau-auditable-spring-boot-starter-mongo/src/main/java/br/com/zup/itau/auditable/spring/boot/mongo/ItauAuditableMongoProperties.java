@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * @author pawelszymczyk
  */
-@ConfigurationProperties(prefix = "javers")
+@ConfigurationProperties(prefix = "itauAuditable")
 public class ItauAuditableMongoProperties extends ItauAuditableSpringProperties {
     private static final String DEFAULT_OBJECT_ACCESS_HOOK = DBRefUnproxyObjectAccessHook.class.getName();
 
@@ -43,7 +43,7 @@ public class ItauAuditableMongoProperties extends ItauAuditableSpringProperties 
     }
 
     /**
-     * If <code>javers.mongodb</code> configuration is non-empty,
+     * If <code>itauAuditable.mongodb</code> configuration is non-empty,
      * ItauAuditable uses it to connect to the dedicated MongoDB.
      * <br/>
      * Otherwise, ItauAuditable reuses application's MongoDB configured in the standard way

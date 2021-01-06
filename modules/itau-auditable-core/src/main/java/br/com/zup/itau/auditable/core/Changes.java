@@ -68,7 +68,7 @@ public class Changes extends AbstractList<Change> implements Serializable {
      *
      * is printed by this code:
      * <pre>
-     * Changes changes = javers.findChanges(QueryBuilder.byClass(Employee.class)
+     * Changes changes = itauAuditable.findChanges(QueryBuilder.byClass(Employee.class)
      *                         .withNewObjectChanges().build());
      *
      * changes.groupByCommit().forEach(byCommit -> {
@@ -82,7 +82,7 @@ public class Changes extends AbstractList<Change> implements Serializable {
      * });
      * </pre>
      *
-     * @see <a href="https://javers.org/documentation/repository-examples/#change-log">http://javers.org/documentation/repository-examples/#change-log</a>
+     * @see <a href="https://itauAuditable.org/documentation/repository-examples/#change-log">http://itauAuditable.org/documentation/repository-examples/#change-log</a>
      * @since 3.9
      */
     public List<ChangesByCommit> groupByCommit() {

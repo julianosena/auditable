@@ -54,7 +54,7 @@ class ItauAuditableCore implements ItauAuditable {
     private final GlobalIdFactory globalIdFactory;
     private final ItauAuditableCoreConfiguration configuration;
 
-    ItauAuditableCore(DiffFactory diffFactory, TypeMapper typeMapper, JsonConverter jsonConverter, CommitFactory commitFactory, ItauAuditableExtendedRepository repository, QueryRunner queryRunner, GlobalIdFactory globalIdFactory, ItauAuditableCoreConfiguration javersCoreConfiguration) {
+    ItauAuditableCore(DiffFactory diffFactory, TypeMapper typeMapper, JsonConverter jsonConverter, CommitFactory commitFactory, ItauAuditableExtendedRepository repository, QueryRunner queryRunner, GlobalIdFactory globalIdFactory, ItauAuditableCoreConfiguration itauAuditableCoreConfiguration) {
         this.diffFactory = diffFactory;
         this.typeMapper = typeMapper;
         this.jsonConverter = jsonConverter;
@@ -62,7 +62,7 @@ class ItauAuditableCore implements ItauAuditable {
         this.repository = repository;
         this.queryRunner = queryRunner;
         this.globalIdFactory = globalIdFactory;
-        this.configuration = javersCoreConfiguration;
+        this.configuration = itauAuditableCoreConfiguration;
     }
 
     @Override

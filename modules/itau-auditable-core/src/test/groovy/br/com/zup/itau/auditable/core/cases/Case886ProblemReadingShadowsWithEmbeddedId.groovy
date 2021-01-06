@@ -43,12 +43,12 @@ class Case886ProblemReadingShadowsWithEmbeddedId extends Specification {
 
     def "should create Shadow with ShallowReference with EmbeddedId replaced with null"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
 
-        println javers.getTypeMapping(Agreement).prettyPrint()
-        println javers.getTypeMapping(AgreementMember).prettyPrint()
-        println javers.getTypeMapping(AgreementMemberId).prettyPrint()
-        println javers.getTypeMapping(UUID).prettyPrint()
+        println itauAuditable.getTypeMapping(Agreement).prettyPrint()
+        println itauAuditable.getTypeMapping(AgreementMember).prettyPrint()
+        println itauAuditable.getTypeMapping(AgreementMemberId).prettyPrint()
+        println itauAuditable.getTypeMapping(UUID).prettyPrint()
 
         when:
         UUID agreementId = UUID.randomUUID()
@@ -64,10 +64,10 @@ class Case886ProblemReadingShadowsWithEmbeddedId extends Specification {
                 locationId: UUID.randomUUID(),
                 agreementMembers: [agreementMember])
 
-        javers.commit("Agreement", agreement)
+        itauAuditable.commit("Agreement", agreement)
 
         JqlQuery query = QueryBuilder.byInstanceId(agreementId, Agreement.class).build()
-        List<Shadow<Agreement>> shadows = javers.findShadows(query)
+        List<Shadow<Agreement>> shadows = itauAuditable.findShadows(query)
 
         then:
         Agreement a = shadows[0].get()

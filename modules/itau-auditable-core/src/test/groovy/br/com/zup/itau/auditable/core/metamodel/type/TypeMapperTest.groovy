@@ -25,7 +25,7 @@ import static br.com.zup.itau.auditable.core.metamodel.clazz.ValueObjectDefiniti
 class TypeMapperTest extends Specification {
 
     @Shared
-    def mapper = ItauAuditableTestBuilder.javersTestAssembly().typeMapper
+    def mapper = ItauAuditableTestBuilder.itauAuditableTestAssembly().typeMapper
 
     enum DummyEnum {
         A, B
@@ -197,7 +197,7 @@ class TypeMapperTest extends Specification {
                           new TypeToken<HashMap<String, Integer>>() {}.type]
     }
 
-    def "should spawn generic types as distinct javers types"() {
+    def "should spawn generic types as distinct itauAuditable types"() {
         when:
         def setWithStringItauAuditableType = mapper.getItauAuditableType(new TypeToken<Set<String>>() {}.type)
         def hashSetWithIntItauAuditableType = mapper.getItauAuditableType(new TypeToken<HashSet<Integer>>() {}.type)

@@ -9,7 +9,7 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 /**
- * https://github.com/javers/javers/issues/548
+ * https://github.com/itauAuditable/itauAuditable/issues/548
  */
 class CaseWithGoogleAutoValue extends Specification {
 
@@ -40,10 +40,10 @@ class CaseWithGoogleAutoValue extends Specification {
     @Unroll
     def "should map #entity.simpleName with abstract @IdGetter as EntityType"(){
         given:
-        def javers = ItauAuditableBuilder.javers().withMappingStyle(MappingStyle.BEAN).build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().withMappingStyle(MappingStyle.BEAN).build()
 
         when:
-        def jType = javers.getTypeMapping(entity)
+        def jType = itauAuditable.getTypeMapping(entity)
 
         then:
         jType instanceof EntityType
@@ -58,10 +58,10 @@ class CaseWithGoogleAutoValue extends Specification {
 
     def "should compare package protected Entity with abstract @IdGetter"(){
         given:
-        def javers = ItauAuditableBuilder.javers().withMappingStyle(MappingStyle.BEAN).build()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().withMappingStyle(MappingStyle.BEAN).build()
 
         expect:
-        javers.compare(new ConcreteEntity(id:1, value: 1),
+        itauAuditable.compare(new ConcreteEntity(id:1, value: 1),
                        new ConcreteEntity(id:1, value: 1))
                 .changes.size() == 0
     }

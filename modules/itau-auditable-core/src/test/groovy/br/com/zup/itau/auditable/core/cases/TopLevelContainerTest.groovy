@@ -19,10 +19,10 @@ class TopLevelContainerTest extends Specification {
     @Unroll
     def "should compare top-level #containerType"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build();
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
         when:
-        def diff = javers.compare(container1, container2)
+        def diff = itauAuditable.compare(container1, container2)
 
         then:
         diff.changes.size() == 1
@@ -49,14 +49,14 @@ class TopLevelContainerTest extends Specification {
     @Unroll
     def "should allow committing and querying top-level #colType(s)"() {
         given:
-        def javers = ItauAuditableBuilder.javers().build();
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
         when:
-        javers.commit("author",container1)
-        javers.commit("author",container2)
+        itauAuditable.commit("author",container1)
+        itauAuditable.commit("author",container2)
 
 
-        def changes = javers.findChanges(QueryBuilder.byGlobalId(voId).limit(3).build())
+        def changes = itauAuditable.findChanges(QueryBuilder.byGlobalId(voId).limit(3).build())
 
         then:
         changes[0].propertyName == colType

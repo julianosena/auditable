@@ -29,10 +29,10 @@ class OrganizationStructureLoopCase extends Specification{
         person.employee = emp
 
         when:
-        def javers = ItauAuditableBuilder.javers().build()
-        javers.commit("a",emp)
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
+        itauAuditable.commit("a",emp)
 
-        def snapshots = javers.findSnapshots(QueryBuilder.byInstanceId(1, Employee).build())
+        def snapshots = itauAuditable.findSnapshots(QueryBuilder.byInstanceId(1, Employee).build())
 
         then:
         snapshots.size() == 1

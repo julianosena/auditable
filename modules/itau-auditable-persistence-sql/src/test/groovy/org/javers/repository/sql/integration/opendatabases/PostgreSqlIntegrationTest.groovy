@@ -10,7 +10,7 @@ class PostgreSqlIntegrationTest extends ItauAuditableSqlRepositoryE2ETest {
 
     @Override
     Connection createConnection() {
-        DriverManager.getConnection("jdbc:postgresql://localhost:5432/travis_ci_test", "javers", "javers");
+        DriverManager.getConnection("jdbc:postgresql://localhost:5432/travis_ci_test", "itauAuditable", "itauAuditable");
     }
 
     @Override

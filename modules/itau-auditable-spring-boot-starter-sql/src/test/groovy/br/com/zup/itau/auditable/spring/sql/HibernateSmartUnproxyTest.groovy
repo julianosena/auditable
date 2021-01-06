@@ -17,7 +17,7 @@ import spock.lang.Specification
 @ActiveProfiles("test")
 class HibernateSmartUnproxyTest extends Specification {
     @Autowired
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Autowired
     DummyEntityRepository dummyEntityRepository
@@ -45,7 +45,7 @@ class HibernateSmartUnproxyTest extends Specification {
         entity = dummyEntityRepository.save(entity)
 
         then:
-        def entitySnapshot = javers.getLatestSnapshot(entity.id, DummyEntity).get()
+        def entitySnapshot = itauAuditable.getLatestSnapshot(entity.id, DummyEntity).get()
         InstanceId shallowRef = entitySnapshot.getPropertyValue("shallowEntity")
         shallowRef.typeName == ShallowEntity.class.name
         shallowRef.cdoId == shallowEntity.id

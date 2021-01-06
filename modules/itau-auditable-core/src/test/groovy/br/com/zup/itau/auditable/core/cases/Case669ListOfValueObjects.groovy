@@ -18,7 +18,7 @@ class Case669ListOfValueObjects extends Specification {
 
     def "should compare Lists of Value Objects as Sets"(){
       given:
-      def javers = ItauAuditableBuilder.javers().withListCompareAlgorithm(ListCompareAlgorithm.AS_SET).build()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().withListCompareAlgorithm(ListCompareAlgorithm.AS_SET).build()
 
       def l1 = new TopLevelClass(items: [
               new ListItem(name: "name1", value: "value1"),
@@ -31,7 +31,7 @@ class Case669ListOfValueObjects extends Specification {
       ])
 
       when:
-      def diff = javers.compare(l1, l2)
+      def diff = itauAuditable.compare(l1, l2)
 
       then:
       diff.changes.isEmpty()

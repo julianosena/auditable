@@ -47,14 +47,14 @@ class CustomPropertyComparatorCase extends Specification {
     @Unroll
     def "should use CustomPropertyComparator for raw Collection items with #alg"(){
       given:
-      def javers = ItauAuditableBuilder.javers()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable()
               .withListCompareAlgorithm(alg)
               .registerCustomComparator(new  PersonComparator(), Person).build()
 
       when:
       Company c1 = new Company(id: "1", clients: [new Person(name: "james", ignoreThis: "ignore this")])
       Company c2 = new Company(id: "1", clients: [new Person(name: "james")])
-      def diff = javers.compare(c1, c2)
+      def diff = itauAuditable.compare(c1, c2)
 
       then:
       diff.changes.size() == 0
@@ -63,7 +63,7 @@ class CustomPropertyComparatorCase extends Specification {
       c1 = new Company(id: "1", clients: [new Person(name: "james")] )
       c2 = new Company(id: "1", clients: [new Person(name: "james"), new Person(name: "kaz")] )
 
-      diff = javers.compare(c1, c2)
+      diff = itauAuditable.compare(c1, c2)
 
       then:
       diff.changes.size() == 1
@@ -75,7 +75,7 @@ class CustomPropertyComparatorCase extends Specification {
     @Unroll
     def "should use CustomPropertyComparator for List items with #alg"(){
         given:
-        def javers = ItauAuditableBuilder.javers()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
                 .withListCompareAlgorithm(alg)
                 .registerCustomComparator(new  PersonComparator(), Person).build()
 
@@ -83,7 +83,7 @@ class CustomPropertyComparatorCase extends Specification {
         Company c1 = new Company(id: "1", partners: [new Person(name: "james", ignoreThis: "ignore this")])
         Company c2 = new Company(id: "1", partners: [new Person(name: "james")])
 
-        def diff = javers.compare(c1, c2)
+        def diff = itauAuditable.compare(c1, c2)
 
         then:
         diff.changes.size() == 0
@@ -92,7 +92,7 @@ class CustomPropertyComparatorCase extends Specification {
         c1 = new Company(id: "1", partners: [new Person(name: "james")] )
         c2 = new Company(id: "1", partners: [new Person(name: "james"), new Person(name: "kaz")] )
 
-        diff = javers.compare(c1, c2)
+        diff = itauAuditable.compare(c1, c2)
 
         then:
         diff.changes.size() == 1

@@ -34,8 +34,8 @@ import java.time.LocalDateTime;
  * if it's not what you need, implement {@link JsonTypeAdapter} for custom serialization
  * and register it with {@link ItauAuditableBuilder#registerValueTypeAdapter(JsonTypeAdapter)}.
  *
- * @see <a href="http://javers.org/documentation/domain-configuration/#ValueType">http://javers.org/documentation/domain-configuration/#ValueType</a>
- * @see <a href="https://javers.org/documentation/diff-configuration/#custom-comparators">https://javers.org/documentation/diff-configuration/#custom-comparators</a>
+ * @see <a href="http://itauAuditable.org/documentation/domain-configuration/#ValueType">http://itauAuditable.org/documentation/domain-configuration/#ValueType</a>
+ * @see <a href="https://itauAuditable.org/documentation/diff-configuration/#custom-comparators">https://itauAuditable.org/documentation/diff-configuration/#custom-comparators</a>
  */
 public class ValueType extends PrimitiveOrValueType {
 

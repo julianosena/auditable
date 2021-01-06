@@ -35,15 +35,15 @@ class RefactoringExample extends Specification {
            when both old and new class use @TypeName annotation'''()
     {
         given:
-        def javers = ItauAuditableBuilder.javers().build()
-        javers.commit('author', new Person(id:1, name:'Bob'))
+        def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
+        itauAuditable.commit('author', new Person(id:1, name:'Bob'))
 
         when: '''Refactoring happens here, Person.class is removed,
                  new PersonRefactored.class appears'''
-        javers.commit('author', new PersonRefactored(id:1, name:'Uncle Bob', city:'London'))
+        itauAuditable.commit('author', new PersonRefactored(id:1, name:'Uncle Bob', city:'London'))
 
         def changes =
-            javers.findChanges( QueryBuilder.byInstanceId(1, PersonRefactored.class).build() )
+            itauAuditable.findChanges( QueryBuilder.byInstanceId(1, PersonRefactored.class).build() )
 
         then: 'two ValueChanges are expected'
         assert changes.size() == 2
@@ -75,14 +75,14 @@ class RefactoringExample extends Specification {
            when old class forgot to use @TypeName annotation'''()
     {
       given:
-      def javers = ItauAuditableBuilder.javers().build()
-      javers.commit('author', new PersonSimple(id:1, name:'Bob'))
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
+      itauAuditable.commit('author', new PersonSimple(id:1, name:'Bob'))
 
       when:
-      javers.commit('author', new PersonRetrofitted(id:1, name:'Uncle Bob'))
+      itauAuditable.commit('author', new PersonRetrofitted(id:1, name:'Uncle Bob'))
 
       def changes =
-          javers.findChanges( QueryBuilder.byInstanceId(1,PersonRetrofitted.class).build() )
+          itauAuditable.findChanges( QueryBuilder.byInstanceId(1,PersonRetrofitted.class).build() )
 
       then: 'one ValueChange is expected'
       assert changes.size() == 1
@@ -124,14 +124,14 @@ class RefactoringExample extends Specification {
 
     def 'should be very relaxed about ValueObject types'(){
       given:
-      def javers = ItauAuditableBuilder.javers().build()
-      javers.commit('author', new Person(id:1, address:new EmailAddress('me@example.com', false)))
-      javers.commit('author', new Person(id:1, address:new HomeAddress ('London','Green 50', true)))
-      javers.commit('author', new Person(id:1, address:new HomeAddress ('London','Green 55', true)))
+      def itauAuditable = ItauAuditableBuilder.itauAuditable().build()
+      itauAuditable.commit('author', new Person(id:1, address:new EmailAddress('me@example.com', false)))
+      itauAuditable.commit('author', new Person(id:1, address:new HomeAddress ('London','Green 50', true)))
+      itauAuditable.commit('author', new Person(id:1, address:new HomeAddress ('London','Green 55', true)))
 
       when:
       def changes =
-          javers.findChanges( QueryBuilder.byValueObjectId(1, Person.class, 'address').build() )
+          itauAuditable.findChanges( QueryBuilder.byValueObjectId(1, Person.class, 'address').build() )
 
       changes.each { println it }
 

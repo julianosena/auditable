@@ -4,18 +4,17 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import br.com.zup.itau.auditable.common.collections.Maps;
-import br.com.zup.itau.auditable.core.ItauAuditable;
 import br.com.zup.itau.auditable.core.ItauAuditableBuilder;
 import br.com.zup.itau.auditable.repository.mongo.MongoRepository;
-import br.com.zup.itau.auditable.spring.annotation.ItauAuditableAuditable;
-import br.com.zup.itau.auditable.spring.annotation.ItauAuditableAuditableAsync;
-import br.com.zup.itau.auditable.spring.annotation.ItauAuditableSpringDataAuditable;
+import br.com.zup.itau.auditable.spring.annotation.ItauAuditable;
+import br.com.zup.itau.auditable.spring.annotation.ItauAuditableAsync;
+import br.com.zup.itau.auditable.spring.annotation.ItauAuditableSpringData;
 import br.com.zup.itau.auditable.spring.auditable.AuthorProvider;
 import br.com.zup.itau.auditable.spring.auditable.CommitPropertiesProvider;
 import br.com.zup.itau.auditable.spring.auditable.SpringSecurityAuthorProvider;
-import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAuditableAspect;
-import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAuditableAspectAsync;
-import br.com.zup.itau.auditable.spring.auditable.aspect.springdata.ItauAuditableSpringDataAuditableRepositoryAspect;
+import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAspect;
+import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAspectAsync;
+import br.com.zup.itau.auditable.spring.auditable.aspect.springdata.ItauAuditableSpringDataRepositoryAspect;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -26,7 +25,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -42,12 +40,12 @@ public class ItauAuditableSpringMongoApplicationConfig {
      * Creates JaVers instance backed by {@link MongoRepository}
      */
     @Bean
-    public ItauAuditable javers() {
-        MongoRepository javersMongoRepository =
+    public br.com.zup.itau.auditable.core.ItauAuditable itauAuditable() {
+        MongoRepository itauAuditableMongoRepository =
                 new MongoRepository(mongo().getDatabase(DATABASE_NAME));
 
-        return ItauAuditableBuilder.javers()
-                .registerItauAuditableRepository(javersMongoRepository)
+        return ItauAuditableBuilder.itauAuditable()
+                .registerItauAuditableRepository(itauAuditableMongoRepository)
                 .build();
     }
 
@@ -71,23 +69,23 @@ public class ItauAuditableSpringMongoApplicationConfig {
     /**
      * Enables auto-audit aspect for ordinary repositories.<br/>
      *
-     * Use {@link ItauAuditableAuditable}
+     * Use {@link ItauAuditable}
      * to mark repository methods that you want to audit.
      */
     @Bean
-    public ItauAuditableAuditableAspect javersAuditableAspect() {
-        return new ItauAuditableAuditableAspect(javers(), authorProvider(), commitPropertiesProvider());
+    public ItauAuditableAspect itauAuditableAuditableAspect() {
+        return new ItauAuditableAspect(itauAuditable(), authorProvider(), commitPropertiesProvider());
     }
 
     /**
      * Enables auto-audit aspect for Spring Data repositories. <br/>
      *
-     * Use {@link ItauAuditableSpringDataAuditable}
+     * Use {@link ItauAuditableSpringData}
      * to annotate CrudRepositories you want to audit.
      */
     @Bean
-    public ItauAuditableSpringDataAuditableRepositoryAspect javersSpringDataAuditableAspect() {
-        return new ItauAuditableSpringDataAuditableRepositoryAspect(javers(), authorProvider(),
+    public ItauAuditableSpringDataRepositoryAspect itauAuditableSpringDataAspect() {
+        return new ItauAuditableSpringDataRepositoryAspect(itauAuditable(), authorProvider(),
                 commitPropertiesProvider());
     }
 
@@ -97,12 +95,12 @@ public class ItauAuditableSpringMongoApplicationConfig {
      *
      * Enables asynchronous auto-audit aspect for ordinary repositories.<br/>
      *
-     * Use {@link ItauAuditableAuditableAsync}
+     * Use {@link ItauAuditableAsync}
      * to mark repository methods that you want to audit.
      */
     @Bean
-    public ItauAuditableAuditableAspectAsync javersAuditableAspectAsync() {
-        return new ItauAuditableAuditableAspectAsync(javers(), authorProvider(), commitPropertiesProvider(), javersAsyncAuditExecutor());
+    public ItauAuditableAspectAsync itauAuditableAuditableAspectAsync() {
+        return new ItauAuditableAspectAsync(itauAuditable(), authorProvider(), commitPropertiesProvider(), itauAuditableAsyncAuditExecutor());
     }
 
     /**
@@ -110,9 +108,9 @@ public class ItauAuditableSpringMongoApplicationConfig {
      * <br/><br/>
      */
     @Bean
-    public ExecutorService javersAsyncAuditExecutor() {
+    public ExecutorService itauAuditableAsyncAuditExecutor() {
         ThreadFactory threadFactory = new ThreadFactoryBuilder()
-                .setNameFormat("ItauAuditableAuditableAsync-%d")
+                .setNameFormat("ItauAuditableAsync-%d")
                 .build();
         return Executors.newFixedThreadPool(2, threadFactory);
     }

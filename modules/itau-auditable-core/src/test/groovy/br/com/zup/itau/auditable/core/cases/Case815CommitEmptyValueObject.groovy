@@ -14,7 +14,7 @@ class Case815CommitEmptyValueObject extends Specification {
         when:
         // Use a simple in-memory repository.
         InMemoryRepository repo = new InMemoryRepository()
-        ItauAuditable javers = ItauAuditableBuilder.javers().registerItauAuditableRepository(repo).build()
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().registerItauAuditableRepository(repo).build()
 
         // Create a RangeHolder with a Range that has some values.
         def versionOne = new RangeHolder()
@@ -25,7 +25,7 @@ class Case815CommitEmptyValueObject extends Specification {
         versionOne.setRange(populatedRange)
 
         // Commit the first version.
-        javers.commit("tester", versionOne)
+        itauAuditable.commit("tester", versionOne)
 
         // Create a RangeHolder with an empty Range (all fields are null).
         def versionTwo = new RangeHolder()
@@ -34,7 +34,7 @@ class Case815CommitEmptyValueObject extends Specification {
         versionTwo.setRange(emptyRange)
 
         // Commit the second version. Should not throw an UnsupportedOperationException.
-        javers.commit("tester", versionTwo)
+        itauAuditable.commit("tester", versionTwo)
 
         then:
         notThrown(UnsupportedOperationException)

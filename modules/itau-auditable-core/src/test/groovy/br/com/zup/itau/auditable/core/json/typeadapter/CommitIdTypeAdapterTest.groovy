@@ -3,7 +3,7 @@ package br.com.zup.itau.auditable.core.json.typeadapter
 import br.com.zup.itau.auditable.core.commit.CommitId
 import spock.lang.Specification
 
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 
 /**
 * @author pawel szymczyk
@@ -12,11 +12,11 @@ class CommitIdTypeAdapterTest extends Specification{
 
     def "should serialize CommitId to Json"() {
         given:
-        def javers = javersTestAssembly()
+        def itauAuditable = itauAuditableTestAssembly()
         def commitId = new CommitId(13, 7)
 
         when:
-        def jsonText = javers.jsonConverter.toJson(commitId)
+        def jsonText = itauAuditable.jsonConverter.toJson(commitId)
 
         then:
         jsonText == "13.07"
@@ -28,7 +28,7 @@ class CommitIdTypeAdapterTest extends Specification{
         def json = "12.9"
 
         when:
-        def commitId = javersTestAssembly().jsonConverter.fromJson(json, CommitId)
+        def commitId = itauAuditableTestAssembly().jsonConverter.fromJson(json, CommitId)
 
         then:
         commitId.getMajorId() == 12

@@ -19,12 +19,12 @@ import static br.com.zup.itau.auditable.core.snapshot.SnapshotsAssert.getAssertT
  */
 class ChangedCdoSnapshotsFactoryTest extends Specification {
 
-    @Shared ItauAuditableTestBuilder javers
+    @Shared ItauAuditableTestBuilder itauAuditable
     @Shared ChangedCdoSnapshotsFactory changedCdoSnapshotsFactory
 
     def setup(){
-        javers = ItauAuditableTestBuilder.javersTestAssembly()
-        changedCdoSnapshotsFactory = javers.getContainerComponent(ChangedCdoSnapshotsFactory)
+        itauAuditable = ItauAuditableTestBuilder.itauAuditableTestAssembly()
+        changedCdoSnapshotsFactory = itauAuditable.getContainerComponent(ChangedCdoSnapshotsFactory)
     }
 
     CommitMetadata someCommitMetadata(){
@@ -34,15 +34,15 @@ class ChangedCdoSnapshotsFactoryTest extends Specification {
     def "should not mark snapshot as initial even if not present in previous commit but committed before"() {
         given:
         def cdo5 = new SnapshotEntity(id: 5)
-        javers.javers().commit("author", cdo5)
+        itauAuditable.itauAuditable().commit("author", cdo5)
 
         def cdo1 = new SnapshotEntity(id: 1)
-        javers.javers().commit("author", cdo1)
+        itauAuditable.itauAuditable().commit("author", cdo1)
 
         when:
         cdo1.entityRef = cdo5
         cdo5.intProperty = 1
-        def commit = javers.javers().commit("author", cdo1)
+        def commit = itauAuditable.itauAuditable().commit("author", cdo1)
 
         then:
         SnapshotsAssert.assertThat(commit.snapshots)
@@ -56,7 +56,7 @@ class ChangedCdoSnapshotsFactoryTest extends Specification {
         def cdo = new SnapshotEntity(id: 1)
 
         when:
-        def commit = javers.javers().commit("author", cdo)
+        def commit = itauAuditable.itauAuditable().commit("author", cdo)
 
         then:
         SnapshotsAssert.assertThat(commit.snapshots)
@@ -65,7 +65,7 @@ class ChangedCdoSnapshotsFactoryTest extends Specification {
 
         when:
         cdo.entityRef = new SnapshotEntity(id: 5)
-        commit = javers.javers().commit("author", cdo)
+        commit = itauAuditable.itauAuditable().commit("author", cdo)
 
         then:
         SnapshotsAssert.assertThat(commit.snapshots)
@@ -77,7 +77,7 @@ class ChangedCdoSnapshotsFactoryTest extends Specification {
     def "should flatten straight Entity relation"() {
         given:
         def cdo = new SnapshotEntity(id: 1, entityRef: new SnapshotEntity(id: 5))
-        def node = javers.createLiveGraph(cdo)
+        def node = itauAuditable.createLiveGraph(cdo)
 
         when:
         def snapshots = changedCdoSnapshotsFactory.create(node, [] as Set, someCommitMetadata())
@@ -94,7 +94,7 @@ class ChangedCdoSnapshotsFactoryTest extends Specification {
         def ref2  = new SnapshotEntity(id:2,entityRef: ref3)
         //cdo -> ref2 -> ref3
         def cdo   = new SnapshotEntity(id:1,entityRef: ref2)
-        def node = javers.createLiveGraph(cdo)
+        def node = itauAuditable.createLiveGraph(cdo)
 
         when:
         def snapshots = changedCdoSnapshotsFactory.create(node, [] as Set, someCommitMetadata())
@@ -109,7 +109,7 @@ class ChangedCdoSnapshotsFactoryTest extends Specification {
     def "should flatten straight ValueObject relation"() {
         given:
         def cdo  = new SnapshotEntity(id:1, valueObjectRef: new DummyAddress("street"))
-        def node = javers.createLiveGraph(cdo)
+        def node = itauAuditable.createLiveGraph(cdo)
 
         when:
         def snapshots = changedCdoSnapshotsFactory.create(node, [] as Set, someCommitMetadata())
@@ -123,7 +123,7 @@ class ChangedCdoSnapshotsFactoryTest extends Specification {
     def "should flatten Set of ValueObject"() {
         given:
         def cdo = new SnapshotEntity(setOfValueObjects: [new DummyAddress("London"), new DummyAddress("London City")])
-        def node = javers.createLiveGraph(cdo)
+        def node = itauAuditable.createLiveGraph(cdo)
 
         when:
         def snapshots = changedCdoSnapshotsFactory.create(node, [] as Set, someCommitMetadata())
@@ -132,14 +132,14 @@ class ChangedCdoSnapshotsFactoryTest extends Specification {
         SnapshotsAssert.assertThat(snapshots)
                 .hasSize(3)
                 .hasSnapshot(instanceId(1, SnapshotEntity))
-                .hasSnapshot(valueObjectId(1, SnapshotEntity, "setOfValueObjects/"+javers.addressHash("London")))
-                .hasSnapshot(valueObjectId(1, SnapshotEntity, "setOfValueObjects/"+javers.addressHash("London City")))
+                .hasSnapshot(valueObjectId(1, SnapshotEntity, "setOfValueObjects/"+itauAuditable.addressHash("London")))
+                .hasSnapshot(valueObjectId(1, SnapshotEntity, "setOfValueObjects/"+itauAuditable.addressHash("London City")))
     }
 
     @Unroll
     def "should flatten #listType of ValueObject"() {
         given:
-        def node = javers.createLiveGraph(cdo)
+        def node = itauAuditable.createLiveGraph(cdo)
 
         when:
         def snapshots = changedCdoSnapshotsFactory.create(node, [] as Set, someCommitMetadata())
@@ -167,7 +167,7 @@ class ChangedCdoSnapshotsFactoryTest extends Specification {
     @Unroll
     def "should flatten #containerType of Entity"() {
         given:
-        def node = javers.createLiveGraph(cdo)
+        def node = itauAuditable.createLiveGraph(cdo)
 
         when:
         def snapshots = changedCdoSnapshotsFactory.create(node, [] as Set, someCommitMetadata())
@@ -189,7 +189,7 @@ class ChangedCdoSnapshotsFactoryTest extends Specification {
     @Unroll
     def "should flatten Map of <#keyType, #valueType>"() {
         given:
-        def node = javers.createLiveGraph(cdo)
+        def node = itauAuditable.createLiveGraph(cdo)
 
         when:
         def snapshots = changedCdoSnapshotsFactory.create(node, [] as Set, someCommitMetadata())
@@ -217,10 +217,10 @@ class ChangedCdoSnapshotsFactoryTest extends Specification {
     def "should reuse existing snapshots when nothing changed"() {
         given:
         def cdo = new SnapshotEntity(listOfEntities: [new SnapshotEntity(id:2), new SnapshotEntity(id:3)])
-        def firstCommit = javers.javers().commit("author",cdo)
+        def firstCommit = itauAuditable.itauAuditable().commit("author",cdo)
 
         when:
-        def secondCommit = javers.javers().commit("author",cdo)
+        def secondCommit = itauAuditable.itauAuditable().commit("author",cdo)
 
         then:
         firstCommit.snapshots.size() == 3
@@ -231,13 +231,13 @@ class ChangedCdoSnapshotsFactoryTest extends Specification {
     def "should reuse existing root snapshot when not changed"() {
         given:
         def cdo = new SnapshotEntity(listOfEntities: [new SnapshotEntity(id:2), new SnapshotEntity(id:3)])
-        def firstCommit = javers.commitFactory.create("author",[:],cdo)
-        javers.javersRepository.persist(firstCommit)
+        def firstCommit = itauAuditable.commitFactory.create("author",[:],cdo)
+        itauAuditable.itauAuditableRepository.persist(firstCommit)
 
         when:
         cdo.listOfEntities.get(0).intProperty = 1
         cdo.listOfEntities.get(1).intProperty = 1
-        def secondCommit = javers.javers().commit("author",cdo)
+        def secondCommit = itauAuditable.itauAuditable().commit("author",cdo)
 
         then:
         SnapshotsAssert.assertThat(secondCommit.snapshots)
@@ -249,12 +249,12 @@ class ChangedCdoSnapshotsFactoryTest extends Specification {
     def "should reuse existing ref snapshots when not changed"() {
         given:
         def cdo = new SnapshotEntity(listOfEntities: [new SnapshotEntity(id:2), new SnapshotEntity(id:3)])
-        def firstCommit = javers.commitFactory.create("author",[:],cdo)
-        javers.javersRepository.persist(firstCommit)
+        def firstCommit = itauAuditable.commitFactory.create("author",[:],cdo)
+        itauAuditable.itauAuditableRepository.persist(firstCommit)
 
         when:
         cdo.intProperty = 1
-        def secondCommit = javers.javers().commit("author",cdo)
+        def secondCommit = itauAuditable.itauAuditable().commit("author",cdo)
 
         then:
         SnapshotsAssert.assertThat(secondCommit.snapshots)

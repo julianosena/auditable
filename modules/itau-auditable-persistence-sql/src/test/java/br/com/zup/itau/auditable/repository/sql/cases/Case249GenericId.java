@@ -12,7 +12,7 @@ import org.junit.Test;
 import java.io.Serializable;
 
 /**
- * see https://github.com/javers/javers/issues/249
+ * see https://github.com/itauAuditable/itauAuditable/issues/249
  * @author bartosz.walacik
  */
 public class Case249GenericId {
@@ -39,15 +39,15 @@ public class Case249GenericId {
     @Test
     public void shouldCommitEntityWithSerializableId() {
         //given
-        ItauAuditable javers = ItauAuditableBuilder.javers().
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().
                 registerItauAuditableRepository(H2RepositoryFactory.create()).build();
 
         //when
         Account acc = new Account("1","2");
-        javers.commit("author", acc);
+        itauAuditable.commit("author", acc);
 
         //then
-        CdoSnapshot snapshot = javers.getLatestSnapshot("1", Account.class).get();
+        CdoSnapshot snapshot = itauAuditable.getLatestSnapshot("1", Account.class).get();
         Assertions.assertThat(snapshot.getPropertyValue("id")).isEqualTo("1");
         Assertions.assertThat(snapshot.getPropertyValue("value")).isEqualTo("2");
     }

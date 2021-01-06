@@ -10,7 +10,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.javersTestAssembly
+import static br.com.zup.itau.auditable.core.ItauAuditableTestBuilder.itauAuditableTestAssembly
 
 /**
  * @author bartosz walacik
@@ -19,7 +19,7 @@ class JsonConverterDateTimeTest extends Specification {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(JsonConverterDateTimeTest.class);
 
     @Shared
-    def jsonConverter = javersTestAssembly().jsonConverter
+    def jsonConverter = itauAuditableTestAssembly().jsonConverter
 
     @Shared
     long time = 1443807427050

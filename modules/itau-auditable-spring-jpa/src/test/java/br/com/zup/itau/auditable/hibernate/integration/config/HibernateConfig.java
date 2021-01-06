@@ -7,8 +7,8 @@ import br.com.zup.itau.auditable.repository.sql.ItauAuditableSqlRepository;
 import br.com.zup.itau.auditable.spring.auditable.AuthorProvider;
 import br.com.zup.itau.auditable.spring.auditable.CommitPropertiesProvider;
 import br.com.zup.itau.auditable.spring.auditable.SpringSecurityAuthorProvider;
-import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAuditableAspect;
-import br.com.zup.itau.auditable.spring.auditable.aspect.springdata.ItauAuditableSpringDataAuditableRepositoryAspect;
+import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAspect;
+import br.com.zup.itau.auditable.spring.auditable.aspect.springdata.ItauAuditableSpringDataRepositoryAspect;
 import br.com.zup.itau.auditable.spring.jpa.JpaHibernateConnectionProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -20,7 +20,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -70,13 +69,13 @@ public class HibernateConfig {
     }
 
     @Bean
-    public ItauAuditableAuditableAspect javersAuditableAspect(ItauAuditable javers) {
-        return new ItauAuditableAuditableAspect(javers, authorProvider(), commitPropertiesProvider());
+    public ItauAuditableAspect itauAuditableAuditableAspect(ItauAuditable itauAuditable) {
+        return new ItauAuditableAspect(itauAuditable, authorProvider(), commitPropertiesProvider());
     }
 
     @Bean
-    public ItauAuditableSpringDataAuditableRepositoryAspect javersSpringDataAuditableAspect(ItauAuditable javers) {
-        return new ItauAuditableSpringDataAuditableRepositoryAspect(javers, authorProvider(), commitPropertiesProvider());
+    public ItauAuditableSpringDataRepositoryAspect itauAuditableSpringDataAspect(ItauAuditable itauAuditable) {
+        return new ItauAuditableSpringDataRepositoryAspect(itauAuditable, authorProvider(), commitPropertiesProvider());
     }
 
     /**

@@ -8,7 +8,7 @@ import br.com.zup.itau.auditable.core.diff.changetype.ValueChange
 import br.com.zup.itau.auditable.test.builder.CategoryTestBuilder
 import spock.lang.Specification
 
-import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.javers
+import static br.com.zup.itau.auditable.core.ItauAuditableBuilder.itauAuditable
 import static br.com.zup.itau.auditable.core.diff.DiffAssert.assertThat
 
 /**
@@ -22,10 +22,10 @@ class ItauAuditableNapCategoryTreeIntegrationTest extends Specification {
         given:
         def cat1 = CategoryTestBuilder.category().deepWithChildNumber(3, 3, "name").build()
         def cat2 = CategoryTestBuilder.category().deepWithChildNumber(3, 3, "newName").build()
-        ItauAuditable javers = javers().build()
+        ItauAuditable itauAuditable = itauAuditable().build()
 
         when:
-        Diff diff = javers.compare(cat1, cat2)
+        Diff diff = itauAuditable.compare(cat1, cat2)
 
         then:
         assertThat(diff).hasChanges(40).hasAllOfType(ValueChange)
@@ -35,10 +35,10 @@ class ItauAuditableNapCategoryTreeIntegrationTest extends Specification {
         given:
         def cat1 = CategoryTestBuilder.category().deepWithChildNumber(5,5).build()
         def cat2 = CategoryTestBuilder.category().deepWithChildNumber(5,5).build()
-        ItauAuditable javers = javers().build()
+        ItauAuditable itauAuditable = itauAuditable().build()
 
         when:
-        Diff diff = javers.compare(cat1, cat2)
+        Diff diff = itauAuditable.compare(cat1, cat2)
 
         then:
         !diff.changes
@@ -48,10 +48,10 @@ class ItauAuditableNapCategoryTreeIntegrationTest extends Specification {
         given:
         def cat1 = CategoryTestBuilder.category().deepWithChildNumber(5,5).build()
         def cat2 = CategoryTestBuilder.category(-1).deepWithChildNumber(5,5).build()
-        ItauAuditable javers = javers().build()
+        ItauAuditable itauAuditable = itauAuditable().build()
 
         when:
-        Diff diff = javers.compare(cat1, cat2)
+        Diff diff = itauAuditable.compare(cat1, cat2)
 
         then:
         diff.getChangesByType(NewObject).size() == 3906

@@ -18,18 +18,18 @@ public class CaseShadowWithInitializedPrimitiveBooleanField {
 
     @Test
     public void shouldFindShadowWithSameBooleanValue() {
-        ItauAuditable javers = ItauAuditableBuilder.javers().build();
+        ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable().build();
 
         Long personId = 1L;
         Person original = new Person();
         original.setPersonId( personId );
         original.setActive( false );
 
-        javers.commit( "author", original );
+        itauAuditable.commit( "author", original );
 
         JqlQuery query = QueryBuilder.byInstanceId( personId, Person.class ).build();
-        List<Shadow<Person>> shadows = javers.findShadows( query );
-        List<CdoSnapshot> snapshots = javers.findSnapshots( query);
+        List<Shadow<Person>> shadows = itauAuditable.findShadows( query );
+        List<CdoSnapshot> snapshots = itauAuditable.findSnapshots( query);
 
         Person shadow = shadows.get( 0 ).get();
 

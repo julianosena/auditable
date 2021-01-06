@@ -11,11 +11,11 @@ import spock.lang.Specification
  */
 class ObjectHasherTest extends Specification {
     @Shared ObjectHasher objectHasher
-    @Shared ItauAuditableTestBuilder javers
+    @Shared ItauAuditableTestBuilder itauAuditable
 
     def setupSpec(){
-        javers = ItauAuditableTestBuilder.javersTestAssembly()
-        objectHasher = new ObjectHasher(javers.snapshotFactory, javers.jsonConverter)
+        itauAuditable = ItauAuditableTestBuilder.itauAuditableTestAssembly()
+        objectHasher = new ObjectHasher(itauAuditable.snapshotFactory, itauAuditable.jsonConverter)
     }
 
     def "should calculate hash of ValueObject "(){
@@ -23,11 +23,11 @@ class ObjectHasherTest extends Specification {
         def address = new DummyAddress('Warsaw', 'Mokotowska')
 
         when:
-        def node = javers.createLiveNode(address)
+        def node = itauAuditable.createLiveNode(address)
         def hash = objectHasher.hash([node.cdo])
 
         then:
         hash == 'ba4a8532bc3fa2c16990e2a21e06cd1f'
-        hash == javers.hash(address)
+        hash == itauAuditable.hash(address)
     }
 }

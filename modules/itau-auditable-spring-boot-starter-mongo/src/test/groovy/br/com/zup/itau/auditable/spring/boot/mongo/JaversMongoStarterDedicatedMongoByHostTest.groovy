@@ -9,9 +9,9 @@ class ItauAuditableMongoStarterDedicatedMongoByHostTest extends ItauAuditableMon
 
     def "should read dedicated mongo configuration from host"(){
         expect:
-        javersProperties.mongodb
-        javersProperties.mongodb.host == 'localhost'
-        javersProperties.mongodb.port == ItauAuditableMongoStarterDedicatedMongoTest.PORT
-        javersProperties.mongodb.database == 'itau-auditable-dedicated'
+        itauAuditableProperties.mongodb
+        itauAuditableProperties.mongodb.host == 'localhost'
+        itauAuditableProperties.mongodb.port == ItauAuditableMongoStarterDedicatedMongoTest.PORT
+        itauAuditableProperties.mongodb.database == 'itau-auditable-dedicated'
     }
 }

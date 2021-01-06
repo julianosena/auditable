@@ -18,7 +18,7 @@ class ItauAuditableSpringDataAspectIntegrationTest extends Specification {
     ApplicationContext context
 
     @Autowired
-    ItauAuditable javers
+    ItauAuditable itauAuditable
 
     @Autowired
     DummyAuditedCrudRepository repository
@@ -48,7 +48,7 @@ class ItauAuditableSpringDataAspectIntegrationTest extends Specification {
         repository.save(o)
 
         then:
-        def snapshots = javers.findSnapshots(byInstanceId(o.id, DummyObject).build())
+        def snapshots = itauAuditable.findSnapshots(byInstanceId(o.id, DummyObject).build())
 
         snapshots.size() == 1
         snapshots[0].initial
@@ -65,8 +65,8 @@ class ItauAuditableSpringDataAspectIntegrationTest extends Specification {
         repository.saveAll([o1,o2])
 
         then:
-        javers.findSnapshots(byInstanceId(o1.id, DummyObject).build()).size() == 1
-        javers.findSnapshots(byInstanceId(o2.id, DummyObject).build()).size() == 1
+        itauAuditable.findSnapshots(byInstanceId(o1.id, DummyObject).build()).size() == 1
+        itauAuditable.findSnapshots(byInstanceId(o2.id, DummyObject).build()).size() == 1
     }
 
     def "should commitDelete on audited crudRepository.delete(object)"() {
@@ -78,7 +78,7 @@ class ItauAuditableSpringDataAspectIntegrationTest extends Specification {
         repository.delete(o)
 
         then:
-        def snapshots = javers.findSnapshots(byInstanceId(o.id, DummyObject).build())
+        def snapshots = itauAuditable.findSnapshots(byInstanceId(o.id, DummyObject).build())
         snapshots.size() == 2
         snapshots[0].terminal
         snapshots[1].initial
@@ -94,7 +94,7 @@ class ItauAuditableSpringDataAspectIntegrationTest extends Specification {
         call(repository, o)
 
         then:
-        def snapshots = javers.findSnapshots(byInstanceId(o.id, DummyObject).build())
+        def snapshots = itauAuditable.findSnapshots(byInstanceId(o.id, DummyObject).build())
         snapshots.size() == 2
         snapshots[0].terminal
         snapshots[1].initial
@@ -118,8 +118,8 @@ class ItauAuditableSpringDataAspectIntegrationTest extends Specification {
         repository.deleteAll([o1, o2] as Iterable)
 
         then:
-        def snapshots1 = javers.findSnapshots(byInstanceId(o1.id, DummyObject).build())
-        def snapshots2 = javers.findSnapshots(byInstanceId(o2.id, DummyObject).build())
+        def snapshots1 = itauAuditable.findSnapshots(byInstanceId(o1.id, DummyObject).build())
+        def snapshots2 = itauAuditable.findSnapshots(byInstanceId(o2.id, DummyObject).build())
 
         [snapshots1, snapshots2].each { snapshots ->
             snapshots.size() == 2
@@ -138,7 +138,7 @@ class ItauAuditableSpringDataAspectIntegrationTest extends Specification {
 
         then:
         result != null
-        def snapshots = javers.findSnapshots(byInstanceId(o.id, DummyObject).build())
+        def snapshots = itauAuditable.findSnapshots(byInstanceId(o.id, DummyObject).build())
         snapshots.size() == 1
         snapshots[0].initial
     }
@@ -153,7 +153,7 @@ class ItauAuditableSpringDataAspectIntegrationTest extends Specification {
         repository.save(o)
 
         then:
-        def snapshots = javers.findSnapshots(byInstanceId(o.id, DummyObject).build())
+        def snapshots = itauAuditable.findSnapshots(byInstanceId(o.id, DummyObject).build())
         snapshots.size() == 2
         !snapshots[0].initial
         snapshots[1].initial
@@ -169,6 +169,6 @@ class ItauAuditableSpringDataAspectIntegrationTest extends Specification {
         noAuditRepository.findById(o.id)
 
         then:
-        javers.findSnapshots(byInstanceId(o.id, DummyObject).build()).size() == 0
+        itauAuditable.findSnapshots(byInstanceId(o.id, DummyObject).build()).size() == 0
     }
 }

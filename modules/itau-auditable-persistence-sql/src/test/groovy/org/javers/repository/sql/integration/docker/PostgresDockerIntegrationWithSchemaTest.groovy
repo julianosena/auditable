@@ -29,6 +29,6 @@ class PostgresDockerIntegrationWithSchemaTest extends ItauAuditableSqlRepository
     }
 
     String getSchema() {
-        return "javers"
+        return "itauAuditable"
     }
 }

@@ -8,8 +8,8 @@ import br.com.zup.itau.auditable.core.ItauAuditable;
 import br.com.zup.itau.auditable.core.ItauAuditableBuilder;
 import br.com.zup.itau.auditable.repository.mongo.MongoRepository;
 import br.com.zup.itau.auditable.spring.auditable.*;
-import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAuditableAspect;
-import br.com.zup.itau.auditable.spring.auditable.aspect.springdata.ItauAuditableSpringDataAuditableRepositoryAspect;
+import br.com.zup.itau.auditable.spring.auditable.aspect.ItauAuditableAspect;
+import br.com.zup.itau.auditable.spring.auditable.aspect.springdata.ItauAuditableSpringDataRepositoryAspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -40,7 +40,7 @@ public class ItauAuditableMongoAutoConfiguration {
     private static final Logger logger = LoggerFactory.getLogger(ItauAuditableMongoAutoConfiguration.class);
 
     @Autowired
-    private ItauAuditableMongoProperties javersMongoProperties;
+    private ItauAuditableMongoProperties itauAuditableMongoProperties;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -49,35 +49,35 @@ public class ItauAuditableMongoAutoConfiguration {
     private MongoProperties mongoProperties; //from spring-boot-starter-data-mongodb
 
     @Autowired
-    @Qualifier("javersMongoClientSettings")
+    @Qualifier("itauAuditableMongoClientSettings")
     private Optional<MongoClientSettings> mongoClientSettings;
 
     @Bean(name = "ItauAuditableFromStarter")
     @ConditionalOnMissingBean
-    public ItauAuditable javers() {
+    public ItauAuditable itauAuditable() {
         logger.info("Starting itau-auditable-spring-boot-starter-mongo ...");
 
         MongoDatabase mongoDatabase = initItauAuditableMongoDatabase();
 
-        MongoRepository javersRepository = createMongoRepository(mongoDatabase);
+        MongoRepository itauAuditableRepository = createMongoRepository(mongoDatabase);
 
-        return ItauAuditableBuilder.javers()
-                .registerItauAuditableRepository(javersRepository)
-                .withProperties(javersMongoProperties)
-                .withObjectAccessHook(javersMongoProperties.createObjectAccessHookInstance())
+        return ItauAuditableBuilder.itauAuditable()
+                .registerItauAuditableRepository(itauAuditableRepository)
+                .withProperties(itauAuditableMongoProperties)
+                .withObjectAccessHook(itauAuditableMongoProperties.createObjectAccessHookInstance())
                 .build();
     }
 
     private MongoDatabase initItauAuditableMongoDatabase() {
-        if (!javersMongoProperties.isDedicatedMongodbConfigurationEnabled()) {
+        if (!itauAuditableMongoProperties.isDedicatedMongodbConfigurationEnabled()) {
             MongoDatabase mongoDatabase = getDefaultMongoDatabase();
             logger.info("connecting ItauAuditable to Mongo database '{}' configured in spring.data.mongodb properties",
                         mongoDatabase.getName());
             return mongoDatabase;
         } else {
             MongoDatabase mongoDatabase = ItauAuditableDedicatedMongoFactory
-                    .createMongoDatabase(javersMongoProperties, mongoClientSettings);
-            logger.info("connecting ItauAuditable to Mongo database '{}' configured in javers.mongodb properties",
+                    .createMongoDatabase(itauAuditableMongoProperties, mongoClientSettings);
+            logger.info("connecting ItauAuditable to Mongo database '{}' configured in itauAuditable.mongodb properties",
                     mongoDatabase.getName());
             return mongoDatabase;
         }
@@ -105,11 +105,11 @@ public class ItauAuditableMongoAutoConfiguration {
     }
 
     private MongoRepository createMongoRepository(MongoDatabase mongoDatabase) {
-        if (javersMongoProperties.isDocumentDbCompatibilityEnabled()) {
+        if (itauAuditableMongoProperties.isDocumentDbCompatibilityEnabled()) {
             logger.info("enabling Amazon DocumentDB compatibility");
-            return mongoRepositoryWithDocumentDBCompatibility(mongoDatabase, javersMongoProperties.getSnapshotsCacheSize());
+            return mongoRepositoryWithDocumentDBCompatibility(mongoDatabase, itauAuditableMongoProperties.getSnapshotsCacheSize());
         }
-        return new MongoRepository(mongoDatabase, javersMongoProperties.getSnapshotsCacheSize());
+        return new MongoRepository(mongoDatabase, itauAuditableMongoProperties.getSnapshotsCacheSize());
     }
 
     @Bean(name = "SpringSecurityAuthorProvider")
@@ -133,20 +133,20 @@ public class ItauAuditableMongoAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "javers.auditableAspectEnabled", havingValue = "true", matchIfMissing = true)
-    public ItauAuditableAuditableAspect javersAuditableAspect(
-            ItauAuditable javers,
+    @ConditionalOnProperty(name = "itauAuditable.auditableAspectEnabled", havingValue = "true", matchIfMissing = true)
+    public ItauAuditableAspect itauAuditableAuditableAspect(
+            ItauAuditable itauAuditable,
             AuthorProvider authorProvider,
             CommitPropertiesProvider commitPropertiesProvider) {
-        return new ItauAuditableAuditableAspect(javers, authorProvider, commitPropertiesProvider);
+        return new ItauAuditableAspect(itauAuditable, authorProvider, commitPropertiesProvider);
     }
 
     @Bean
-    @ConditionalOnProperty(name = "javers.springDataAuditableRepositoryAspectEnabled", havingValue = "true", matchIfMissing = true)
-    public ItauAuditableSpringDataAuditableRepositoryAspect javersSpringDataAuditableAspect(
-            ItauAuditable javers,
+    @ConditionalOnProperty(name = "itauAuditable.springDataAuditableRepositoryAspectEnabled", havingValue = "true", matchIfMissing = true)
+    public ItauAuditableSpringDataRepositoryAspect itauAuditableSpringDataAspect(
+            ItauAuditable itauAuditable,
             AuthorProvider authorProvider,
             CommitPropertiesProvider commitPropertiesProvider) {
-        return new ItauAuditableSpringDataAuditableRepositoryAspect(javers, authorProvider, commitPropertiesProvider);
+        return new ItauAuditableSpringDataRepositoryAspect(itauAuditable, authorProvider, commitPropertiesProvider);
     }
 }

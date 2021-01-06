@@ -16,7 +16,7 @@ public class BasicEntityDiffExample {
   @Test
   public void shouldCompareTwoEntities() {
     //given
-    ItauAuditable javers = ItauAuditableBuilder.javers()
+    ItauAuditable itauAuditable = ItauAuditableBuilder.itauAuditable()
             .withListCompareAlgorithm(LEVENSHTEIN_DISTANCE)
             .build();
 
@@ -40,7 +40,7 @@ public class BasicEntityDiffExample {
             .build();
 
     //when
-    Diff diff = javers.compare(frodoOld, frodoNew);
+    Diff diff = itauAuditable.compare(frodoOld, frodoNew);
 
     //then
     assertThat(diff.getChanges()).hasSize(9);
@@ -61,6 +61,6 @@ public class BasicEntityDiffExample {
 
     // diff as JSON
     System.out.println("");
-    System.out.println(javers.getJsonConverter().toJson(diff));
+    System.out.println(itauAuditable.getJsonConverter().toJson(diff));
   }
 }

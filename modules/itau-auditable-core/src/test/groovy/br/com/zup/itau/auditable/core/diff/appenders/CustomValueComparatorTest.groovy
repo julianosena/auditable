@@ -9,11 +9,11 @@ class CustomValueComparatorTest extends Specification {
 
     def "should use CustomValueComparator for built-in ValueTypes"(){
       given:
-      def javers = ItauAuditableBuilder.javers()
+      def itauAuditable = ItauAuditableBuilder.itauAuditable()
               .registerValue(BigDecimal, {a, b -> a.intValue() == b.intValue()}).build()
 
       when:
-      def diff = javers.compare( new DummyUserWithValues("1", 100.1),
+      def diff = itauAuditable.compare( new DummyUserWithValues("1", 100.1),
                                  new DummyUserWithValues("1", 100.2) )
 
       then:
@@ -27,11 +27,11 @@ class CustomValueComparatorTest extends Specification {
     @Unroll
     def "should use CustomValueComparator for user's ValueTypes"(){
         given:
-        def javers = ItauAuditableBuilder.javers()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
                 .registerValue(BigDecimal, {a, b -> a.intValue() == b.intValue()}).build()
 
         when:
-        def diff = javers.compare( new SomeValue(v:left), new SomeValue(v:right) )
+        def diff = itauAuditable.compare( new SomeValue(v:left), new SomeValue(v:right) )
 
         then:
         diff.changes.size() == expectedChange
@@ -52,7 +52,7 @@ class CustomValueComparatorTest extends Specification {
     @Unroll
     def "should use CustomValueComparator for Values stored in Arrays, Lists and Maps" () {
         when:
-        def javers = ItauAuditableBuilder.javers()
+        def itauAuditable = ItauAuditableBuilder.itauAuditable()
                 .registerValue(String, {a, b -> a.size() == b.size()})
                 .build()
 
@@ -65,7 +65,7 @@ class CustomValueComparatorTest extends Specification {
                                       stringMap:   [a : right] )
 
         then:
-        javers.compare(lObject, rObject).changes.size() == expectedChange
+        itauAuditable.compare(lObject, rObject).changes.size() == expectedChange
 
         where:
         left            | right          || expectedChange
