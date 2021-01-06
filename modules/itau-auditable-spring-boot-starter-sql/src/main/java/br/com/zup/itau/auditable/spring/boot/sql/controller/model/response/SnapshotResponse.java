@@ -8,12 +8,12 @@ public class SnapshotResponse {
     private String type;
     private Long version;
     private String state;
-    private Set<String> changedProperties;
+    private String changedProperties;
     private String managedType;
 
     public SnapshotResponse() {}
 
-    public SnapshotResponse(Long snapshotPk, String type, Long version, String state, Set<String> changedProperties, String managedType) {
+    public SnapshotResponse(Long snapshotPk, String type, Long version, String state, String changedProperties, String managedType) {
         this.snapshotPk = snapshotPk;
         this.type = type;
         this.version = version;
@@ -54,11 +54,11 @@ public class SnapshotResponse {
         this.state = state;
     }
 
-    public Set<String> getChangedProperties() {
+    public String getChangedProperties() {
         return changedProperties;
     }
 
-    public void setChangedProperties(Set<String> changedProperties) {
+    public void setChangedProperties(String changedProperties) {
         this.changedProperties = changedProperties;
     }
 

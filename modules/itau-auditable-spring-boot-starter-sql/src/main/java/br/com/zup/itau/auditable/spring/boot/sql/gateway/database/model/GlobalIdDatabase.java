@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "jv_global_id")
-public class JvGlobalIdDatabase implements Serializable {
+public class GlobalIdDatabase implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,16 +27,16 @@ public class JvGlobalIdDatabase implements Serializable {
     private Long ownerIdFk;
 
     @OneToMany(mappedBy = "globalId", fetch = FetchType.LAZY)
-    private List<JvSnapshotDatabase> jvSnapshots;
+    private List<SnapshotDatabase> jvSnapshots;
 
-    public JvGlobalIdDatabase() { }
+    public GlobalIdDatabase() { }
 
-    public JvGlobalIdDatabase(Long globalIdPk,
-                              Long localId,
-                              String fragment,
-                              String typeName,
-                              Long ownerIdFk,
-                              List<JvSnapshotDatabase> jvSnapshots) {
+    public GlobalIdDatabase(Long globalIdPk,
+                            Long localId,
+                            String fragment,
+                            String typeName,
+                            Long ownerIdFk,
+                            List<SnapshotDatabase> jvSnapshots) {
 
         this.globalIdPk = globalIdPk;
         this.localId = localId;
@@ -86,11 +86,11 @@ public class JvGlobalIdDatabase implements Serializable {
         this.ownerIdFk = ownerIdFk;
     }
 
-    public List<JvSnapshotDatabase> getJvSnapshots() {
+    public List<SnapshotDatabase> getJvSnapshots() {
         return jvSnapshots;
     }
 
-    public void setJvSnapshots(List<JvSnapshotDatabase> jvSnapshots) {
+    public void setJvSnapshots(List<SnapshotDatabase> jvSnapshots) {
         this.jvSnapshots = jvSnapshots;
     }
 }

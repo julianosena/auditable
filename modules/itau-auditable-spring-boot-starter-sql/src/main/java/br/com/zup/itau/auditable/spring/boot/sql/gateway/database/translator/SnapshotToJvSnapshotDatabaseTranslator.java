@@ -1,12 +1,12 @@
 package br.com.zup.itau.auditable.spring.boot.sql.gateway.database.translator;
 
 import br.com.zup.itau.auditable.spring.boot.sql.domain.Snapshot;
-import br.com.zup.itau.auditable.spring.boot.sql.gateway.database.model.JvSnapshotDatabase;
+import br.com.zup.itau.auditable.spring.boot.sql.gateway.database.model.SnapshotDatabase;
 
 public class SnapshotToJvSnapshotDatabaseTranslator {
 
-    public static JvSnapshotDatabase translate(Snapshot snapshot) {
-        return new JvSnapshotDatabase(
+    public static SnapshotDatabase translate(Snapshot snapshot) {
+        return new SnapshotDatabase(
                 snapshot.getSnapshotPk(),
                 snapshot.getType(),
                 snapshot.getVersion(),

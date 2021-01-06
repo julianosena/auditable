@@ -6,18 +6,18 @@ import java.util.Set;
 
 @Entity
 @Table(name = "jv_snapshot")
-public class JvSnapshotDatabase implements Serializable {
+public class SnapshotDatabase implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public JvSnapshotDatabase() { }
+    public SnapshotDatabase() { }
 
-    public JvSnapshotDatabase(Long snapshotPk,
-                              String type,
-                              Long version,
-                              String state,
-                              Set<String> changedProperties,
-                              String managedType) {
+    public SnapshotDatabase(Long snapshotPk,
+                            String type,
+                            Long version,
+                            String state,
+                            String changedProperties,
+                            String managedType) {
 
         this.snapshotPk = snapshotPk;
         this.type = type;
@@ -41,14 +41,14 @@ public class JvSnapshotDatabase implements Serializable {
     private String state;
 
     @Column(name = "changed_properties")
-    private Set<String> changedProperties;
+    private String changedProperties;
 
     @Column(name = "managed_type")
     private String managedType;
 
     @ManyToOne
     @JoinColumn(name = "jv_global_fk")
-    private JvGlobalIdDatabase globalId;
+    private GlobalIdDatabase globalId;
 
     public Long getSnapshotPk() {
         return snapshotPk;
@@ -82,11 +82,11 @@ public class JvSnapshotDatabase implements Serializable {
         this.state = state;
     }
 
-    public Set<String> getChangedProperties() {
+    public String getChangedProperties() {
         return changedProperties;
     }
 
-    public void setChangedProperties(Set<String> changedProperties) {
+    public void setChangedProperties(String changedProperties) {
         this.changedProperties = changedProperties;
     }
 
@@ -98,11 +98,11 @@ public class JvSnapshotDatabase implements Serializable {
         this.managedType = managedType;
     }
 
-    public JvGlobalIdDatabase getGlobalId() {
+    public GlobalIdDatabase getGlobalId() {
         return globalId;
     }
 
-    public void setGlobalId(JvGlobalIdDatabase globalId) {
+    public void setGlobalId(GlobalIdDatabase globalId) {
         this.globalId = globalId;
     }
 }
