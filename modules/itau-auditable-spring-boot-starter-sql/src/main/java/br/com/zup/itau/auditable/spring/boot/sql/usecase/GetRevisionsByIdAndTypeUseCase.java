@@ -1,6 +1,6 @@
 package br.com.zup.itau.auditable.spring.boot.sql.usecase;
 
-import br.com.zup.itau.auditable.spring.boot.sql.domain.Snapshot;
+import br.com.zup.itau.auditable.spring.boot.sql.domain.GlobalId;
 import br.com.zup.itau.auditable.spring.boot.sql.gateway.GetRevisionsByIdAndTypeGateway;
 import br.com.zup.itau.auditable.spring.boot.sql.usecase.exception.GetRevisionsByIdAndTypeUseCaseException;
 import br.com.zup.itau.auditable.usecase.exception.ItauAuditableUseCaseException;
@@ -17,7 +17,7 @@ public class GetRevisionsByIdAndTypeUseCase {
         this.getRevisionsByIdAndTypeGateway = getRevisionsByIdAndTypeGateway;
     }
 
-    public List<Snapshot> execute(Long id, String type) throws ItauAuditableUseCaseException {
+    public List<GlobalId> execute(Long id, String type) throws ItauAuditableUseCaseException {
         try {
 
             return this.getRevisionsByIdAndTypeGateway.execute(id, type);
