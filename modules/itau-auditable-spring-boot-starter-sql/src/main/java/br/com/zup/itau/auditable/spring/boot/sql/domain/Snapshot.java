@@ -1,37 +1,26 @@
-package br.com.zup.itau.auditable.spring.boot.sql.gateway.database.model;
+package br.com.zup.itau.auditable.spring.boot.sql.domain;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Set;
 
-@Entity
-@Table(name = "jv_snapshot")
-public class JvSnapshot implements Serializable {
+public class Snapshot {
 
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @Column(name = "snapshot_pk")
     private Long snapshotPk;
-
-    @Column(name = "type")
     private String type;
-
-    @Column(name = "version")
     private Long version;
-
-    @Column(name = "state")
     private String state;
-
-    @Column(name = "changed_properties")
     private Set<String> changedProperties;
-
-    @Column(name = "managed_type")
     private String managedType;
 
-    @ManyToOne
-    @JoinColumn(name = "jv_global_fk")
-    private JvGlobalIdDatabase globalId;
+    public Snapshot() {}
+
+    public Snapshot(Long snapshotPk, String type, Long version, String state, Set<String> changedProperties, String managedType) {
+        this.snapshotPk = snapshotPk;
+        this.type = type;
+        this.version = version;
+        this.state = state;
+        this.changedProperties = changedProperties;
+        this.managedType = managedType;
+    }
 
     public Long getSnapshotPk() {
         return snapshotPk;
@@ -79,13 +68,5 @@ public class JvSnapshot implements Serializable {
 
     public void setManagedType(String managedType) {
         this.managedType = managedType;
-    }
-
-    public JvGlobalIdDatabase getGlobalId() {
-        return globalId;
-    }
-
-    public void setGlobalId(JvGlobalIdDatabase globalId) {
-        this.globalId = globalId;
     }
 }

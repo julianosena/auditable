@@ -10,9 +10,26 @@ public class JvGlobalIdDatabase implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public JvGlobalIdDatabase() { }
+
+    public JvGlobalIdDatabase(Long globalIdPk,
+                              Long localId,
+                              String fragment,
+                              String typeName,
+                              Long ownerIdFk,
+                              List<JvSnapshotDatabase> jvSnapshotDatabase) {
+
+        this.globalIdPk = globalIdPk;
+        this.localId = localId;
+        this.fragment = fragment;
+        this.typeName = typeName;
+        this.ownerIdFk = ownerIdFk;
+        this.jvSnapshotDatabase = jvSnapshotDatabase;
+    }
+
     @Id
     @Column(name = "global_id_pk")
-    private Long globalId;
+    private Long globalIdPk;
 
     @Column(name = "local_id")
     private Long localId;
@@ -26,16 +43,16 @@ public class JvGlobalIdDatabase implements Serializable {
     @Column(name = "owner_id_fk")
     private Long ownerIdFk;
 
-    @OneToMany(mappedBy = "globalId", fetch = FetchType.LAZY)
-    private List<JvSnapshot> jvSnapshots;
+    @OneToMany(mappedBy = "globalIdPk", fetch = FetchType.LAZY)
+    private List<JvSnapshotDatabase> jvSnapshotDatabase;
 
 
-    public Long getGlobalId() {
-        return globalId;
+    public Long getGlobalIdPk() {
+        return globalIdPk;
     }
 
-    public void setGlobalId(Long globalId) {
-        this.globalId = globalId;
+    public void setGlobalIdPk(Long globalIdPk) {
+        this.globalIdPk = globalIdPk;
     }
 
     public Long getLocalId() {
@@ -70,11 +87,11 @@ public class JvGlobalIdDatabase implements Serializable {
         this.ownerIdFk = ownerIdFk;
     }
 
-    public List<JvSnapshot> getJvSnapshots() {
-        return jvSnapshots;
+    public List<JvSnapshotDatabase> getJvSnapshots() {
+        return jvSnapshotDatabase;
     }
 
-    public void setJvSnapshots(List<JvSnapshot> jvSnapshots) {
-        this.jvSnapshots = jvSnapshots;
+    public void setJvSnapshots(List<JvSnapshotDatabase> jvSnapshotDatabase) {
+        this.jvSnapshotDatabase = jvSnapshotDatabase;
     }
 }
