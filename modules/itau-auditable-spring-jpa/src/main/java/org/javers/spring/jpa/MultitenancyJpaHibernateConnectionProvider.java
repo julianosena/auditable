@@ -21,8 +21,9 @@ public class MultitenancyJpaHibernateConnectionProvider implements ConnectionPro
 
         Connection connection = session.connection();
 
-        final String schemaName = AuditableContextHolder.getContext().getDatabaseName();
+        final String schemaName = AuditableContextHolder.getContext().getDatabaseSchemaName();
         connection.setSchema(schemaName);
+
         return connection;
     }
 
