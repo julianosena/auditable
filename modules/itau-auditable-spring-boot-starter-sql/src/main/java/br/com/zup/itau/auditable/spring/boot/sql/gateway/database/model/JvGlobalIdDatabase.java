@@ -27,7 +27,7 @@ public class JvGlobalIdDatabase implements Serializable {
     private Long ownerIdFk;
 
     @OneToMany(mappedBy = "globalId", fetch = FetchType.LAZY)
-    private List<JvSnapshot> jvSnapshots;
+    private List<JvSnapshotDatabase> jvSnapshots;
 
 
     public Long getGlobalId() {
@@ -70,11 +70,11 @@ public class JvGlobalIdDatabase implements Serializable {
         this.ownerIdFk = ownerIdFk;
     }
 
-    public List<JvSnapshot> getJvSnapshots() {
+    public List<JvSnapshotDatabase> getJvSnapshots() {
         return jvSnapshots;
     }
 
-    public void setJvSnapshots(List<JvSnapshot> jvSnapshots) {
+    public void setJvSnapshots(List<JvSnapshotDatabase> jvSnapshots) {
         this.jvSnapshots = jvSnapshots;
     }
 }
