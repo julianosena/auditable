@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-abstract public class AuditableAbstractController {
+abstract public class ItauAuditableAbstractController {
 
     @Autowired
     private GetRevisionsByIdAndTypeUseCase getRevisionsByIdAndTypeUseCase;
