@@ -15,7 +15,7 @@ public class GlobalIdDatabase implements Serializable {
     private Long globalIdPk;
 
     @Column(name = "local_id")
-    private Long localId;
+    private String localId;
 
     @Column(name = "fragment")
     private String fragment;
@@ -32,7 +32,7 @@ public class GlobalIdDatabase implements Serializable {
     public GlobalIdDatabase() { }
 
     public GlobalIdDatabase(Long globalIdPk,
-                            Long localId,
+                            String localId,
                             String fragment,
                             String typeName,
                             Long ownerIdFk,
@@ -54,11 +54,11 @@ public class GlobalIdDatabase implements Serializable {
         this.globalIdPk = globalIdPk;
     }
 
-    public Long getLocalId() {
+    public String getLocalId() {
         return localId;
     }
 
-    public void setLocalId(Long localId) {
+    public void setLocalId(String localId) {
         this.localId = localId;
     }
 

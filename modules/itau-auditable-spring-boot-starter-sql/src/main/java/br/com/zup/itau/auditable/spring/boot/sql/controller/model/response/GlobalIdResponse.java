@@ -1,13 +1,11 @@
 package br.com.zup.itau.auditable.spring.boot.sql.controller.model.response;
 
-import br.com.zup.itau.auditable.spring.boot.sql.domain.Snapshot;
-
 import java.util.List;
 
 public class GlobalIdResponse {
 
     private Long globalId;
-    private Long localId;
+    private String localId;
     private String fragment;
     private String typeName;
     private Long ownerIdFk;
@@ -16,11 +14,11 @@ public class GlobalIdResponse {
     public GlobalIdResponse() { }
 
     public GlobalIdResponse(Long globalId,
-                    Long localId,
-                    String fragment,
-                    String typeName,
-                    Long ownerIdFk,
-                    List<SnapshotResponse> snapshots) {
+                            String localId,
+                            String fragment,
+                            String typeName,
+                            Long ownerIdFk,
+                            List<SnapshotResponse> snapshots) {
 
         this.globalId = globalId;
         this.localId = localId;
@@ -38,11 +36,11 @@ public class GlobalIdResponse {
         this.globalId = globalId;
     }
 
-    public Long getLocalId() {
+    public String getLocalId() {
         return localId;
     }
 
-    public void setLocalId(Long localId) {
+    public void setLocalId(String localId) {
         this.localId = localId;
     }
 

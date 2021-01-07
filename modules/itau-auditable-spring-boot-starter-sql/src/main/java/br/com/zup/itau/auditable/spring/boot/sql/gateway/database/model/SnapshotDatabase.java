@@ -47,7 +47,7 @@ public class SnapshotDatabase implements Serializable {
     private String managedType;
 
     @ManyToOne
-    @JoinColumn(name = "jv_global_fk")
+    @JoinColumn(name = "global_id_fk", referencedColumnName = "global_id_pk")
     private GlobalIdDatabase globalId;
 
     public Long getSnapshotPk() {

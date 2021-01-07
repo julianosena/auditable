@@ -5,7 +5,7 @@ import java.util.List;
 public class GlobalId {
 
     private Long globalId;
-    private Long localId;
+    private String localId;
     private String fragment;
     private String typeName;
     private Long ownerIdFk;
@@ -14,7 +14,7 @@ public class GlobalId {
     public GlobalId() { }
 
     public GlobalId(Long globalId,
-                    Long localId,
+                    String localId,
                     String fragment,
                     String typeName,
                     Long ownerIdFk,
@@ -36,11 +36,11 @@ public class GlobalId {
         this.globalId = globalId;
     }
 
-    public Long getLocalId() {
+    public String getLocalId() {
         return localId;
     }
 
-    public void setLocalId(Long localId) {
+    public void setLocalId(String localId) {
         this.localId = localId;
     }
 

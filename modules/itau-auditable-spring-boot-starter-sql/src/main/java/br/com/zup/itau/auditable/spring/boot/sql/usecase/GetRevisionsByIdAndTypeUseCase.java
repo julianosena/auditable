@@ -17,7 +17,7 @@ public class GetRevisionsByIdAndTypeUseCase {
         this.getRevisionsByIdAndTypeGateway = getRevisionsByIdAndTypeGateway;
     }
 
-    public List<GlobalId> execute(Long id, String type) throws ItauAuditableUseCaseException {
+    public List<GlobalId> execute(String id, String type) throws ItauAuditableUseCaseException {
         try {
 
             return this.getRevisionsByIdAndTypeGateway.execute(id, type);

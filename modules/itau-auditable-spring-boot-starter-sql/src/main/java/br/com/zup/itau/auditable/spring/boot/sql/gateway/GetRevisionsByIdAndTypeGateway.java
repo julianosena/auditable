@@ -6,5 +6,5 @@ import br.com.zup.itau.auditable.spring.boot.sql.gateway.exception.ItauAuditable
 import java.util.List;
 
 public interface GetRevisionsByIdAndTypeGateway {
-    List<GlobalId> execute(Long id, String type) throws ItauAuditableGatewayException;
+    List<GlobalId> execute(String id, String type) throws ItauAuditableGatewayException;
 }

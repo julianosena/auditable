@@ -18,7 +18,7 @@ abstract public class AbstractController {
     private GetRevisionsByIdAndTypeUseCase getRevisionsByIdAndTypeUseCase;
 
     @GetMapping("/revisions/{id}")
-    public List<GlobalIdResponse> execute(@PathVariable("id") Long id) throws ItauAuditableUseCaseException {
+    public List<GlobalIdResponse> execute(@PathVariable("id") String id) throws ItauAuditableUseCaseException {
         List<GlobalId> revisions = this.getRevisionsByIdAndTypeUseCase.execute(id, this.getType());
         return revisions.stream().map(GlobalIdToGlobalIdResponseTranslator::translate).collect(Collectors.toList());
     }

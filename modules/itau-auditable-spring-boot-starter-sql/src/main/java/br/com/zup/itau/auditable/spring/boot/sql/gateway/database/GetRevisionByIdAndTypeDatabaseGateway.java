@@ -22,7 +22,7 @@ public class GetRevisionByIdAndTypeDatabaseGateway implements GetRevisionsByIdAn
     }
 
     @Override
-    public List<GlobalId> execute(Long id, String type) throws ItauAuditableGatewayException {
+    public List<GlobalId> execute(String id, String type) throws ItauAuditableGatewayException {
         try {
 
             List<GlobalIdDatabase> globalIdDatabases = this.repository.findAllByLocalIdAndTypeName(id, type);
