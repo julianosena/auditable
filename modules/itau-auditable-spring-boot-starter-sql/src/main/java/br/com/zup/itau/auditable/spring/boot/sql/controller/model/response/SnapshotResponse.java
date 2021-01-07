@@ -3,6 +3,7 @@ package br.com.zup.itau.auditable.spring.boot.sql.controller.model.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
+import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SnapshotResponse {
@@ -10,12 +11,12 @@ public class SnapshotResponse {
     private Long snapshotPk;
     private String type;
     private Long version;
-    private Object state;
+    private Map<String, Object> state;
     private List<String> changedProperties;
 
     public SnapshotResponse() {}
 
-    public SnapshotResponse(Long snapshotPk, String type, Long version, Object state, List<String> changedProperties) {
+    public SnapshotResponse(Long snapshotPk, String type, Long version, Map<String, Object> state, List<String> changedProperties) {
         this.snapshotPk = snapshotPk;
         this.type = type;
         this.version = version;
@@ -51,7 +52,7 @@ public class SnapshotResponse {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(Map<String, Object> state) {
         this.state = state;
     }
 

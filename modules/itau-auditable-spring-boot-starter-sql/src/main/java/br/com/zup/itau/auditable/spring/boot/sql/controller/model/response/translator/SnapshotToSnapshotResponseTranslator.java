@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
+import java.util.Map;
 
 public class SnapshotToSnapshotResponseTranslator {
 
@@ -16,7 +17,8 @@ public class SnapshotToSnapshotResponseTranslator {
         List<String> changedPropertiesList = objectMapper.readValue(changedProperties, new TypeReference<List<String>>() {
         });
 
-        Object state = objectMapper.readValue(changedProperties, Object.class);
+        Map<String, Object> state = objectMapper.readValue(snapshot.getState(), new TypeReference<Map<String, Object>>() {
+        });
 
         return new SnapshotResponse(
                 snapshot.getSnapshotPk(),
