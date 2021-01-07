@@ -1,25 +1,26 @@
 package br.com.zup.itau.auditable.spring.boot.sql.controller.model.response;
 
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SnapshotResponse {
 
     private Long snapshotPk;
     private String type;
     private Long version;
-    private String state;
-    private String changedProperties;
-    private String managedType;
+    private Object state;
+    private List<String> changedProperties;
 
     public SnapshotResponse() {}
 
-    public SnapshotResponse(Long snapshotPk, String type, Long version, String state, String changedProperties, String managedType) {
+    public SnapshotResponse(Long snapshotPk, String type, Long version, Object state, List<String> changedProperties) {
         this.snapshotPk = snapshotPk;
         this.type = type;
         this.version = version;
         this.state = state;
         this.changedProperties = changedProperties;
-        this.managedType = managedType;
     }
 
     public Long getSnapshotPk() {
@@ -46,7 +47,7 @@ public class SnapshotResponse {
         this.version = version;
     }
 
-    public String getState() {
+    public Object getState() {
         return state;
     }
 
@@ -54,19 +55,11 @@ public class SnapshotResponse {
         this.state = state;
     }
 
-    public String getChangedProperties() {
+    public List<String> getChangedProperties() {
         return changedProperties;
     }
 
-    public void setChangedProperties(String changedProperties) {
+    public void setChangedProperties(List<String> changedProperties) {
         this.changedProperties = changedProperties;
-    }
-
-    public String getManagedType() {
-        return managedType;
-    }
-
-    public void setManagedType(String managedType) {
-        this.managedType = managedType;
     }
 }

@@ -1,13 +1,15 @@
 package br.com.zup.itau.auditable.spring.boot.sql.controller.model.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class GlobalIdResponse {
 
     private Long globalId;
     private String localId;
     private String fragment;
-    private String typeName;
     private Long ownerIdFk;
     private List<SnapshotResponse> snapshots;
 
@@ -16,14 +18,12 @@ public class GlobalIdResponse {
     public GlobalIdResponse(Long globalId,
                             String localId,
                             String fragment,
-                            String typeName,
                             Long ownerIdFk,
                             List<SnapshotResponse> snapshots) {
 
         this.globalId = globalId;
         this.localId = localId;
         this.fragment = fragment;
-        this.typeName = typeName;
         this.ownerIdFk = ownerIdFk;
         this.snapshots = snapshots;
     }
@@ -50,14 +50,6 @@ public class GlobalIdResponse {
 
     public void setFragment(String fragment) {
         this.fragment = fragment;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
     }
 
     public Long getOwnerIdFk() {
