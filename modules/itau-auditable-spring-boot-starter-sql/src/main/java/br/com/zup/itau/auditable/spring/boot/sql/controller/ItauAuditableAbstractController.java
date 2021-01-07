@@ -19,7 +19,7 @@ abstract public class ItauAuditableAbstractController {
     @Autowired
     private GetRevisionsByIdAndTypeUseCase getRevisionsByIdAndTypeUseCase;
 
-    @GetMapping("/revisions/{id}")
+    @GetMapping("/{id}/revisions")
     public List<GlobalIdResponse> execute(@PathVariable("id") String id) throws ItauAuditableUseCaseException, ItauAuditableTranslatorException {
         List<GlobalId> revisions = this.getRevisionsByIdAndTypeUseCase.execute(id, this.getType());
         List<GlobalIdResponse> list = new ArrayList<>();
