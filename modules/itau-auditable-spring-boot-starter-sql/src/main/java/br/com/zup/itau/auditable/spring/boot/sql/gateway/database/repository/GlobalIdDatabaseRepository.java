@@ -22,8 +22,9 @@ public class GlobalIdDatabaseRepository {
         try {
             Session session = em.unwrap(Session.class);
             Query<GlobalIdDatabase> query = session.createQuery("" +
-                    "SELECT globalId FROM GlobalIdDatabase AS globalId " +
+                    "SELECT DISTINCT globalId FROM GlobalIdDatabase AS globalId " +
                     "INNER JOIN FETCH globalId.jvSnapshots AS snapshots " +
+                    "INNER JOIN FETCH snapshots.commitDatabase AS commit " +
                     "WHERE globalId.localId = :id AND globalId.typeName = :typeName")
                     .setParameter("id", id)
                     .setParameter("typeName", typeName);
