@@ -51,6 +51,6 @@ class ItauAuditableMongoStarterDefaultsTest extends Specification{
       then:
       itauAuditable.repository.delegate.mongoSchemaManager.mongo.name == "spring-mongo-default"
       snapshots.size() == 1
-      mongoDatabase.getCollection("jv_snapshots").countDocuments() == 1
+      mongoDatabase.getCollection("audit_snapshots").countDocuments() == 1
     }
 }

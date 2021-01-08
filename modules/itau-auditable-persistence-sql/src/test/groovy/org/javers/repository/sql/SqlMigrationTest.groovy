@@ -124,9 +124,9 @@ class SqlMigrationTest extends Specification{
     }
 
     def clearTables(){
-        execute("delete  from jv_snapshot")
-        execute("delete  from jv_commit")
-        execute("delete  from jv_global_id")
+        execute("delete  from audit_snapshot")
+        execute("delete  from audit_commit")
+        execute("delete  from audit_global_id")
     }
 
     def execute(String sql){

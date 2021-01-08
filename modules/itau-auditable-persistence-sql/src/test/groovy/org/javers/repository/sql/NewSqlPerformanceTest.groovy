@@ -32,10 +32,10 @@ class NewSqlPerformanceTest extends NewPerformanceTest {
 
     @Override
     void clearDatabase(){
-        execute("delete  from jv_commit_property")
-        execute("delete  from jv_snapshot")
-        execute("delete  from jv_commit")
-        execute("delete  from jv_global_id")
+        execute("delete  from audit_commit_property")
+        execute("delete  from audit_snapshot")
+        execute("delete  from audit_commit")
+        execute("delete  from audit_global_id")
     }
 
     @Override

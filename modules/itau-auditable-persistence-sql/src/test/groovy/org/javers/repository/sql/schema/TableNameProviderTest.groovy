@@ -11,16 +11,16 @@ class TableNameProviderTest extends Specification {
                 new SqlRepositoryConfiguration(false, null, true, null, null, null, null))
 
         then:
-        names.commitTableNameWithSchema == "jv_commit"
-        names.commitPkSeqName.toString() == "jv_commit_pk_seq"
+        names.commitTableNameWithSchema == "audit_commit"
+        names.commitPkSeqName.toString() == "audit_commit_pk_seq"
 
-        names.globalIdTableNameWithSchema == "jv_global_id"
-        names.globalIdPkSeqName.toString() == "jv_global_id_pk_seq"
+        names.globalIdTableNameWithSchema == "audit_global_id"
+        names.globalIdPkSeqName.toString() == "audit_global_id_pk_seq"
 
-        names.snapshotTableNameWithSchema == "jv_snapshot"
-        names.snapshotTablePkSeqName.toString() == "jv_snapshot_pk_seq"
+        names.snapshotTableNameWithSchema == "audit_snapshot"
+        names.snapshotTablePkSeqName.toString() == "audit_snapshot_pk_seq"
 
-        names.commitPropertyTableNameWithSchema == "jv_commit_property"
+        names.commitPropertyTableNameWithSchema == "audit_commit_property"
     }
 
     def "should provide default names with schema" () {
@@ -29,16 +29,16 @@ class TableNameProviderTest extends Specification {
                 new SqlRepositoryConfiguration(false, 's', true, null, null, null, null))
 
         then:
-        names.commitTableNameWithSchema == "s.jv_commit"
-        names.commitPkSeqName.toString() == "s.jv_commit_pk_seq"
+        names.commitTableNameWithSchema == "s.audit_commit"
+        names.commitPkSeqName.toString() == "s.audit_commit_pk_seq"
 
-        names.globalIdTableNameWithSchema == "s.jv_global_id"
-        names.globalIdPkSeqName.toString() == "s.jv_global_id_pk_seq"
+        names.globalIdTableNameWithSchema == "s.audit_global_id"
+        names.globalIdPkSeqName.toString() == "s.audit_global_id_pk_seq"
 
-        names.snapshotTableNameWithSchema == "s.jv_snapshot"
-        names.snapshotTablePkSeqName.toString() == "s.jv_snapshot_pk_seq"
+        names.snapshotTableNameWithSchema == "s.audit_snapshot"
+        names.snapshotTablePkSeqName.toString() == "s.audit_snapshot_pk_seq"
 
-        names.commitPropertyTableNameWithSchema == "s.jv_commit_property"
+        names.commitPropertyTableNameWithSchema == "s.audit_commit_property"
     }
 
     def "should provide custom table names" () {
@@ -48,13 +48,13 @@ class TableNameProviderTest extends Specification {
 
         then:
         names.commitTableNameWithSchema == "c"
-        names.commitPkSeqName.toString() == "jv_commit_pk_seq"
+        names.commitPkSeqName.toString() == "audit_commit_pk_seq"
 
         names.globalIdTableNameWithSchema == "g"
-        names.globalIdPkSeqName.toString() == "jv_global_id_pk_seq"
+        names.globalIdPkSeqName.toString() == "audit_global_id_pk_seq"
 
         names.snapshotTableNameWithSchema == "s"
-        names.snapshotTablePkSeqName.toString() == "jv_snapshot_pk_seq"
+        names.snapshotTablePkSeqName.toString() == "audit_snapshot_pk_seq"
 
         names.commitPropertyTableNameWithSchema == "cp"
     }

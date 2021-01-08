@@ -40,7 +40,7 @@ abstract class ItauAuditableMongoStarterDedicatedMongoTest extends Specification
 
         then:
         snapshots.size() == 1
-        dedicatedDb.getCollection("jv_snapshots").countDocuments() == 1
+        dedicatedDb.getCollection("audit_snapshots").countDocuments() == 1
     }
 
     void cleanupSpec() {

@@ -21,7 +21,7 @@ class MultipleTxManagersTest extends Specification {
 
     def setup() {
         def sql = Sql.newInstance(H2_URL, "org.h2.Driver")
-        sql.execute("DELETE jv_snapshot")
+        sql.execute("DELETE audit_snapshot")
     }
 
     def "should not fail when there are more than one transaction manager in the application context"(){
