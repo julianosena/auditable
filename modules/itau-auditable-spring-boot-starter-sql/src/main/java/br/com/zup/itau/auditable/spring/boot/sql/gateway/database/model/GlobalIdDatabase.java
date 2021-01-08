@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "jv_global_id")
+@Table(name = "audit_global_id")
 public class GlobalIdDatabase implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -98,7 +98,7 @@ abstract class ItauAuditableSqlRepositoryE2ETest extends ItauAuditableRepository
         stmt.close()
     }
 
-    def "should not create jv_ tables if they already exists"(){
+    def "should not create audit_ tables if they already exists"(){
       given:
       def firstItauAuditable = itauAuditable
       println "itauAuditable" + itauAuditable

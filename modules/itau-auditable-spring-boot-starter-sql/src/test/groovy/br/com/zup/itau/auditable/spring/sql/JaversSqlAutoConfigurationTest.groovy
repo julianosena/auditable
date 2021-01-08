@@ -45,10 +45,10 @@ class ItauAuditableSqlAutoConfigurationTest extends Specification {
         itauAuditableProperties.prettyPrintDateFormats.localTime == "HH mm ss"
         itauAuditableProperties.sqlGlobalIdCacheDisabled
         itauAuditableProperties.objectAccessHook == "br.com.zup.itau.auditable.spring.boot.DummySqlObjectAccessHook"
-        itauAuditableProperties.sqlGlobalIdTableName == "cust_jv_global_id"
-        itauAuditableProperties.sqlCommitTableName == "cust_jv_commit"
-        itauAuditableProperties.sqlSnapshotTableName == "cust_jv_snapshot"
-        itauAuditableProperties.sqlCommitPropertyTableName == "cust_jv_commit_property"
+        itauAuditableProperties.sqlGlobalIdTableName == "cust_audit_global_id"
+        itauAuditableProperties.sqlCommitTableName == "cust_audit_commit"
+        itauAuditableProperties.sqlSnapshotTableName == "cust_audit_snapshot"
+        itauAuditableProperties.sqlCommitPropertyTableName == "cust_audit_commit_property"
     }
 
     def "shouldHaveSpringSecurityAuthorProviderWhenSpringSecurityOnClasspath" () {

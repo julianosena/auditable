@@ -29,7 +29,7 @@ class CacheEvictTest extends Specification{
 
     def setup() {
         def sql = Sql.newInstance(H2_URL, "org.h2.Driver")
-        sql.execute("DELETE jv_snapshot")
+        sql.execute("DELETE audit_snapshot")
     }
 
     def "should evict GlobalId PK Cache after rollback"(){

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "jv_snapshot")
+@Table(name = "audit_snapshot")
 public class SnapshotDatabase implements Serializable {
 
     private static final long serialVersionUID = 1L;

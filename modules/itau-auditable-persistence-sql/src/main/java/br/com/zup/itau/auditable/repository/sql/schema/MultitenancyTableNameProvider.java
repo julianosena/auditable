@@ -9,15 +9,15 @@ import org.slf4j.LoggerFactory;
  * @author Ian Agius
  */
 public class MultitenancyTableNameProvider {
-    private static final String SNAPSHOT_TABLE_PK_SEQ = "jv_snapshot_pk_seq";
-    private static final String COMMIT_PK_SEQ =        "jv_commit_pk_seq";
-    private static final String GLOBAL_ID_PK_SEQ =     "jv_global_id_pk_seq";
+    private static final String SNAPSHOT_TABLE_PK_SEQ = "audit_snapshot_pk_seq";
+    private static final String COMMIT_PK_SEQ =        "audit_commit_pk_seq";
+    private static final String GLOBAL_ID_PK_SEQ =     "audit_global_id_pk_seq";
 
 
-    private static final String DEFAULT_GLOBAL_ID_TABLE_NAME = "jv_global_id";
-    private static final String DEFAULT_SNAPSHOT_TABLE_NAME =   "jv_snapshot";
-    private static final String DEFAULT_COMMIT_TABLE_NAME =    "jv_commit";
-    private static final String DEFAULT_COMMIT_PROPERTY_TABLE_NAME = "jv_commit_property";
+    private static final String DEFAULT_GLOBAL_ID_TABLE_NAME = "audit_global_id";
+    private static final String DEFAULT_SNAPSHOT_TABLE_NAME =   "audit_snapshot";
+    private static final String DEFAULT_COMMIT_TABLE_NAME =    "audit_commit";
+    private static final String DEFAULT_COMMIT_PROPERTY_TABLE_NAME = "audit_commit_property";
 
     private static final Logger logger = LoggerFactory.getLogger(MultitenancyTableNameProvider.class);
     private final SqlRepositoryConfiguration configuration;
@@ -63,7 +63,7 @@ public class MultitenancyTableNameProvider {
      */
     @Deprecated
     public String getCdoClassTableNameWithSchema() {
-        return fullDbName("jv_cdo_class").nameWithSchema();
+        return fullDbName("audit_cdo_class").nameWithSchema();
     }
 
     MultitenancyDBObjectName getGlobalIdTableName() {

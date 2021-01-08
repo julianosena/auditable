@@ -148,9 +148,9 @@ public class ItauAuditableSchemaManager extends SchemaNameAware {
             } else if (dialect instanceof OracleDialect) {
                 executeSQL("ALTER TABLE " + getCommitTableNameWithSchema() + " MODIFY commit_id number(22,2)");
             } else if (dialect instanceof MsSqlDialect) {
-                executeSQL("drop index jv_commit_commit_id_idx on " + getCommitTableNameWithSchema());
+                executeSQL("drop index audit_commit_commit_id_idx on " + getCommitTableNameWithSchema());
                 executeSQL("ALTER TABLE " + getCommitTableNameWithSchema() + " ALTER COLUMN commit_id numeric(22,2)");
-                executeSQL("CREATE INDEX jv_commit_commit_id_idx ON " + getCommitTableNameWithSchema() + " (commit_id)");
+                executeSQL("CREATE INDEX audit_commit_commit_id_idx ON " + getCommitTableNameWithSchema() + " (commit_id)");
             } else {
                 handleUnsupportedDialect();
             }

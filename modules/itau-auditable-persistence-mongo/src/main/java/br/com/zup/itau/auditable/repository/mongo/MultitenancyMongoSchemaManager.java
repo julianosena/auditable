@@ -18,7 +18,7 @@ import static br.com.zup.itau.auditable.repository.mongo.MongoDialect.MONGO_DB;
 
 class MultitenancyMongoSchemaManager {
     static final int ASC = 1;
-    static final String SNAPSHOTS = "jv_snapshots";
+    static final String SNAPSHOTS = "audit_snapshots";
     static final String COMMIT_ID = "commitMetadata.id";
     static final String COMMIT_DATE = "commitMetadata.commitDate";
     static final String COMMIT_DATE_INSTANT = "commitMetadata.commitDateInstant";
@@ -74,10 +74,10 @@ class MultitenancyMongoSchemaManager {
 
                 Document update = new Document("eval",
                         "function() { \n"+
-                                "    db.jv_snapshots.find().forEach( \n"+
+                                "    db.audit_snapshots.find().forEach( \n"+
                                 "      function(snapshot) { \n"+
                                 "        snapshot.commitMetadata.id = Number(snapshot.commitMetadata.id); \n"+
-                                "        db.jv_snapshots.save(snapshot); } \n" +
+                                "        db.audit_snapshots.save(snapshot); } \n" +
                                 "    ); "+
                                 "    return 'ok'; \n"+
                                 "}"
