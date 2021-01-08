@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "jv_commit")
+@Table(name = "audit_commit")
 public class CommitDatabase implements Serializable {
 
     private static final long serialVersionUID = 1L;
