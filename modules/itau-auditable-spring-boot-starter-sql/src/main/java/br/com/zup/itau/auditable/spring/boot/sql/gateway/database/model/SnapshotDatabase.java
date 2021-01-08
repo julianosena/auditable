@@ -50,6 +50,10 @@ public class SnapshotDatabase implements Serializable {
     @JoinColumn(name = "global_id_fk", referencedColumnName = "global_id_pk")
     private GlobalIdDatabase globalId;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "commit_fk", referencedColumnName = "commit_pk")
+    private CommitDatabase commitDatabase;
+
     public Long getSnapshotPk() {
         return snapshotPk;
     }
@@ -104,5 +108,13 @@ public class SnapshotDatabase implements Serializable {
 
     public void setGlobalId(GlobalIdDatabase globalId) {
         this.globalId = globalId;
+    }
+
+    public CommitDatabase getCommitDatabase() {
+        return commitDatabase;
+    }
+
+    public void setCommitDatabase(CommitDatabase commitDatabase) {
+        this.commitDatabase = commitDatabase;
     }
 }

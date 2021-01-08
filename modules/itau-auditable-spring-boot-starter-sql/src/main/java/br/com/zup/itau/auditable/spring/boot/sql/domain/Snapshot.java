@@ -10,16 +10,18 @@ public class Snapshot {
     private String state;
     private String changedProperties;
     private String managedType;
+    private Commit commit;
 
     public Snapshot() {}
 
-    public Snapshot(Long snapshotPk, String type, Long version, String state, String changedProperties, String managedType) {
+    public Snapshot(Long snapshotPk, String type, Long version, String state, String changedProperties, String managedType, Commit commit) {
         this.snapshotPk = snapshotPk;
         this.type = type;
         this.version = version;
         this.state = state;
         this.changedProperties = changedProperties;
         this.managedType = managedType;
+        this.commit = commit;
     }
 
     public Long getSnapshotPk() {
@@ -68,5 +70,13 @@ public class Snapshot {
 
     public void setManagedType(String managedType) {
         this.managedType = managedType;
+    }
+
+    public Commit getCommit() {
+        return commit;
+    }
+
+    public void setCommit(Commit commit) {
+        this.commit = commit;
     }
 }

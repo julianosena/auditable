@@ -1,5 +1,6 @@
 package br.com.zup.itau.auditable.spring.boot.sql.controller.model.response.translator;
 
+import br.com.zup.itau.auditable.spring.boot.sql.controller.model.response.CommitResponse;
 import br.com.zup.itau.auditable.spring.boot.sql.controller.model.response.SnapshotResponse;
 import br.com.zup.itau.auditable.spring.boot.sql.domain.Snapshot;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,12 +21,15 @@ public class SnapshotToSnapshotResponseTranslator {
         Map<String, Object> state = objectMapper.readValue(snapshot.getState(), new TypeReference<Map<String, Object>>() {
         });
 
+        CommitResponse commitResponse = CommitToCommitResponseTranslator.translate(snapshot.getCommit());
+
         return new SnapshotResponse(
                 snapshot.getSnapshotPk(),
                 snapshot.getType(),
                 snapshot.getVersion(),
                 state,
-                changedPropertiesList
+                changedPropertiesList,
+                commitResponse
         );
     }
 }

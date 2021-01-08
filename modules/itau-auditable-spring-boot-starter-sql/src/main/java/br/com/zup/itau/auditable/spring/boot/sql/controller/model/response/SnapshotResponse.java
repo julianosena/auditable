@@ -13,15 +13,17 @@ public class SnapshotResponse {
     private Long version;
     private Map<String, Object> state;
     private List<String> changedProperties;
+    private CommitResponse commit;
 
     public SnapshotResponse() {}
 
-    public SnapshotResponse(Long snapshotPk, String type, Long version, Map<String, Object> state, List<String> changedProperties) {
+    public SnapshotResponse(Long snapshotPk, String type, Long version, Map<String, Object> state, List<String> changedProperties, CommitResponse commit) {
         this.snapshotPk = snapshotPk;
         this.type = type;
         this.version = version;
         this.state = state;
         this.changedProperties = changedProperties;
+        this.commit = commit;
     }
 
     public Long getSnapshotPk() {
@@ -62,5 +64,13 @@ public class SnapshotResponse {
 
     public void setChangedProperties(List<String> changedProperties) {
         this.changedProperties = changedProperties;
+    }
+
+    public CommitResponse getCommit() {
+        return commit;
+    }
+
+    public void setCommit(CommitResponse commit) {
+        this.commit = commit;
     }
 }
