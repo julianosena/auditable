@@ -23,7 +23,7 @@ public abstract class ItauAuditableAbstractController {
         final List<Snapshot> snapshots = this.getRevisionsByIdAndTypeUseCase.execute(this.getType(), id);
         final List<SnapshotResponse> snapshotResponses = snapshots.stream().map(SnapshotToSnapshotResponseTranslator::execute)
                 .collect(Collectors.toList());
-        return snapshots.isEmpty() ? null : new GlobalIdResponse(snapshots.get(0).getGlobalId().get("cdoId"), snapshotResponses);
+        return snapshots.isEmpty() ? new GlobalIdResponse() : new GlobalIdResponse(snapshots.get(0).getGlobalId().get("cdoId"), snapshotResponses);
     }
 
     public abstract String getType();
