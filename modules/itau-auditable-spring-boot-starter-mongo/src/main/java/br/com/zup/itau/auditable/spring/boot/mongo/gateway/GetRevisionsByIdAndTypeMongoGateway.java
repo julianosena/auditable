@@ -1,9 +1,9 @@
 package br.com.zup.itau.auditable.spring.boot.mongo.gateway;
 
-import br.com.zup.itau.auditable.core.metamodel.object.CdoSnapshot;
+import br.com.zup.itau.auditable.spring.boot.mongo.gateway.database.model.Snapshot;
 
 import java.util.List;
 
 public interface GetRevisionsByIdAndTypeMongoGateway {
-    List<CdoSnapshot> execute(final String dataClass, final String id);
+    List<Snapshot> execute(final String dataClass, final String id);
 }

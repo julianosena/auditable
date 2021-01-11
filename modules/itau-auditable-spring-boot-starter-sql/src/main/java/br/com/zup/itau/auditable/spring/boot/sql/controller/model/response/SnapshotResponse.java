@@ -8,11 +8,11 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SnapshotResponse {
 
-    private Long snapshotPk;
-    private String type;
-    private Long version;
-    private Map<String, Object> state;
-    private List<String> changedProperties;
+    private Long snapshotPk; //id da tabela
+    private String type; //initial etc
+    private Long version; //version
+    private Map<String, Object> state; //dados do objeto no momento de auditoria
+    private List<String> changedProperties; //propriedades alteradas
     private CommitResponse commit;
 
     public SnapshotResponse() {}

@@ -6,8 +6,8 @@ public class CommitResponse {
 
     private Long commitId;
     private Long commitFk;
-    private String author;
-    private LocalDateTime commitDate;
+    private String author; //autor
+    private LocalDateTime commitDate; //momento da auditoria
 
     public CommitResponse(Long commitId, Long commitFk, String author, LocalDateTime commitDate) {
         this.commitId = commitId;

@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * @author pawelszymczyk
  */
-@ConfigurationProperties(prefix = "itauAuditable")
+@ConfigurationProperties(prefix = "itau-auditable")
 public class ItauAuditableMongoProperties extends ItauAuditableSpringProperties {
     private static final String DEFAULT_OBJECT_ACCESS_HOOK = DBRefUnproxyObjectAccessHook.class.getName();
 

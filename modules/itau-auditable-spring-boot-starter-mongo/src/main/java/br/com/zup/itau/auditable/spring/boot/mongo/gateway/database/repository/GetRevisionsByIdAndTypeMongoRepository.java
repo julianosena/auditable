@@ -1,10 +1,10 @@
 package br.com.zup.itau.auditable.spring.boot.mongo.gateway.database.repository;
 
-import br.com.zup.itau.auditable.core.AuditableContextHolder;
-import br.com.zup.itau.auditable.spring.boot.mongo.gateway.database.model.CdoSnapshot;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoDatabase;
+import br.com.zup.itau.auditable.spring.boot.mongo.gateway.database.model.Snapshot;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,20 +13,12 @@ import java.util.List;
 public class GetRevisionsByIdAndTypeMongoRepository {
 
     @Autowired
-    private MongoClient mongoClient;
+    private MongoTemplate mongoTemplate;
 
-    public List<CdoSnapshot> execute(final String dataClass, final String id) {
-        String databaseName = AuditableContextHolder.getContext().getDatabaseName();
-
-        String name = "DATABASE_NAME_DEFAULT";
-
-        if (null != databaseName) {
-            name = databaseName;
-        }
-
-        MongoDatabase database = mongoClient.getDatabase(name);
-
-        System.out.println(database.getCollection("jv_snapshots"));
-        return null;
+    public List<Snapshot> execute(final String dataClass, final String id) {
+        final Query query = new Query();
+        query.addCriteria(Criteria.where("globalId.entity").is(dataClass)
+                .and("globalId.cdoId").is(id));
+        return mongoTemplate.find(query, Snapshot.class);
     }
 }
