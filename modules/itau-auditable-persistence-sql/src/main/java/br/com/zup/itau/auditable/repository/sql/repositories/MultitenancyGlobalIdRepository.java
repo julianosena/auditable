@@ -23,7 +23,7 @@ public class MultitenancyGlobalIdRepository extends MultitenancySchemaNameAware 
     private JsonConverter jsonConverter;
     private final boolean disableCache;
 
-    private Cache<GlobalId, Long> globalIdPkCache = CacheBuilder.newBuilder()
+    private final Cache<GlobalId, Long> globalIdPkCache = CacheBuilder.newBuilder()
             .maximumSize(1000)
             .build();
 
@@ -34,7 +34,7 @@ public class MultitenancyGlobalIdRepository extends MultitenancySchemaNameAware 
 
     public long getOrInsertId(GlobalId globalId, Session session) {
         Optional<Long> pk = findGlobalIdPk(globalId, session);
-        return pk.isPresent() ? pk.get() : insert(globalId, session);
+        return pk.orElseGet(() -> insert(globalId, session));
     }
 
     public void evictCache() {
@@ -82,9 +82,17 @@ public class MultitenancyGlobalIdRepository extends MultitenancySchemaNameAware 
                   .queryName("find PK of valueObjectId");
         }
         else if (globalId instanceof InstanceId){
-            select.and(GLOBAL_ID_LOCAL_ID, jsonConverter.toJson(((InstanceId)globalId).getCdoId()))
-                  .and(GLOBAL_ID_TYPE_NAME, globalId.getTypeName())
-                  .queryName("find PK of InstanceId");
+            Object cdoId = ((InstanceId)globalId).getCdoId();
+
+            if(cdoId instanceof String){
+                select.and(GLOBAL_ID_LOCAL_ID, cdoId.toString())
+                        .and(GLOBAL_ID_TYPE_NAME, globalId.getTypeName())
+                        .queryName("find PK of InstanceId");
+            } else {
+                select.and(GLOBAL_ID_LOCAL_ID, jsonConverter.toJson(((InstanceId) globalId).getCdoId()))
+                        .and(GLOBAL_ID_TYPE_NAME, globalId.getTypeName())
+                        .queryName("find PK of InstanceId");
+            }
         }
         else if (globalId instanceof UnboundedValueObjectId){
             select.and(GLOBAL_ID_TYPE_NAME, globalId.getTypeName())
@@ -105,9 +113,17 @@ public class MultitenancyGlobalIdRepository extends MultitenancySchemaNameAware 
                   .value(GLOBAL_ID_OWNER_ID_FK, ownerFk);
         }
         else if (globalId instanceof InstanceId) {
-            insert = session.insert("InstanceId")
-                    .value(GLOBAL_ID_TYPE_NAME, globalId.getTypeName())
-                    .value(GLOBAL_ID_LOCAL_ID, jsonConverter.toJson(((InstanceId)globalId).getCdoId()));
+            Object cdoId = ((InstanceId)globalId).getCdoId();
+
+            if(cdoId instanceof String){
+                insert = session.insert("InstanceId")
+                        .value(GLOBAL_ID_TYPE_NAME, globalId.getTypeName())
+                        .value(GLOBAL_ID_LOCAL_ID, cdoId.toString());
+            } else {
+                insert = session.insert("InstanceId")
+                        .value(GLOBAL_ID_TYPE_NAME, globalId.getTypeName())
+                        .value(GLOBAL_ID_LOCAL_ID, jsonConverter.toJson(((InstanceId)globalId).getCdoId()));
+            }
 
         }
         else if (globalId instanceof UnboundedValueObjectId) {
