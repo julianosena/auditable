@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+
 public abstract class ItauAuditableAbstractController {
 
     @Autowired
     private GetRevisionsByIdAndTypeUseCase getRevisionsByIdAndTypeUseCase;
 
-    @GetMapping("/{id}/revisions")
+    @GetMapping(value = "/{id}/revisions", produces = APPLICATION_JSON_UTF8_VALUE)
     public GlobalIdResponse execute(@PathVariable("id") String id) throws GetRevisionsByIdAndTypeUseCaseException {
         final List<Snapshot> snapshots = this.getRevisionsByIdAndTypeUseCase.execute(this.getType(), id);
         final List<SnapshotResponse> snapshotResponses = snapshots.stream().map(SnapshotToSnapshotResponseTranslator::execute)
