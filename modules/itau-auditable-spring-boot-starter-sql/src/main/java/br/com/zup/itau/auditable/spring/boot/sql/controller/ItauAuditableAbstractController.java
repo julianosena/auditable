@@ -10,24 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 abstract public class ItauAuditableAbstractController {
 
     @Autowired
     private GetRevisionsByIdAndTypeUseCase getRevisionsByIdAndTypeUseCase;
 
     @GetMapping("/{id}/revisions")
-    public List<GlobalIdResponse> execute(@PathVariable("id") String id) throws ItauAuditableUseCaseException, ItauAuditableTranslatorException {
-        List<GlobalId> revisions = this.getRevisionsByIdAndTypeUseCase.execute(id, this.getType());
-        List<GlobalIdResponse> list = new ArrayList<>();
-        for (GlobalId revision : revisions) {
-            GlobalIdResponse translate = GlobalIdToGlobalIdResponseTranslator.translate(revision);
-            list.add(translate);
-        }
-        return list;
+    public GlobalIdResponse execute(@PathVariable("id") String id) throws ItauAuditableUseCaseException, ItauAuditableTranslatorException {
+        GlobalId revision = this.getRevisionsByIdAndTypeUseCase.execute(id, this.getType());
+        return GlobalIdToGlobalIdResponseTranslator.translate(revision);
     }
 
     public abstract String getType();

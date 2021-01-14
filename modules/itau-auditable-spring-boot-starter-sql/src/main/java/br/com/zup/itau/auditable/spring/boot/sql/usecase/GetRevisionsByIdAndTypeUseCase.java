@@ -6,8 +6,6 @@ import br.com.zup.itau.auditable.spring.boot.sql.usecase.exception.GetRevisionsB
 import br.com.zup.itau.auditable.usecase.exception.ItauAuditableUseCaseException;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class GetRevisionsByIdAndTypeUseCase {
 
@@ -17,7 +15,7 @@ public class GetRevisionsByIdAndTypeUseCase {
         this.getRevisionsByIdAndTypeGateway = getRevisionsByIdAndTypeGateway;
     }
 
-    public List<GlobalId> execute(String id, String type) throws ItauAuditableUseCaseException {
+    public GlobalId execute(String id, String type) throws ItauAuditableUseCaseException {
         try {
 
             return this.getRevisionsByIdAndTypeGateway.execute(id, type);
