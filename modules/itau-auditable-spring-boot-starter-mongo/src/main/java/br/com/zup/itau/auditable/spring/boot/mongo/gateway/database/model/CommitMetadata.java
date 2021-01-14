@@ -9,9 +9,9 @@ public class CommitMetadata {
     private final Map<String, String> properties;
     private final LocalDateTime commitDate;
     private final Instant commitDateInstant;
-    private final String id;
+    private final Long id;
 
-    public CommitMetadata(String author, Map<String, String> properties, LocalDateTime commitDate, Instant commitDateInstant, String id) {
+    public CommitMetadata(String author, Map<String, String> properties, LocalDateTime commitDate, Instant commitDateInstant, Long id) {
         this.author = author;
         this.properties = properties;
         this.commitDate = commitDate;
@@ -35,7 +35,7 @@ public class CommitMetadata {
         return commitDateInstant;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 }

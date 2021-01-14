@@ -7,10 +7,10 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GlobalIdResponse {
 
-    private Long globalId; //id do objeto no javers
-    private String localId; //id do objeto auditado
-    private String fragment; //nao manjo
-    private Long ownerIdFk; //nao lembro
+    private Long globalId;
+    private String localId;
+    private String fragment;
+    private Long ownerIdFk;
     private List<SnapshotResponse> snapshots;
 
     public GlobalIdResponse() { }
