@@ -11,6 +11,6 @@ public class CommitMetadataToCommitMetadataResponseTranslator {
     public static CommitMetadataResponse execute(final CommitMetadata commitMetadata) {
         return new CommitMetadataResponse(commitMetadata.getAuthor(),
                 commitMetadata.getCommitDate(),
-                commitMetadata.getId());
+                commitMetadata.getCommitId());
     }
 }

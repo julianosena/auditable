@@ -1,5 +1,7 @@
 package br.com.zup.itau.auditable.spring.boot.mongo.gateway.database.model;
 
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -9,14 +11,15 @@ public class CommitMetadata {
     private final Map<String, String> properties;
     private final LocalDateTime commitDate;
     private final Instant commitDateInstant;
-    private final Long id;
+    @Field("id")
+    private final long commitId;
 
-    public CommitMetadata(String author, Map<String, String> properties, LocalDateTime commitDate, Instant commitDateInstant, Long id) {
+    public CommitMetadata(String author, Map<String, String> properties, LocalDateTime commitDate, Instant commitDateInstant, long commitId) {
         this.author = author;
         this.properties = properties;
         this.commitDate = commitDate;
         this.commitDateInstant = commitDateInstant;
-        this.id = id;
+        this.commitId = commitId;
     }
 
     public String getAuthor() {
@@ -35,7 +38,7 @@ public class CommitMetadata {
         return commitDateInstant;
     }
 
-    public long getId() {
-        return id;
+    public long getCommitId() {
+        return commitId;
     }
 }
