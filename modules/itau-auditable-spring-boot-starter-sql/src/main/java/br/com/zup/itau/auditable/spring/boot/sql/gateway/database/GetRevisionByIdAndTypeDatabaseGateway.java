@@ -9,6 +9,8 @@ import br.com.zup.itau.auditable.spring.boot.sql.gateway.exception.ItauAuditable
 import br.com.zup.itau.auditable.spring.boot.sql.gateway.exception.ItauAuditableGetGatewayException;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class GetRevisionByIdAndTypeDatabaseGateway implements GetRevisionsByIdAndTypeGateway {
 
@@ -19,11 +21,12 @@ public class GetRevisionByIdAndTypeDatabaseGateway implements GetRevisionsByIdAn
     }
 
     @Override
-    public GlobalId execute(String id, String type) throws ItauAuditableGatewayException {
+    public Optional<GlobalId> execute(String id, String type) throws ItauAuditableGatewayException {
         try {
 
-            GlobalIdDatabase globalIdDatabase = this.repository.findAllByLocalIdAndTypeName(id, type);
-            return GlobalIdDatabaseToGlobalIdTranslator.translate(globalIdDatabase);
+            Optional<GlobalIdDatabase> optionalGlobalIdDatabase = this.repository.findAllByLocalIdAndTypeName(id, type);
+
+            return optionalGlobalIdDatabase.map(GlobalIdDatabaseToGlobalIdTranslator ::translate);
 
         } catch (Exception e){
             throw new ItauAuditableGetGatewayException("Problem in get revisions by id and type process", e);

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Optional;
+
 abstract public class ItauAuditableAbstractController {
 
     @Autowired
@@ -17,7 +19,7 @@ abstract public class ItauAuditableAbstractController {
 
     @GetMapping("/{id}/revisions")
     public GlobalIdResponse execute(@PathVariable("id") String id) throws ItauAuditableUseCaseException, ItauAuditableTranslatorException {
-        GlobalId revision = this.getRevisionsByIdAndTypeUseCase.execute(id, this.getType());
+        Optional<GlobalId> revision = this.getRevisionsByIdAndTypeUseCase.execute(id, this.getType());
         return GlobalIdToGlobalIdResponseTranslator.translate(revision);
     }
 

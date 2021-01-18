@@ -7,7 +7,9 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.util.Optional;
 
 @Component
 public class GlobalIdDatabaseRepository {
@@ -15,7 +17,7 @@ public class GlobalIdDatabaseRepository {
     @PersistenceContext
     private EntityManager em;
 
-    public GlobalIdDatabase findAllByLocalIdAndTypeName(String id, String typeName) throws ItauAuditableGatewayException {
+    public Optional<GlobalIdDatabase> findAllByLocalIdAndTypeName(String id, String typeName) throws ItauAuditableGatewayException {
         try {
             Session session = em.unwrap(Session.class);
             Query<GlobalIdDatabase> query = session.createQuery("" +
@@ -26,10 +28,11 @@ public class GlobalIdDatabaseRepository {
                     .setParameter("id", id)
                     .setParameter("typeName", typeName);
 
-            return query.getSingleResult();
-
+            return Optional.of(query.getSingleResult());
+        } catch (NoResultException ex) {
+            return Optional.empty();
         } catch (Exception e) {
-            throw new ItauAuditableGatewayException("Ocorreu o seguinte erro ao buscar as auditorias", e.getCause());
+            throw new ItauAuditableGatewayException("Ocorreu o seguinte erro ao buscar as auditorias", e);
         }
     }
 }
